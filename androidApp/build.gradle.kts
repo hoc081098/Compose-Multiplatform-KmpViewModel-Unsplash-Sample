@@ -35,4 +35,8 @@ android {
     kotlin {
         jvmToolchain(11)
     }
+
+    packagingOptions {
+        exclude("META-INF/versions/9/previous-compilation-data.bin")
+    }
 }
