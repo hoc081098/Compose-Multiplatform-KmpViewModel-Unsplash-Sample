@@ -19,11 +19,14 @@ pluginManagement {
         kotlin("jvm").version(kotlinVersion)
         kotlin("multiplatform").version(kotlinVersion)
         kotlin("android").version(kotlinVersion)
+        kotlin("plugin.serialization").version(kotlinVersion)
 
         id("com.android.application").version(agpVersion)
         id("com.android.library").version(agpVersion)
 
         id("org.jetbrains.compose").version(composeVersion)
+
+        id("com.codingfeline.buildkonfig").version("0.13.3")
     }
 }
 
@@ -32,5 +35,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
     }
 }

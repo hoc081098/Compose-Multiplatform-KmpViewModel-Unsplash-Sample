@@ -1,9 +1,20 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec
+import java.util.Properties
+
 plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
+    kotlin("plugin.serialization")
+    id("com.codingfeline.buildkonfig")
 }
+
+val ktorVersion = "2.3.3"
+val kotlinxSerializationVersion = "1.6.0-RC"
+val coroutinesVersion = "1.7.3"
+val kmpViewModel = "0.4.1-SNAPSHOT"
+val koinVersion = "3.4.3"
 
 kotlin {
     androidTarget()
@@ -35,6 +46,39 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
+
+                // Ktor
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("io.ktor:ktor-client-json:$ktorVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("io.ktor:ktor-client-serialization:$ktorVersion")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
+                // KotlinX Serialization
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+
+                // KotlinX Coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+                // KMP View Model
+                implementation("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
+                implementation("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
+                implementation("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
+
+                // KotlinX DateTime
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+
+                // Napier
+                implementation("io.github.aakira:napier:2.6.1")
+
+                // FlowExt
+                implementation("io.github.hoc081098:FlowExt:0.7.1")
+
+                // Koin
+                implementation("io.insert-koin:koin-core:$koinVersion")
+                implementation("io.insert-koin:koin-compose:1.0.4")
             }
         }
         val androidMain by getting {
@@ -42,6 +86,16 @@ kotlin {
                 api("androidx.activity:activity-compose:1.6.1")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.9.0")
+
+                // Ktor
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
+                // KotlinX Coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+
+                // Koin
+                implementation("io.insert-koin:koin-android:$koinVersion")
+                implementation("io.insert-koin:koin-androidx-compose:3.4.6")
             }
         }
         val iosX64Main by getting
@@ -52,10 +106,21 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                // Ktor
+                implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+            }
         }
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.common)
+
+                // Ktor
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+
+                // KotlinX Coroutines
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
             }
         }
     }
@@ -63,7 +128,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication.common"
+    namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -81,3 +146,54 @@ android {
         jvmToolchain(11)
     }
 }
+
+buildkonfig {
+    packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
+    defaultConfigs {
+        buildConfigField(
+            type = FieldSpec.Type.STRING,
+            name = "UNSPLASH_CLIENT_ID",
+            value = "TODO"
+        )
+        buildConfigField(
+            type = FieldSpec.Type.STRING,
+            name = "UNSPLASH_BASE_URL",
+            value = "https://api.unsplash.com/"
+        )
+    }
+
+    defaultConfigs(flavor = "dev") {
+        buildConfigField(
+            type = FieldSpec.Type.STRING,
+            name = "UNSPLASH_CLIENT_ID",
+            value = rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
+        )
+    }
+}
+
+interface PropertiesMap : Map<String, String> {
+    override operator fun get(key: String): String
+}
+
+private class DefaultPropertiesMap(val inner: Map<String, String>) : PropertiesMap, Map<String, String> by inner {
+    override fun get(key: String): String = inner[key] ?: error("Key $key not found")
+}
+
+fun Map<String, String>.toPropertiesMap(): PropertiesMap = DefaultPropertiesMap(this)
+
+fun Project.readPropertiesFile(pathFromRootProject: String): PropertiesMap = Properties().apply {
+    load(
+        rootProject
+            .file(pathFromRootProject)
+            .apply {
+                check(exists()) {
+                    "$pathFromRootProject file not found. " +
+                        "Create $pathFromRootProject file from root project."
+                }
+            }
+            .reader(),
+    )
+}
+    .map { it.key as String to it.value as String }
+    .toMap()
+    .toPropertiesMap()
