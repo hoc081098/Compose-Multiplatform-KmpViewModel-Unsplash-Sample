@@ -8,4 +8,5 @@ import org.koin.ksp.generated.module
 @ComponentScan
 internal class DomainModule
 
-internal fun domainModule() = DomainModule().module
+@Suppress("NOTHING_TO_INLINE")
+internal inline fun domainModule() = DomainModule().module

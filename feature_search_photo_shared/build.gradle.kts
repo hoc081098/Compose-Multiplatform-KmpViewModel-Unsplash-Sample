@@ -17,6 +17,7 @@ val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
+val arrowKtVersion = "1.2.0"
 
 kotlin {
     androidTarget()
@@ -81,9 +82,13 @@ kotlin {
                 implementation("io.github.hoc081098:FlowExt:0.7.1")
 
                 // Koin
-                implementation("io.insert-koin:koin-core:$koinVersion")
+                api("io.insert-koin:koin-core:$koinVersion")
                 implementation("io.insert-koin:koin-compose:1.0.4")
                 implementation("io.insert-koin:koin-annotations:$koinKspVersion")
+
+                // Arrow-kt
+                implementation("io.arrow-kt:arrow-core:$arrowKtVersion")
+                implementation("io.arrow-kt:arrow-fx-coroutines:$arrowKtVersion")
             }
         }
         val androidMain by getting {
@@ -133,7 +138,7 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
+    namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -150,6 +155,10 @@ android {
     kotlin {
         jvmToolchain(11)
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 // ---------------------------- BUILD KONFIG ----------------------------
@@ -160,12 +169,17 @@ buildkonfig {
         buildConfigField(
             type = FieldSpec.Type.STRING,
             name = "UNSPLASH_CLIENT_ID",
-            value = "TODO"
+            value = "none"
         )
         buildConfigField(
             type = FieldSpec.Type.STRING,
             name = "UNSPLASH_BASE_URL",
             value = "https://api.unsplash.com/"
+        )
+        buildConfigField(
+            type = FieldSpec.Type.STRING,
+            name = "FLAVOR",
+            value = "none"
         )
     }
 
@@ -174,6 +188,11 @@ buildkonfig {
             type = FieldSpec.Type.STRING,
             name = "UNSPLASH_CLIENT_ID",
             value = rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
+        )
+        buildConfigField(
+            type = FieldSpec.Type.STRING,
+            name = "FLAVOR",
+            value = "dev"
         )
     }
 }
