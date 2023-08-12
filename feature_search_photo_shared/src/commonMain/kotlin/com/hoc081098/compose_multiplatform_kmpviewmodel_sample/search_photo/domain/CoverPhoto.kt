@@ -12,4 +12,5 @@ data class CoverPhoto(
   val promotedAt: Instant?,
   val width: Int,
   val height: Int,
+  val thumbnailUrl: String,
 )

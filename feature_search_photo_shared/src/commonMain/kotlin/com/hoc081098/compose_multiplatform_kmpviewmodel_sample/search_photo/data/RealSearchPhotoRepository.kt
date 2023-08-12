@@ -31,4 +31,5 @@ private fun CoverPhotoResponse.toCoverPhoto() = CoverPhoto(
   promotedAt = promotedAt,
   width = width,
   height = height,
+  thumbnailUrl = urls.thumb,
 )

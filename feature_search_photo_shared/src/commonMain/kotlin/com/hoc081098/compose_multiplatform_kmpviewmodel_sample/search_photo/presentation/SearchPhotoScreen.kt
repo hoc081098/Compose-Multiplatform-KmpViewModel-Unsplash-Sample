@@ -1,6 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,9 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.movableContentOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.collectAsStateWithLifecycle
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.EmptyView
@@ -35,6 +40,8 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.doma
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
+import io.kamel.image.KamelImage
+import io.kamel.image.asyncPainterResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -164,13 +171,14 @@ private fun PhotoGridCell(
   modifier: Modifier = Modifier,
 ) {
   Box(
-    modifier = modifier,
+    modifier = modifier
+      .clickable(onClick = onClick),
   ) {
-    Text(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp),
-      text = photo.id,
+    KamelImage(
+      modifier = Modifier.matchParentSize(),
+      resource = asyncPainterResource(data = photo.thumbnailUrl),
+      contentDescription = null,
+      contentScale = ContentScale.Crop,
     )
   }
 }

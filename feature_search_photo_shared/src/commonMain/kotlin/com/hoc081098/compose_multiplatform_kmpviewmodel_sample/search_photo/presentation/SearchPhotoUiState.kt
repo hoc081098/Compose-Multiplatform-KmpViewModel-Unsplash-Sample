@@ -23,6 +23,7 @@ data class SearchPhotoUiState(
     val promotedAt: ImmutableWrapper<Instant?>,
     val width: Int,
     val height: Int,
+    val thumbnailUrl: String,
   )
 
   companion object {

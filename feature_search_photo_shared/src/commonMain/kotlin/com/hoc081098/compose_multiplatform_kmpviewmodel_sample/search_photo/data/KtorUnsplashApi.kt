@@ -6,6 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.URLBuilder
+import io.ktor.http.headers
 import io.ktor.http.path
 import org.koin.core.annotation.Singleton
 
@@ -25,6 +26,9 @@ internal class KtorUnsplashApi(
           append("query", query)
           append("page", "1")
           append("per_page", "30")
+        }
+        headers {
+          set("Authorization", "Client-ID ${BuildKonfig.UNSPLASH_CLIENT_ID}")
         }
       }
       .build()

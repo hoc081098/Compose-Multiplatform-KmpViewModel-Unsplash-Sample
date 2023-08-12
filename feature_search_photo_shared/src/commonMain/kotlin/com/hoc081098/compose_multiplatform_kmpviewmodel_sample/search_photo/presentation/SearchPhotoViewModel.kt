@@ -118,4 +118,5 @@ private fun CoverPhoto.toPhotoUiItem(): PhotoUiItem = PhotoUiItem(
   promotedAt = promotedAt.toImmutableWrapper(),
   width = width,
   height = height,
+  thumbnailUrl = thumbnailUrl,
 )
