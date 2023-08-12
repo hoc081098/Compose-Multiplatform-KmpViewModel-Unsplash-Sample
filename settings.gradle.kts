@@ -1,7 +1,7 @@
 rootProject.name = "KmpViewModel Compose Multiplatform"
 
 include(":androidApp")
-include(":shared")
+include(":feature_search_photo_shared")
 include(":desktopApp")
 
 pluginManagement {

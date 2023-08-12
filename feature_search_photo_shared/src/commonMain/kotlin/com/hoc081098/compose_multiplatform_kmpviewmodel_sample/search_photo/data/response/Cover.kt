@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UrlsResponse(
+internal data class UrlsResponse(
   @SerialName(value = "raw") val raw: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3
   @SerialName(value = "full") val full: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb
   @SerialName(value = "regular") val regular: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max
@@ -15,7 +15,7 @@ data class UrlsResponse(
 )
 
 @Serializable
-data class LinksResponse(
+internal data class LinksResponse(
   @SerialName(value = "self") val self: String, // https://api.unsplash.com/photos/mzt0A967scs
   @SerialName(value = "html") val html: String, // https://unsplash.com/photos/mzt0A967scs
   @SerialName(value = "download") val download: String, // https://unsplash.com/photos/mzt0A967scs/download
@@ -23,7 +23,7 @@ data class LinksResponse(
 )
 
 @Serializable
-data class CoverPhotoResponse(
+internal data class CoverPhotoResponse(
   @SerialName(value = "id") val id: String, // mzt0A967scs
   @SerialName(value = "slug") val slug: String, // mzt0A967scs
   @SerialName(value = "created_at") val createdAt: Instant, // 2023-03-10T14:13:07Z

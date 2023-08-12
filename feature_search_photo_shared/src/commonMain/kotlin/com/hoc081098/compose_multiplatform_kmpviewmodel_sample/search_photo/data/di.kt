@@ -19,7 +19,7 @@ import org.koin.ksp.generated.module
 @ComponentScan
 internal class DataModule
 
-fun dataModule() = DataModule().module
+internal fun dataModule() = DataModule().module
 
 @Singleton
 internal expect fun createHttpClient(json: Json): HttpClient

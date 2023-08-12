@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 
 val AllModules: List<Module> = listOf(
