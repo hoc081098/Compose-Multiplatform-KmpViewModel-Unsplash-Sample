@@ -89,6 +89,9 @@ kotlin {
                 // Arrow-kt
                 implementation("io.arrow-kt:arrow-core:$arrowKtVersion")
                 implementation("io.arrow-kt:arrow-fx-coroutines:$arrowKtVersion")
+
+                // KotlinX Immutable Collections
+                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
             }
         }
         val androidMain by getting {
