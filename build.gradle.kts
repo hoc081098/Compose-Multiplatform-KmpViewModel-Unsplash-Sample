@@ -7,4 +7,5 @@ plugins {
     id("org.jetbrains.compose").apply(false)
     kotlin("plugin.serialization").apply(false)
     id("com.codingfeline.buildkonfig").apply(false)
+    id("com.google.devtools.ksp").apply(false)
 }

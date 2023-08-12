@@ -1,4 +1,4 @@
-rootProject.name = "MyApplication"
+rootProject.name = "KmpViewModel Compose Multiplatform"
 
 include(":androidApp")
 include(":shared")
@@ -27,6 +27,7 @@ pluginManagement {
         id("org.jetbrains.compose").version(composeVersion)
 
         id("com.codingfeline.buildkonfig").version("0.13.3")
+        id("com.google.devtools.ksp").version("1.9.0-1.0.13")
     }
 }
 

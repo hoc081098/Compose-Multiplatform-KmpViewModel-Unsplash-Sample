@@ -8,6 +8,7 @@ plugins {
     id("org.jetbrains.compose")
     kotlin("plugin.serialization")
     id("com.codingfeline.buildkonfig")
+    id("com.google.devtools.ksp")
 }
 
 val ktorVersion = "2.3.3"
@@ -15,6 +16,7 @@ val kotlinxSerializationVersion = "1.6.0-RC"
 val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.4.3"
+val koinKspVersion = "1.2.2"
 
 kotlin {
     androidTarget()
@@ -40,6 +42,8 @@ kotlin {
 
     sourceSets {
         val commonMain by getting {
+            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
+
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
@@ -79,6 +83,7 @@ kotlin {
                 // Koin
                 implementation("io.insert-koin:koin-core:$koinVersion")
                 implementation("io.insert-koin:koin-compose:1.0.4")
+                implementation("io.insert-koin:koin-annotations:$koinKspVersion")
             }
         }
         val androidMain by getting {
@@ -147,6 +152,8 @@ android {
     }
 }
 
+// ---------------------------- BUILD KONFIG ----------------------------
+
 buildkonfig {
     packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
     defaultConfigs {
@@ -170,6 +177,26 @@ buildkonfig {
         )
     }
 }
+
+// ---------------------------- KOIN ANNOTATIONS PROCESSOR ----------------------------
+
+dependencies {
+    val koinKspCompiler = "io.insert-koin:koin-ksp-compiler:$koinKspVersion"
+    add("kspCommonMainMetadata", koinKspCompiler)
+//    add("kspAndroid", koinKspCompiler)
+//    add("kspDesktop", koinKspCompiler)
+//    add("kspIosX64", koinKspCompiler)
+//    add("kspIosArm64", koinKspCompiler)
+//    add("kspIosSimulatorArm64", koinKspCompiler)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
+    if(name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+// ---------------------------- UTILS ----------------------------
 
 interface PropertiesMap : Map<String, String> {
     override operator fun get(key: String): String

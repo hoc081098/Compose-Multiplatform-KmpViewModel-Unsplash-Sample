@@ -1,7 +1,11 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.VIEW_MODEL_KEY
 import com.hoc081098.kmp.viewmodel.ViewModel
@@ -10,6 +14,14 @@ import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.ExperimentalResourceApi
+import org.koin.compose.KoinApplication
+import org.koin.compose.koinInject
+import org.koin.core.module.Module
+
+val AllModules: List<Module> = listOf(
+    dataModule(),
+    domainModule(),
+)
 
 class DemoViewModel(
     savedStateHandle: SavedStateHandle,
@@ -43,8 +55,17 @@ fun App(
         },
     ),
 ) {
-    MaterialTheme {
+    KoinApplication(
+        application = {
+            modules(AllModules)
+        }
+    ) {
 
+        MaterialTheme {
+            Text(
+                text = "Hello ${getPlatformName()} ${koinInject<SearchPhotoUseCase>()}",
+            )
+        }
     }
 }
 

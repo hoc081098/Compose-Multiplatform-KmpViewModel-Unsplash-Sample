@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.data
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.data.response.SearchPhotosResult
 
