@@ -1,5 +1,6 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,7 +19,10 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -182,6 +186,14 @@ private fun PhotoGridCell(
       resource = asyncPainterResource(data = photo.thumbnailUrl),
       contentDescription = null,
       contentScale = ContentScale.Crop,
+      animationSpec = tween(),
+      onFailure = {
+        Icon(
+          modifier = Modifier.align(Alignment.Center),
+          imageVector = Icons.Default.Info,
+          contentDescription = null,
+        )
+      },
     )
   }
 }
