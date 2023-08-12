@@ -9,6 +9,7 @@ import io.github.aakira.napier.Napier
 
 @Composable
 fun SearchPhotoScreen(
+  navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   LaunchedEffect(Unit) {
@@ -16,7 +17,8 @@ fun SearchPhotoScreen(
   }
 
   SearchPhotoScreenWithKoin(
-    modifier = modifier
+    modifier = modifier,
+    navigateToPhotoDetail = navigateToPhotoDetail,
   )
 }
 

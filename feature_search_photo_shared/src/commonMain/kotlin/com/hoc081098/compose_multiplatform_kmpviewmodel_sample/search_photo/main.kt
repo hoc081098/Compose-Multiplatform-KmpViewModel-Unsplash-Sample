@@ -21,6 +21,7 @@ internal val FeatureSearchPhotoModule = module {
 
 @Composable
 internal fun SearchPhotoScreenWithKoin(
+  navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   val loaded = rememberKoinModules(unloadModules = true) { listOf(FeatureSearchPhotoModule) }
@@ -28,7 +29,8 @@ internal fun SearchPhotoScreenWithKoin(
   if (loaded) {
     MaterialTheme {
       SearchPhotoScreen(
-        modifier = modifier
+        modifier = modifier,
+        navigateToPhotoDetail = navigateToPhotoDetail,
       )
     }
   }

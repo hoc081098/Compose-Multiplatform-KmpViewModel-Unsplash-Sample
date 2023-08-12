@@ -58,6 +58,7 @@ private fun searchPhotoViewModel(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchPhotoScreen(
+  navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
   viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
 ) {
@@ -101,7 +102,7 @@ internal fun SearchPhotoScreen(
       ListContent(
         modifier = Modifier.matchParentSize(),
         state = state,
-        onItemClick = { },
+        onItemClick = { navigateToPhotoDetail(it.id) }
       )
     }
   }
