@@ -26,7 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common.collectAsStateWithLifecycle
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.collectAsStateWithLifecycle
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.EmptyView
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.LoadingIndicator

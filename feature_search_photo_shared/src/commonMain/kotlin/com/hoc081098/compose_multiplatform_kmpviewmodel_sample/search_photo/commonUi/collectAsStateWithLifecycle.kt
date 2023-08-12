@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -16,7 +16,7 @@ enum class LifecycleState {
 
 @Suppress("StateFlowValueCalledInComposition")
 @Composable
-public expect fun <T> StateFlow<T>.collectAsStateWithLifecycle(
+expect fun <T> StateFlow<T>.collectAsStateWithLifecycle(
   minActiveState: LifecycleState = LifecycleState.STARTED,
   context: CoroutineContext = EmptyCoroutineContext,
 ): State<T>
