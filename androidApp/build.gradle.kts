@@ -9,7 +9,7 @@ kotlin {
     sourceSets {
         val androidMain by getting {
             dependencies {
-                implementation(project(":shared"))
+                implementation(project(":feature_search_photo_shared"))
             }
         }
     }
@@ -17,12 +17,12 @@ kotlin {
 
 android {
     compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    namespace = "com.myapplication"
+    namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
 
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
-        applicationId = "com.myapplication.MyApplication"
+        applicationId = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
         minSdk = (findProperty("android.minSdk") as String).toInt()
         targetSdk = (findProperty("android.targetSdk") as String).toInt()
         versionCode = 1
@@ -34,5 +34,9 @@ android {
     }
     kotlin {
         jvmToolchain(11)
+    }
+
+    packagingOptions {
+        exclude("META-INF/versions/9/previous-compilation-data.bin")
     }
 }
