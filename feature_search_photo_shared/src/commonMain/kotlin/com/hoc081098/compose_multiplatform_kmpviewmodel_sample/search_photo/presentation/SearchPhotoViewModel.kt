@@ -4,7 +4,7 @@ import arrow.core.right
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common.toImmutableWrapper
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.CoverPhoto
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.CoverPhotoUiItem
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
 import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
@@ -92,7 +92,7 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
         ifRight = { coverPhotos ->
           SearchPhotoUiState(
             photoUiItems = coverPhotos
-              .map { it.toCoverPhotoUiItem() }
+              .map { it.toPhotoUiItem() }
               .toImmutableList(),
             isLoading = false,
             error = null,
@@ -110,7 +110,7 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
       )
     }
 
-private fun CoverPhoto.toCoverPhotoUiItem(): CoverPhotoUiItem = CoverPhotoUiItem(
+private fun CoverPhoto.toPhotoUiItem(): PhotoUiItem = PhotoUiItem(
   id = id,
   slug = slug,
   createdAt = createdAt.toImmutableWrapper(),

@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.data.response
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName

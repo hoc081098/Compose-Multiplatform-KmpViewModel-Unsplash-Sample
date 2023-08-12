@@ -1,25 +1,176 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
-import androidx.compose.material.Text
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common.collectAsStateWithLifecycle
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.EmptyView
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.ErrorMessageAndRetryButton
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi.LoadingIndicator
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
 
 @Composable
-internal fun SearchPhotoScreen(
-  modifier: Modifier = Modifier,
+private fun searchPhotoViewModel(
   searchPhotoUseCase: SearchPhotoUseCase = koinInject(),
-  viewModel: SearchPhotoViewModel = kmpViewModel(
+): SearchPhotoViewModel =
+  kmpViewModel(
     factory = {
       SearchPhotoViewModel(
         savedStateHandle = createSavedStateHandle(),
         searchPhotoUseCase = searchPhotoUseCase
       )
     },
-  ),
+  )
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun SearchPhotoScreen(
+  modifier: Modifier = Modifier,
+  viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
 ) {
-  Text("SearchPhotoScreen $viewModel")
+  val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+  val searchTerm by viewModel
+    .searchTermStateFlow
+    .collectAsStateWithLifecycle(context = viewModel.viewModelScope.coroutineContext)
+
+  Column(
+    modifier = modifier.fillMaxSize()
+      .background(color = MaterialTheme.colorScheme.background),
+  ) {
+    TextField(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
+      value = searchTerm.orEmpty(),
+      onValueChange = remember(viewModel) { viewModel::search },
+      label = { Text(text = "Search term") },
+    )
+
+    Spacer(modifier = Modifier.height(8.dp))
+
+    Text(
+      modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp),
+      text = "Submitted term: ${state.submittedTerm.orEmpty()}",
+    )
+
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Box(
+      modifier = Modifier
+        .fillMaxWidth()
+        .weight(1f),
+      contentAlignment = Alignment.Center,
+    ) {
+      ListContent(
+        modifier = Modifier.matchParentSize(),
+        state = state,
+        onItemClick = { },
+      )
+    }
+  }
+}
+
+@Composable
+private fun ListContent(
+  state: SearchPhotoUiState,
+  onItemClick: (PhotoUiItem) -> Unit,
+  modifier: Modifier = Modifier,
+  lazyGridState: LazyGridState = rememberLazyGridState(),
+) {
+  if (state.isLoading) {
+    LoadingIndicator(
+      modifier = modifier,
+    )
+    return
+  }
+
+  state.error?.let { error ->
+    ErrorMessageAndRetryButton(
+      modifier = modifier,
+      onRetry = { },
+      errorMessage = when (error) {
+        SearchPhotoError.NetworkError -> "Network error"
+        SearchPhotoError.ServerError -> "Server error"
+        SearchPhotoError.TimeoutError -> "Timeout error"
+        SearchPhotoError.Unexpected -> "Unexpected error"
+      },
+    )
+    return
+  }
+
+  if (state.photoUiItems.isEmpty()) {
+    EmptyView(
+      modifier = modifier,
+    )
+  } else {
+    LazyVerticalGrid(
+      modifier = modifier,
+      columns = GridCells.Fixed(count = 2),
+      state = lazyGridState,
+      verticalArrangement = Arrangement.spacedBy(16.dp),
+      horizontalArrangement = Arrangement.spacedBy(16.dp),
+      contentPadding = PaddingValues(16.dp),
+    ) {
+      items(
+        items = state.photoUiItems,
+        key = { it.id },
+      ) {
+        PhotoGridCell(
+          modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio(1f),
+          photo = it,
+          onClick = { onItemClick(it) },
+        )
+      }
+    }
+  }
+}
+
+@Composable
+private fun PhotoGridCell(
+  photo: PhotoUiItem,
+  onClick: () -> Unit,
+  modifier: Modifier = Modifier,
+) {
+  Box(
+    modifier = modifier,
+  ) {
+    Text(
+      modifier = Modifier
+        .fillMaxSize()
+        .padding(16.dp),
+      text = photo.id,
+    )
+  }
 }

@@ -1,7 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data
 
 import arrow.core.Either
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.data.response.CoverPhotoResponse
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response.CoverPhotoResponse
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.CoverPhoto
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoRepository
 import org.koin.core.annotation.Singleton

@@ -1,5 +1,8 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo
 
+import androidx.compose.material.Colors
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.BuildKonfig
@@ -25,9 +28,12 @@ internal fun SearchPhotoScreenWithKoin(
   val loaded = rememberKoinModules(unloadModules = true) { listOf(FeatureSearchPhotoModule) }
 
   if (loaded) {
-    SearchPhotoScreen(
-      modifier = modifier
-    )
+    MaterialTheme(
+    ) {
+      SearchPhotoScreen(
+        modifier = modifier
+      )
+    }
   }
 }
 

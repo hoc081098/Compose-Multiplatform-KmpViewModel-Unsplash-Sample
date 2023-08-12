@@ -9,13 +9,13 @@ import kotlinx.datetime.Instant
 
 @Immutable
 data class SearchPhotoUiState(
-  val photoUiItems: ImmutableList<CoverPhotoUiItem>,
+  val photoUiItems: ImmutableList<PhotoUiItem>,
   val isLoading: Boolean,
   val error: SearchPhotoError?,
   val submittedTerm: String?,
 ) {
   @Immutable
-  data class CoverPhotoUiItem(
+  data class PhotoUiItem(
     val id: String,
     val slug: String,
     val createdAt: ImmutableWrapper<Instant>,

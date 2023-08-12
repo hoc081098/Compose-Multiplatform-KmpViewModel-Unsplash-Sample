@@ -48,7 +48,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
-                implementation(compose.material)
+                implementation(compose.material3)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
 
@@ -96,9 +96,12 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-                api("androidx.activity:activity-compose:1.6.1")
+                api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
-                api("androidx.core:core-ktx:1.9.0")
+                api("androidx.core:core-ktx:1.10.1")
+
+                // AndroidX Lifecycle Compose Runtime
+                implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
                 // Ktor
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
