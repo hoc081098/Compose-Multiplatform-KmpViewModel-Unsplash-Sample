@@ -1,5 +1,6 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -69,6 +70,8 @@ internal fun SearchPhotoScreen(
     modifier = modifier.fillMaxSize()
       .background(color = MaterialTheme.colorScheme.background),
   ) {
+    Spacer(modifier = Modifier.height(16.dp))
+
     TextField(
       modifier = Modifier
         .fillMaxWidth()
@@ -104,6 +107,7 @@ internal fun SearchPhotoScreen(
   }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ListContent(
   state: SearchPhotoUiState,
@@ -139,7 +143,7 @@ private fun ListContent(
   } else {
     LazyVerticalGrid(
       modifier = modifier,
-      columns = GridCells.Fixed(count = 2),
+      columns = GridCells.Adaptive(minSize = 128.dp),
       state = lazyGridState,
       verticalArrangement = Arrangement.spacedBy(16.dp),
       horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -151,6 +155,7 @@ private fun ListContent(
       ) {
         PhotoGridCell(
           modifier = Modifier
+            .animateItemPlacement()
             .fillMaxWidth()
             .aspectRatio(1f),
           photo = it,
