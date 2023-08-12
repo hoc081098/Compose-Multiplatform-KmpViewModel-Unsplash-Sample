@@ -1,6 +1,5 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response
 
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response.CoverPhotoResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
