@@ -9,9 +9,6 @@ import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
-import com.hoc081098.kmp.viewmodel.wrapper.NonNullStateFlowWrapper
-import com.hoc081098.kmp.viewmodel.wrapper.NullableStateFlowWrapper
-import com.hoc081098.kmp.viewmodel.wrapper.wrap
 import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
@@ -19,6 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
@@ -33,14 +31,13 @@ internal class SearchPhotoViewModel(
   private val savedStateHandle: SavedStateHandle,
   private val searchPhotoUseCase: SearchPhotoUseCase,
 ) : ViewModel() {
-  val searchTermStateFlow: NullableStateFlowWrapper<String?> = savedStateHandle
+  val searchTermStateFlow: StateFlow<String?> = savedStateHandle
     .getStateFlow<String?>(
       key = SEARCH_TERM_KEY,
       initialValue = null
     )
-    .wrap()
 
-  val stateFlow: NonNullStateFlowWrapper<SearchPhotoUiState> = searchTermStateFlow
+  val stateFlow: StateFlow<SearchPhotoUiState> = searchTermStateFlow
     .debounce(400.milliseconds)
     .map { it.orEmpty().trim() }
     .distinctUntilChanged()
@@ -50,7 +47,6 @@ internal class SearchPhotoViewModel(
       started = SharingStarted.Lazily,
       initialValue = SearchPhotoUiState.INITIAL,
     )
-    .wrap()
 
   fun search(term: String) {
     savedStateHandle[SEARCH_TERM_KEY] = term
