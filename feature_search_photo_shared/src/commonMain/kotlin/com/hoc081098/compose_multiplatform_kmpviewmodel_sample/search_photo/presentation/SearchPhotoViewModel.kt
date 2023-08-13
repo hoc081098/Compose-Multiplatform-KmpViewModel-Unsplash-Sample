@@ -1,7 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
 import arrow.core.right
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common.toImmutableWrapper
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.toImmutableWrapper
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.CoverPhoto
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem

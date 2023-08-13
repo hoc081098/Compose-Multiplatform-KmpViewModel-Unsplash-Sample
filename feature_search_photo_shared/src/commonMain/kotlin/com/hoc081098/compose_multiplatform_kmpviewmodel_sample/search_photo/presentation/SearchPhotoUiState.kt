@@ -1,7 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
 import androidx.compose.runtime.Immutable
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common.ImmutableWrapper
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.ImmutableWrapper
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoError
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.common
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
