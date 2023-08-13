@@ -4,11 +4,11 @@ import androidx.compose.ui.window.ComposeUIViewController
 import kotlin.experimental.ExperimentalNativeApi
 import platform.UIKit.UIViewController
 
-fun SearchPhotoViewController(
-  navigateToPhotoDetail: (id: String) -> Unit = {},
+fun PhotoDetailViewController(
+  id: String,
 ): UIViewController = ComposeUIViewController {
-  SearchPhotoScreenWithKoin(
-    navigateToPhotoDetail = navigateToPhotoDetail,
+  PhotoDetailScreenWithKoin(
+    id = id,
   )
 }
 

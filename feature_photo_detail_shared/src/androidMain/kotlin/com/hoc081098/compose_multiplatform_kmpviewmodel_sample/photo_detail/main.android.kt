@@ -4,13 +4,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun SearchPhotoScreen(
-  navigateToPhotoDetail: (id: String) -> Unit,
+fun PhotoDetailScreen(
+  id: String,
   modifier: Modifier = Modifier,
 ) {
-  SearchPhotoScreenWithKoin(
+  PhotoDetailScreenWithKoin(
     modifier = modifier,
-    navigateToPhotoDetail = navigateToPhotoDetail,
+    id = id,
   )
 }
 

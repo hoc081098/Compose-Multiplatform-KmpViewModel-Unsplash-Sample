@@ -6,7 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.SearchPhotoScreen
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.SearchPhotoScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import org.koin.core.context.startKoin
@@ -35,7 +36,11 @@ fun main() {
       Window(
         title = "Photo detail for $it",
         onCloseRequest = { id = null },
-      ) {}
+      ) {
+        PhotoDetailScreen(
+          id = it,
+        )
+      }
     }
   }
 }

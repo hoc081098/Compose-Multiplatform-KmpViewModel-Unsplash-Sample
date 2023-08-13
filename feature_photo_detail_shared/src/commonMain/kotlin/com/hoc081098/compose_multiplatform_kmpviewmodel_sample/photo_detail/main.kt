@@ -1,10 +1,13 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.BuildKonfig
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailScreen
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
@@ -17,10 +20,19 @@ internal val FeaturePhotoDetailModule = module {
 }
 
 @Composable
-internal fun SearchPhotoScreenWithKoin(
-  navigateToPhotoDetail: (id: String) -> Unit,
+internal fun PhotoDetailScreenWithKoin(
+  id: String,
   modifier: Modifier = Modifier,
 ) {
+  val loaded = rememberKoinModules { listOf(FeaturePhotoDetailModule) }
+  if (loaded) {
+    MaterialTheme {
+      PhotoDetailScreen(
+        modifier = modifier,
+        id = id,
+      )
+    }
+  }
 }
 
 enum class BuildFlavor {

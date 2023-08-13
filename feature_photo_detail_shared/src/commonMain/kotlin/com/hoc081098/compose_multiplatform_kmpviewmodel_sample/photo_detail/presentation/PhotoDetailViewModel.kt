@@ -3,6 +3,7 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.pre
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 
@@ -10,7 +11,7 @@ internal class PhotoDetailViewModel(
   savedStateHandle: SavedStateHandle,
   private val getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase,
 ) : ViewModel() {
-  internal val id = checkNotNull(savedStateHandle.get<Int>(ID_KEY)) {
+  internal val id = checkNotNull(savedStateHandle.get<String>(ID_KEY)) {
     """id must not be null.
       |For non-Android platforms, you must set id to `SavedStateHandle` with key $ID_KEY,
       |and pass that `SavedStateHandle` to `PhotoDetailViewModel` constructor.
@@ -24,6 +25,8 @@ internal class PhotoDetailViewModel(
   )
 
   init {
+    Napier.d("init $this")
+    addCloseable { Napier.d("close $this") }
   }
 
   internal fun process(intent: PhotoDetailViewIntent) {

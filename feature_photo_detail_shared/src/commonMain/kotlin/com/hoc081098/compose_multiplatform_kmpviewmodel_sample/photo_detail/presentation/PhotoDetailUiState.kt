@@ -6,7 +6,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.doma
 import kotlinx.datetime.Instant
 
 @Immutable
-sealed interface PhotoDetailUiState {
+internal sealed interface PhotoDetailUiState {
   data object Loading : PhotoDetailUiState
 
   data class Content(
