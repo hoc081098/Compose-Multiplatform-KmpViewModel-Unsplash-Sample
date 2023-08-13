@@ -5,10 +5,12 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun SearchPhotoScreen(
+  navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
 ) {
   SearchPhotoScreenWithKoin(
-    modifier = modifier
+    modifier = modifier,
+    navigateToPhotoDetail = navigateToPhotoDetail,
   )
 }
 

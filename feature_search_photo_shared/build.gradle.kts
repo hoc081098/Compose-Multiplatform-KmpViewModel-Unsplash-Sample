@@ -78,15 +78,10 @@ kotlin {
                 // KotlinX DateTime
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
-                // Napier
-                implementation("io.github.aakira:napier:2.6.1")
-
                 // FlowExt
                 implementation("io.github.hoc081098:FlowExt:0.7.1")
 
                 // Koin
-                api("io.insert-koin:koin-core:$koinVersion")
-                implementation("io.insert-koin:koin-compose:1.0.4")
                 implementation("io.insert-koin:koin-annotations:$koinKspVersion")
 
                 // Arrow-kt
@@ -111,10 +106,6 @@ kotlin {
 
                 // KotlinX Coroutines
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
-
-                // Koin
-                implementation("io.insert-koin:koin-android:$koinVersion")
-                implementation("io.insert-koin:koin-androidx-compose:3.4.6")
             }
         }
         val iosX64Main by getting

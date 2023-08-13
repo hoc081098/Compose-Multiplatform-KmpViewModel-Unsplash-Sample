@@ -48,6 +48,11 @@ internal class SearchPhotoViewModel(
       initialValue = SearchPhotoUiState.INITIAL,
     )
 
+  init {
+    Napier.d("init $this")
+    addCloseable { Napier.d("close $this") }
+  }
+
   fun search(term: String) {
     savedStateHandle[SEARCH_TERM_KEY] = term
   }

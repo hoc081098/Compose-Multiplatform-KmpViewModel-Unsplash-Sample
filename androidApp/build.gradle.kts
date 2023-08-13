@@ -4,12 +4,18 @@ plugins {
     id("org.jetbrains.compose")
 }
 
+val koinVersion = "3.4.3"
+
 kotlin {
     androidTarget()
     sourceSets {
         val androidMain by getting {
             dependencies {
                 implementation(project(":feature_search_photo_shared"))
+
+                // Koin Android
+                implementation("io.insert-koin:koin-android:$koinVersion")
+                implementation("io.insert-koin:koin-androidx-compose:3.4.6")
             }
         }
     }

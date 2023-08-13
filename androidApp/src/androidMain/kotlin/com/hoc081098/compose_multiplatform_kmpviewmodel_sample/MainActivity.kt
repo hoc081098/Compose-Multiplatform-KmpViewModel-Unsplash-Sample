@@ -10,7 +10,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            SearchPhotoScreen()
+            SearchPhotoScreen(
+                navigateToPhotoDetail = {
+                    // TODO
+                }
+            )
         }
     }
 }

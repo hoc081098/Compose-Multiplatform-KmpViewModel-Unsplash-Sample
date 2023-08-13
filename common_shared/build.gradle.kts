@@ -1,6 +1,5 @@
 plugins {
     kotlin("multiplatform")
-    id("com.android.library")
     id("org.jetbrains.compose")
 }
 
@@ -18,14 +17,6 @@ kotlin {
 
     targetHierarchy.default()
 
-    androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = JavaVersion.VERSION_17.toString()
-            }
-        }
-    }
-
     jvm()
 
     iosX64()
@@ -35,11 +26,14 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
+                api(compose.runtime)
 
                 // Koin
                 api("io.insert-koin:koin-core:$koinVersion")
-                implementation("io.insert-koin:koin-compose:1.0.4")
+                api("io.insert-koin:koin-compose:1.0.4")
+
+                // Napier
+                api("io.github.aakira:napier:2.6.1")
             }
         }
         val commonTest by getting {
@@ -48,18 +42,4 @@ kotlin {
             }
         }
     }
-}
-
-android {
-    namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared"
-    compileSdk = (findProperty("android.compileSdk") as String).toInt()
-    defaultConfig {
-        minSdk = (findProperty("android.minSdk") as String).toInt()
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
-    }
-
 }
