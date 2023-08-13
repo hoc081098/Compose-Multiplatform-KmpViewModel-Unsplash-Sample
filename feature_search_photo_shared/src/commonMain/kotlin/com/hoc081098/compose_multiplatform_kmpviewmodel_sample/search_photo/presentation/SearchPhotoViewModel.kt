@@ -10,6 +10,7 @@ import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
 import io.github.aakira.napier.Napier
+import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
 internal class SearchPhotoViewModel(
@@ -34,7 +34,7 @@ internal class SearchPhotoViewModel(
   val searchTermStateFlow: StateFlow<String?> = savedStateHandle
     .getStateFlow<String?>(
       key = SEARCH_TERM_KEY,
-      initialValue = null
+      initialValue = null,
     )
 
   val stateFlow: StateFlow<SearchPhotoUiState> = searchTermStateFlow
@@ -73,12 +73,14 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
   }
     .onStart { Napier.d("search products term=$term") }
     .onEach { either ->
-      Napier.d("search products ${
-        either.fold(
-          ifLeft = { "error=$it" },
-          ifRight = { "success=${it.size}" }
-        )
-      }")
+      Napier.d(
+        "search products ${
+          either.fold(
+            ifLeft = { "error=$it" },
+            ifRight = { "success=${it.size}" },
+          )
+        }",
+      )
     }
     .map { either ->
       either.fold(
@@ -99,7 +101,7 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
             error = null,
             submittedTerm = term,
           )
-        }
+        },
       )
     }
     .startWith {

@@ -9,7 +9,7 @@ import org.koin.core.annotation.Singleton
 @Singleton(
   binds = [
     SearchPhotoRepository::class,
-  ]
+  ],
 )
 internal class RealSearchPhotoRepository(
   private val unsplashApi: UnsplashApi,

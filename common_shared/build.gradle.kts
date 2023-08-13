@@ -1,6 +1,6 @@
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+  kotlin("multiplatform")
+  id("org.jetbrains.compose")
 }
 
 val ktorVersion = "2.3.3"
@@ -13,33 +13,33 @@ val arrowKtVersion = "1.2.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-    jvmToolchain(17)
+  jvmToolchain(17)
 
-    targetHierarchy.default()
+  targetHierarchy.default()
 
-    jvm()
+  jvm()
 
-    iosX64()
-    iosArm64()
-    iosSimulatorArm64()
+  iosX64()
+  iosArm64()
+  iosSimulatorArm64()
 
-    sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(compose.runtime)
+  sourceSets {
+    val commonMain by getting {
+      dependencies {
+        api(compose.runtime)
 
-                // Koin
-                api("io.insert-koin:koin-core:$koinVersion")
-                api("io.insert-koin:koin-compose:1.0.4")
+        // Koin
+        api("io.insert-koin:koin-core:$koinVersion")
+        api("io.insert-koin:koin-compose:1.0.4")
 
-                // Napier
-                api("io.github.aakira:napier:2.6.1")
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-            }
-        }
+        // Napier
+        api("io.github.aakira:napier:2.6.1")
+      }
     }
+    val commonTest by getting {
+      dependencies {
+        implementation(kotlin("test"))
+      }
+    }
+  }
 }

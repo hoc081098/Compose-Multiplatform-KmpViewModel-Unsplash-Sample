@@ -9,5 +9,5 @@ import org.koin.core.annotation.Singleton
 internal actual fun createHttpClient(json: Json): HttpClient =
   createHttpClient(
     engineFactory = OkHttp,
-    json = json
+    json = json,
   ) {}

@@ -31,7 +31,7 @@ internal fun <T : HttpClientEngineConfig> createHttpClient(
     json(json)
     register(
       ContentType.Text.Plain,
-      KotlinxSerializationConverter(json)
+      KotlinxSerializationConverter(json),
     )
   }
 

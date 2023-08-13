@@ -14,5 +14,4 @@ fun SearchPhotoScreen(
   )
 }
 
-
 actual fun isDebug(): Boolean = BuildConfig.DEBUG

@@ -43,7 +43,7 @@ internal fun createJson(): Json = Json {
 internal object InstantSerializer : KSerializer<Instant> {
   override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
     "InstantSerializer",
-    PrimitiveKind.STRING
+    PrimitiveKind.STRING,
   )
 
   override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeString(value.toString())

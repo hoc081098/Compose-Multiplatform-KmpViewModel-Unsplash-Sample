@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 internal data class SearchPhotosResult(
   @SerialName(value = "total") val total: Int,
   @SerialName(value = "total_pages") val totalPages: Int,
-  @SerialName(value = "results") val results: List<CoverPhotoResponse>
+  @SerialName(value = "results") val results: List<CoverPhotoResponse>,
 )

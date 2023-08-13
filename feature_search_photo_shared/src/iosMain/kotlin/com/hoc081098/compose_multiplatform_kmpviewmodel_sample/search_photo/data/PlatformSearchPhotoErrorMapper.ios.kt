@@ -26,7 +26,7 @@ internal actual class PlatformSearchPhotoErrorMapper actual constructor() : (Thr
   private companion object {
     private val NETWORK_ERROR_CODES = setOf(
       NSURLErrorNotConnectedToInternet,
-      NSURLErrorNetworkConnectionLost
+      NSURLErrorNetworkConnectionLost,
     )
   }
 }

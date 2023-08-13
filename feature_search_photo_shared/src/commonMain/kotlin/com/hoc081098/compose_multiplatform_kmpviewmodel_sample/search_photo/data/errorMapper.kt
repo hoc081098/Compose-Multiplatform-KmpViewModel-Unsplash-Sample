@@ -13,14 +13,14 @@ import org.koin.core.annotation.Singleton
 internal interface SearchPhotoErrorMapper : (Throwable) -> SearchPhotoError
 
 @Singleton(
-  binds = []
+  binds = [],
 )
-internal expect class PlatformSearchPhotoErrorMapper  constructor(): (Throwable) -> SearchPhotoError?
+internal expect class PlatformSearchPhotoErrorMapper constructor() : (Throwable) -> SearchPhotoError?
 
 @Singleton(
   binds = [
     SearchPhotoErrorMapper::class,
-  ]
+  ],
 )
 internal class RealSearchPhotoErrorMapper(
   private val platformMapper: PlatformSearchPhotoErrorMapper,
@@ -47,7 +47,8 @@ internal class RealSearchPhotoErrorMapper(
       // Timeout error
       is HttpRequestTimeoutException,
       is ConnectTimeoutException,
-      is SocketTimeoutException -> SearchPhotoError.TimeoutError
+      is SocketTimeoutException,
+      -> SearchPhotoError.TimeoutError
 
       // Network error
       is ChannelReadException -> SearchPhotoError.NetworkError

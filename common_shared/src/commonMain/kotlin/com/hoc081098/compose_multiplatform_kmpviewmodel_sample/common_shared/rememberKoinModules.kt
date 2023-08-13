@@ -23,7 +23,7 @@ inline fun rememberKoinModules(
   unloadOnForgotten: Boolean? = null,
   unloadOnAbandoned: Boolean? = null,
   unloadModules: Boolean = false,
-  crossinline modules: @DisallowComposableCalls () -> List<Module> = { emptyList() }
+  crossinline modules: @DisallowComposableCalls () -> List<Module> = { emptyList() },
 ): Boolean {
   val koin = getKoin()
   val loadedState = remember(koin) { mutableStateOf(false) }

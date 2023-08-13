@@ -54,7 +54,7 @@ private fun searchPhotoViewModel(
     factory = {
       SearchPhotoViewModel(
         savedStateHandle = createSavedStateHandle(),
-        searchPhotoUseCase = searchPhotoUseCase
+        searchPhotoUseCase = searchPhotoUseCase,
       )
     },
   )
@@ -106,7 +106,7 @@ internal fun SearchPhotoScreen(
       ListContent(
         modifier = Modifier.matchParentSize(),
         state = state,
-        onItemClick = { navigateToPhotoDetail(it.id) }
+        onItemClick = { navigateToPhotoDetail(it.id) },
       )
     }
   }

@@ -1,6 +1,5 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
-import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,31 +14,28 @@ import org.koin.core.logger.Level
 import org.koin.core.logger.PrintLogger
 
 fun main() {
-    startKoin {
-        logger(PrintLogger(level = Level.DEBUG))
+  startKoin {
+    logger(PrintLogger(level = Level.DEBUG))
+  }
+
+  Napier.base(DebugAntilog())
+
+  application {
+    var id by remember { mutableStateOf(null as String?) }
+
+    Window(onCloseRequest = ::exitApplication) {
+      SearchPhotoScreen(
+        navigateToPhotoDetail = {
+          id = it
+        },
+      )
     }
 
-    Napier.base(DebugAntilog())
-
-    application {
-
-        var id by remember { mutableStateOf(null as String?) }
-
-        Window(onCloseRequest = ::exitApplication) {
-            SearchPhotoScreen(
-                navigateToPhotoDetail = {
-                    id = it
-                }
-            )
-        }
-
-        id?.let {
-            Window(
-                title = "Photo detail for $it",
-                onCloseRequest =  { id = null }
-            ) {
-                Text(text = "Photo detail for $it")
-            }
-        }
+    id?.let {
+      Window(
+        title = "Photo detail for $it",
+        onCloseRequest = { id = null },
+      ) {}
     }
+  }
 }

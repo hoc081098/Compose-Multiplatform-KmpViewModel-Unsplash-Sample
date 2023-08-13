@@ -14,7 +14,7 @@ import org.koin.core.annotation.Singleton
 @Singleton(
   binds = [
     UnsplashApi::class,
-  ]
+  ],
 )
 internal class KtorUnsplashApi(
   private val httpClient: HttpClient,
@@ -29,11 +29,11 @@ internal class KtorUnsplashApi(
           append("per_page", "30")
         }
       }
-      .build()
+      .build(),
   ) {
     header(
       HttpHeaders.Authorization,
-      "Client-ID ${BuildKonfig.UNSPLASH_CLIENT_ID}"
+      "Client-ID ${BuildKonfig.UNSPLASH_CLIENT_ID}",
     )
   }.body<SearchPhotosResult>()
 }

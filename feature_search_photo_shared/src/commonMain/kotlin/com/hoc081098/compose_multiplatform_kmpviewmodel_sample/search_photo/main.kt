@@ -8,8 +8,8 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rem
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoScreen
-import org.koin.dsl.module
 import kotlin.jvm.JvmField
+import org.koin.dsl.module
 
 @JvmField
 internal val FeatureSearchPhotoModule = module {
@@ -38,7 +38,8 @@ internal fun SearchPhotoScreenWithKoin(
 
 enum class BuildFlavor {
   DEV,
-  PROD;
+  PROD,
+  ;
 
   companion object {
     val Current: BuildFlavor by lazy {

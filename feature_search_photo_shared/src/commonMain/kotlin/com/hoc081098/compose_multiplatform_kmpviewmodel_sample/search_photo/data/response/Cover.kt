@@ -11,7 +11,7 @@ internal data class UrlsResponse(
   @SerialName(value = "regular") val regular: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max
   @SerialName(value = "small") val small: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max
   @SerialName(value = "thumb") val thumb: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max
-  @SerialName(value = "small_s3") val smallS3: String // https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1560089000-7433a4ebbd64
+  @SerialName(value = "small_s3") val smallS3: String, // https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1560089000-7433a4ebbd64
 )
 
 @Serializable
@@ -19,7 +19,7 @@ internal data class LinksResponse(
   @SerialName(value = "self") val self: String, // https://api.unsplash.com/photos/mzt0A967scs
   @SerialName(value = "html") val html: String, // https://unsplash.com/photos/mzt0A967scs
   @SerialName(value = "download") val download: String, // https://unsplash.com/photos/mzt0A967scs/download
-  @SerialName(value = "download_location") val downloadLocation: String // https://api.unsplash.com/photos/mzt0A967scs/download
+  @SerialName(value = "download_location") val downloadLocation: String, // https://api.unsplash.com/photos/mzt0A967scs/download
 )
 
 @Serializable
