@@ -53,6 +53,7 @@ kotlin {
                 implementation(compose.components.resources)
 
                 api(project(":common_shared"))
+                api(project(":common_ui_shared"))
 
                 // Ktor
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -104,9 +105,6 @@ kotlin {
                 api("androidx.activity:activity-compose:1.7.2")
                 api("androidx.appcompat:appcompat:1.6.1")
                 api("androidx.core:core-ktx:1.10.1")
-
-                // AndroidX Lifecycle Compose Runtime
-                implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
 
                 // Ktor
                 implementation("io.ktor:ktor-client-okhttp:$ktorVersion")

@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -8,7 +8,6 @@ import kotlin.coroutines.CoroutineContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle as androidXCollectAsStateWithLifecycle
 
 @Composable
-@Suppress("StateFlowValueCalledInComposition")
 actual fun <T> StateFlow<T>.collectAsStateWithLifecycle(
   minActiveState: LifecycleState,
   context: CoroutineContext,

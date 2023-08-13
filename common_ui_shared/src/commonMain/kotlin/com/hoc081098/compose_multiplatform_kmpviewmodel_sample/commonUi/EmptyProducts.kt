@@ -1,17 +1,20 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoadingIndicator(modifier: Modifier = Modifier) {
+fun EmptyView(
+  modifier: Modifier = Modifier,
+  text: String = "Empty",
+) {
   Box(
     modifier = modifier,
     contentAlignment = Alignment.Center,
   ) {
-    CircularProgressIndicator()
+    Text(text = text)
   }
 }

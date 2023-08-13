@@ -4,6 +4,7 @@ include(":androidApp")
 include(":desktopApp")
 include(":feature_search_photo_shared")
 include(":common_shared")
+include(":common_ui_shared")
 
 pluginManagement {
     repositories {

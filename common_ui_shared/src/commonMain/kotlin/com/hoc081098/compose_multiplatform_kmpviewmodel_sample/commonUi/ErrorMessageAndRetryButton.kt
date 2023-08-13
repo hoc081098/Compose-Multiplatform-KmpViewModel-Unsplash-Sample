@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.commonUi
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

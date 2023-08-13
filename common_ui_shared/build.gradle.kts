@@ -16,7 +16,14 @@ val arrowKtVersion = "1.2.0"
 kotlin {
     jvmToolchain(17)
 
-    targetHierarchy.default()
+    targetHierarchy.default {
+        common {
+            group("nonAndroid") {
+                withJvm()
+                withIos()
+            }
+        }
+    }
 
     androidTarget {
         compilations.all {
@@ -36,15 +43,25 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
 
-                // Koin
-                api("io.insert-koin:koin-core:$koinVersion")
-                implementation("io.insert-koin:koin-compose:1.0.4")
+                // KotlinX Coroutines
+                api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                // AndroidX Lifecycle Compose Runtime
+                implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
             }
         }
     }
