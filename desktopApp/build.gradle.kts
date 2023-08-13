@@ -12,6 +12,7 @@ kotlin {
       dependencies {
         implementation(compose.desktop.currentOs)
         implementation(project(":feature_search_photo_shared"))
+        implementation(project(":feature_photo_detail_shared"))
       }
     }
   }

@@ -3,6 +3,7 @@ rootProject.name = "KmpViewModel Compose Multiplatform"
 include(":androidApp")
 include(":desktopApp")
 include(":feature_search_photo_shared")
+include(":feature_photo_detail_shared")
 include(":common_shared")
 include(":common_ui_shared")
 
