@@ -1,12 +1,30 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation
 
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.publish
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
+import com.hoc081098.flowext.flatMapFirst
+import com.hoc081098.flowext.flowFromSuspend
+import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
 import io.github.aakira.napier.Napier
-import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class PhotoDetailViewModel(
   savedStateHandle: SavedStateHandle,
   private val getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase,
@@ -19,19 +37,99 @@ internal class PhotoDetailViewModel(
     """.trimMargin()
   }
 
-  private val _intentSharedFlow = MutableSharedFlow<PhotoDetailViewIntent>(
-    replay = 0,
-    extraBufferCapacity = 1,
-  )
+  private val _intentChannel = Channel<PhotoDetailViewIntent>(capacity = 1)
+
+  internal val uiStateFlow: StateFlow<PhotoDetailUiState>
 
   init {
     Napier.d("init $this")
     addCloseable { Napier.d("close $this") }
+
+    uiStateFlow = _intentChannel
+      .consumeAsFlow()
+      .publish {
+        merge(
+          select {
+            filterIsInstance<PhotoDetailViewIntent.Init>()
+              .toPartialStateChangesFlow()
+          },
+          select {
+            filterIsInstance<PhotoDetailViewIntent.Refresh>()
+              .toPartialStateChangesFlow()
+          },
+          select {
+            filterIsInstance<PhotoDetailViewIntent.Retry>()
+              .toPartialStateChangesFlow()
+          },
+        )
+      }
+      .scan(PhotoDetailUiState.INITIAL) { state, change -> change.reduce(state) }
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = PhotoDetailUiState.INITIAL,
+      )
   }
 
   internal fun process(intent: PhotoDetailViewIntent) {
-    viewModelScope.launch { _intentSharedFlow.emit(intent) }
+    viewModelScope.launch { _intentChannel.send(intent) }
   }
+
+  //region View intent processors
+  private fun Flow<PhotoDetailViewIntent.Init>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
+    take(1)
+      .flatMapConcat {
+        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+          .map { either ->
+            either.fold(
+              ifLeft = {
+                PhotoDetailPartialStateChange.InitAndRetry.Error(it)
+              },
+              ifRight = {
+                PhotoDetailPartialStateChange.InitAndRetry.Content(it.toPhotoDetailUi())
+              },
+            )
+          }
+          .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
+      }
+
+  private fun Flow<PhotoDetailViewIntent.Retry>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
+    filter { uiStateFlow.value is PhotoDetailUiState.Error }
+      .flatMapFirst {
+        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+          .map { either ->
+            either.fold(
+              ifLeft = {
+                PhotoDetailPartialStateChange.InitAndRetry.Error(it)
+              },
+              ifRight = {
+                PhotoDetailPartialStateChange.InitAndRetry.Content(it.toPhotoDetailUi())
+              },
+            )
+          }
+          .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
+      }
+
+  private fun Flow<PhotoDetailViewIntent.Refresh>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.Refresh> =
+    filter {
+      val state = uiStateFlow.value
+      state is PhotoDetailUiState.Content && !state.isRefreshing
+    }
+      .flatMapFirst {
+        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+          .map { either ->
+            either.fold(
+              ifLeft = {
+                PhotoDetailPartialStateChange.Refresh.Error(it)
+              },
+              ifRight = {
+                PhotoDetailPartialStateChange.Refresh.Content(it.toPhotoDetailUi())
+              },
+            )
+          }
+          .startWith(PhotoDetailPartialStateChange.Refresh.Refreshing)
+      }
+  //endregion
 
   companion object {
     // This key is used by non-Android platforms to set id to SavedStateHandle,

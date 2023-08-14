@@ -34,6 +34,12 @@ kotlin {
 
         // Napier
         api("io.github.aakira:napier:2.6.1")
+
+        // KotlinX Coroutines
+        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+        // FlowExt
+        api("io.github.hoc081098:FlowExt:0.7.1")
       }
     }
     val commonTest by getting {
