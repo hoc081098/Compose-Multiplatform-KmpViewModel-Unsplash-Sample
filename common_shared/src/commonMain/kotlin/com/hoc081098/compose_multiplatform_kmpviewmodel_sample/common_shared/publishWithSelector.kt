@@ -25,11 +25,13 @@ import kotlinx.coroutines.sync.withLock
 
 sealed interface SelectorSourceFlow<T> : Flow<T>
 
+@DslMarker
+annotation class PublishSelectorDsl
+
+@PublishSelectorDsl
 sealed interface SelectorScope<T> {
-  @PublishSelectorDsl
   fun <R> select(block: SelectorSourceFlow<T>.() -> Flow<R>): Flow<R>
 
-  @PublishSelectorDsl
   fun <A> SelectorSourceFlow<A>.shared(replay: Int = 0): SharedFlow<A>
 }
 
@@ -58,7 +60,7 @@ private class DefaultSelectorScope<T>(
   @JvmField
   val mutex = Mutex()
 
-  override fun <R> select(block: SelectorSourceFlow<T>.() -> Flow<R>): Flow<R> {
+  override fun <R> select(block: (SelectorSourceFlow<T>) -> Flow<R>): Flow<R> {
     check(!isInSelectClause) { "select can not be called inside another select" }
     check(!isFrozen) { "select only can be called inside publish, do not use SelectorScope outside publish" }
 
@@ -124,10 +126,8 @@ private class DefaultSelectorScope<T>(
   }
 }
 
-@DslMarker
-annotation class PublishSelectorDsl
 
-fun <T, R> Flow<T>.publish(@PublishSelectorDsl selector: SelectorScope<T>.() -> Flow<R>): Flow<R> {
+fun <T, R> Flow<T>.publish(selector: SelectorScope<T>.() -> Flow<R>): Flow<R> {
   val source = this
 
   return flow {
