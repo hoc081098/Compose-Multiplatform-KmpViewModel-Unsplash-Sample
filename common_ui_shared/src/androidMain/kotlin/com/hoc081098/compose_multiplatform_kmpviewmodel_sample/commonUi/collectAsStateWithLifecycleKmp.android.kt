@@ -8,7 +8,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-actual fun <T> StateFlow<T>.collectAsStateWithLifecycle(
+actual fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
   minActiveState: LifecycleState,
   context: CoroutineContext,
 ): State<T> = androidXCollectAsStateWithLifecycle(
@@ -19,8 +19,6 @@ actual fun <T> StateFlow<T>.collectAsStateWithLifecycle(
 @Suppress("NOTHING_TO_INLINE")
 private inline fun LifecycleState.toAndroidXLifecycleState(): Lifecycle.State =
   when (this) {
-    LifecycleState.DESTROYED -> Lifecycle.State.DESTROYED
-    LifecycleState.INITIALIZED -> Lifecycle.State.INITIALIZED
     LifecycleState.CREATED -> Lifecycle.State.CREATED
     LifecycleState.STARTED -> Lifecycle.State.STARTED
     LifecycleState.RESUMED -> Lifecycle.State.RESUMED

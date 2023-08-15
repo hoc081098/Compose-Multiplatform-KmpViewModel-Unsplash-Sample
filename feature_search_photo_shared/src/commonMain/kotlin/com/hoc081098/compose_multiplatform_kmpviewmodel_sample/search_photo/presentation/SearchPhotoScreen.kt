@@ -1,9 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +17,7 @@ import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,19 +26,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.EmptyView
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.LoadingIndicator
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.collectAsStateWithLifecycle
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.collectAsStateWithLifecycleKmp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.components.PhotoGridCell
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -66,10 +59,10 @@ internal fun SearchPhotoScreen(
   modifier: Modifier = Modifier,
   viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
 ) {
-  val state by viewModel.stateFlow.collectAsStateWithLifecycle()
+  val state by viewModel.stateFlow.collectAsStateWithLifecycleKmp()
   val searchTerm by viewModel
     .searchTermStateFlow
-    .collectAsStateWithLifecycle(context = viewModel.viewModelScope.coroutineContext)
+    .collectAsStateWithLifecycleKmp(context = viewModel.viewModelScope.coroutineContext)
 
   Column(
     modifier = modifier.fillMaxSize()
@@ -168,32 +161,5 @@ private fun ListContent(
         )
       }
     }
-  }
-}
-
-@Composable
-private fun PhotoGridCell(
-  photo: PhotoUiItem,
-  onClick: () -> Unit,
-  modifier: Modifier = Modifier,
-) {
-  Box(
-    modifier = modifier
-      .clickable(onClick = onClick),
-  ) {
-    KamelImage(
-      modifier = Modifier.matchParentSize(),
-      resource = asyncPainterResource(data = photo.thumbnailUrl),
-      contentDescription = null,
-      contentScale = ContentScale.Crop,
-      animationSpec = tween(),
-      onFailure = {
-        Icon(
-          modifier = Modifier.align(Alignment.Center),
-          imageVector = Icons.Default.Info,
-          contentDescription = null,
-        )
-      },
-    )
   }
 }
