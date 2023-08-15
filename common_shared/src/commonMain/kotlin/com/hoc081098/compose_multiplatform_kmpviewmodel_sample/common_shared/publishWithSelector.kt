@@ -2,6 +2,7 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
 
 import com.hoc081098.flowext.defer
 import com.hoc081098.flowext.interval
+import com.hoc081098.flowext.materialize
 import com.hoc081098.flowext.takeUntil
 import com.hoc081098.flowext.timer
 import com.hoc081098.flowext.withLatestFrom
@@ -20,7 +21,7 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
@@ -207,13 +208,13 @@ suspend fun main() {
           val sharedFlow = flow.shared()
 
           interval(0, 100)
-            .takeUntil(sharedFlow.filter { it == 3 })
             .onEach { println(">>> interval: $it") }
-            .flatMapLatest { value ->
+            .flatMapMerge { value ->
               timer(value, 50)
                 .withLatestFrom(sharedFlow)
                 .map { it to "shared" }
             }
+            .takeUntil(sharedFlow.filter { it == 3 })
         },
         select { flow ->
           flow.filterIsInstance<Int>()
@@ -231,5 +232,6 @@ suspend fun main() {
         },
       )
     }
+    .materialize()
     .collect(::println)
 }
