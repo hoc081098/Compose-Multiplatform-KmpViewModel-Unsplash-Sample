@@ -2,7 +2,6 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
 
 import com.hoc081098.flowext.defer
 import com.hoc081098.flowext.interval
-import com.hoc081098.flowext.materialize
 import com.hoc081098.flowext.takeUntil
 import com.hoc081098.flowext.timer
 import com.hoc081098.flowext.withLatestFrom
@@ -11,6 +10,7 @@ import kotlin.jvm.JvmField
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn as kotlinXFlowShareIn
+import kotlinx.coroutines.internal.SynchronizedObject
+import kotlinx.coroutines.internal.synchronized
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -60,31 +62,54 @@ sealed interface SelectorScope<T> {
   fun <R> select(block: SelectorFunction<T, R>): Flow<R>
 }
 
-@OptIn(DelicateCoroutinesApi::class)
+private class SimpleSuspendLazy<T : Any>(
+  initializer: suspend () -> T,
+) {
+  private val mutex = Mutex()
+
+  private var _initializer: (suspend () -> T)? = initializer
+
+  @Volatile
+  private var value: T? = null
+
+  suspend fun getValue(): T = value ?: mutex.withLock {
+    value ?: _initializer!!().also {
+      _initializer = null
+      value = it
+    }
+  }
+}
+
+@OptIn(DelicateCoroutinesApi::class, InternalCoroutinesApi::class)
 private class DefaultSelectorScope<T>(
   @JvmField val scope: CoroutineScope,
-) : SelectorScope<T>, SelectorSharedFlowScope<T> {
+) :
+  SynchronizedObject(),
+  SelectorScope<T>,
+  SelectorSharedFlowScope<T> {
   // Initialized in freezeAndInit
-  // Guarded by mutex
   private lateinit var channels: Array<Channel<T>>
-  private lateinit var selectorFlows: Array<Flow<T>>
-  private lateinit var cachedOutputFlows: Array<Flow<Any?>?>
-
-  @JvmField
-  val mutex = Mutex()
+  private lateinit var cachedOutputFlows: Array<SimpleSuspendLazy<Flow<Any?>>>
 
   @JvmField
   val blocks: MutableList<SelectorFunction<T, Any?>> = ArrayList()
 
+  /**
+   * Indicate that this scope is frozen, all [select] calls after this will throw [IllegalStateException]
+   */
   @Volatile
   @JvmField
   var isFrozen = false
 
-  @Volatile
+  /**
+   * Indicate that a [select] calls is in progress,
+   * all [select] calls inside another [select] block will throw [IllegalStateException]
+   */
   @JvmField
+  @Volatile
   var isInSelectClause = false
 
-  override fun <R> select(block: SelectorFunction<T, R>): Flow<R> {
+  override fun <R> select(block: SelectorFunction<T, R>): Flow<R> = synchronized(this) {
     check(!isInSelectClause) { "select can not be called inside another select" }
     check(!isFrozen) { "select only can be called inside publish, do not use SelectorScope outside publish" }
 
@@ -94,18 +119,15 @@ private class DefaultSelectorScope<T>(
     val index = blocks.size - 1
 
     return defer {
-      // Only frozen state can reach here,
-      // that means we collect the output flow after frozen this scope
-      check(isFrozen) { "only frozen state can reach here!" }
-
-      val outputFlow = mutex.withLock {
+      val cachedOutputFlowLazy = synchronized(this) {
+        // Only frozen state can reach here,
+        // that means we collect the output flow after frozen this scope
+        check(isFrozen) { "only frozen state can reach here!" }
         cachedOutputFlows[index]
-          ?: block(this@DefaultSelectorScope, selectorFlows[index])
-            .also { cachedOutputFlows[index] = it }
       }
 
       @Suppress("UNCHECKED_CAST") // Always safe
-      outputFlow as Flow<R>
+      cachedOutputFlowLazy.getValue() as Flow<R>
     }.also { isInSelectClause = false }
   }
 
@@ -115,14 +137,16 @@ private class DefaultSelectorScope<T>(
     replay = replay,
   )
 
-  suspend inline fun freezeAndInit() {
-    mutex.withLock {
-      isFrozen = true
+  fun freezeAndInit() = synchronized(this) {
+    channels = Array(size) { Channel() }
+    cachedOutputFlows = Array(size) { index ->
+      val block = blocks[index]
+      val flow = channels[index].consumeAsFlow()
 
-      channels = Array(size) { Channel() }
-      selectorFlows = Array(size) { channels[it].consumeAsFlow() }
-      cachedOutputFlows = Array(size) { null }
+      SimpleSuspendLazy { this.block(flow) }
     }
+
+    isFrozen = true
   }
 
   inline val size: Int get() = blocks.size
@@ -232,6 +256,5 @@ suspend fun main() {
         },
       )
     }
-    .materialize()
     .collect(::println)
 }
