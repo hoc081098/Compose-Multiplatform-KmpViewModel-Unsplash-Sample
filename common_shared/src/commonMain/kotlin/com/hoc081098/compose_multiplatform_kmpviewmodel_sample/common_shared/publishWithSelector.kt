@@ -1,10 +1,14 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
 
 import com.hoc081098.flowext.defer
+import com.hoc081098.flowext.interval
+import com.hoc081098.flowext.takeUntil
+import com.hoc081098.flowext.timer
 import kotlin.concurrent.Volatile
 import kotlin.jvm.JvmField
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -15,39 +19,55 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn as kotlinXFlowShareIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-
-sealed interface SelectorSourceFlow<T> : Flow<T>
 
 @DslMarker
 annotation class PublishSelectorDsl
 
 @PublishSelectorDsl
-sealed interface SelectorScope<T> {
-  fun <R> select(block: SelectorSourceFlow<T>.() -> Flow<R>): Flow<R>
+sealed interface SelectorSharedFlowScope<T> {
+  @PublishSelectorDsl
+  fun Flow<T>.shared(replay: Int = 0): SharedFlow<T>
 
-  fun <A> SelectorSourceFlow<A>.shared(replay: Int = 0): SharedFlow<A>
+  /** @suppress */
+  @Deprecated(
+    level = DeprecationLevel.ERROR,
+    message = "This function is not supported",
+    replaceWith = ReplaceWith("this.shared(replay)"),
+  )
+  fun <T> Flow<T>.shareIn(
+    scope: CoroutineScope,
+    started: SharingStarted,
+    replay: Int = 0,
+  ): SharedFlow<T> = throw UnsupportedOperationException("Not implemented, should not be called")
 }
 
-private class DefaultSelectorFlow<T>(@JvmField val flow: Flow<T>) : SelectorSourceFlow<T>, Flow<T> by flow
+@PublishSelectorDsl
+sealed interface SelectorScope<T> {
+  @PublishSelectorDsl
+  fun <R> select(block: SelectorSharedFlowScope<T>.(Flow<T>) -> Flow<R>): Flow<R>
+}
 
+@OptIn(DelicateCoroutinesApi::class)
 private class DefaultSelectorScope<T>(
   @JvmField val scope: CoroutineScope,
-) : SelectorScope<T> {
+) : SelectorScope<T>, SelectorSharedFlowScope<T> {
   // Initialized in freezeAndInit
   // Guarded by mutex
   private lateinit var channels: Array<Channel<T>>
-  private lateinit var selectorFlows: Array<DefaultSelectorFlow<T>>
+  private lateinit var selectorFlows: Array<Flow<T>>
   private lateinit var cachedSelectedFlows: Array<Flow<Any?>?>
 
   @JvmField
-  val blocks: MutableList<(SelectorSourceFlow<T>) -> Flow<Any?>> = ArrayList()
+  val blocks: MutableList<SelectorSharedFlowScope<T>.(Flow<T>) -> Flow<Any?>> = ArrayList()
 
   @Volatile
   @JvmField
@@ -60,7 +80,7 @@ private class DefaultSelectorScope<T>(
   @JvmField
   val mutex = Mutex()
 
-  override fun <R> select(block: (SelectorSourceFlow<T>) -> Flow<R>): Flow<R> {
+  override fun <R> select(block: SelectorSharedFlowScope<T>.(Flow<T>) -> Flow<R>): Flow<R> {
     check(!isInSelectClause) { "select can not be called inside another select" }
     check(!isFrozen) { "select only can be called inside publish, do not use SelectorScope outside publish" }
 
@@ -81,12 +101,18 @@ private class DefaultSelectorScope<T>(
     }.also { isInSelectClause = false }
   }
 
+  override fun Flow<T>.shared(replay: Int): SharedFlow<T> = kotlinXFlowShareIn(
+    scope = scope,
+    started = SharingStarted.Lazily,
+    replay = replay,
+  )
+
   suspend inline fun freezeAndInit() {
     mutex.withLock {
       isFrozen = true
 
       channels = Array(size) { Channel() }
-      selectorFlows = Array(size) { DefaultSelectorFlow(flow = channels[it].consumeAsFlow()) }
+      selectorFlows = Array(size) { channels[it].consumeAsFlow() }
       cachedSelectedFlows = Array(size) { null }
     }
   }
@@ -113,19 +139,12 @@ private class DefaultSelectorScope<T>(
     }
   }
 
-  override fun <A> SelectorSourceFlow<A>.shared(replay: Int): SharedFlow<A> = shareIn(
-    scope = scope,
-    started = SharingStarted.Lazily,
-    replay = replay,
-  )
-
   fun cancel(e: CancellationException) {
     for (channel in channels) {
       channel.cancel(e)
     }
   }
 }
-
 
 fun <T, R> Flow<T>.publish(selector: SelectorScope<T>.() -> Flow<R>): Flow<R> {
   val source = this
@@ -169,9 +188,32 @@ suspend fun main() {
   }
     .publish {
       merge(
-        select { filterIsInstance<Int>().filter { it % 2 == 0 }.map { it to 1 } },
-        select { filterIsInstance<Int>().filter { it % 2 != 0 }.map { it to 2 } },
-        select { filterIsInstance<String>().map { it to 3 } },
+        select {
+          val sharedFlow = it.shared()
+
+          interval(0, 100)
+            .takeUntil(sharedFlow.filter { it == 3 })
+            .onEach { println(">>> interval: $it") }
+            .flatMapLatest { value ->
+              timer(0, 50)
+                .takeUntil(sharedFlow)
+                .map { value to "shared" }
+            }
+        },
+        select { flow ->
+          flow.filterIsInstance<Int>()
+            .filter { it % 2 == 0 }
+            .map { it to "even" }
+        },
+        select { flow ->
+          flow.filterIsInstance<Int>()
+            .filter { it % 2 != 0 }
+            .map { it to "odd" }
+        },
+        select { flow ->
+          flow.filterIsInstance<String>()
+            .map { it to "string" }
+        },
       )
     }
     .collect(::println)

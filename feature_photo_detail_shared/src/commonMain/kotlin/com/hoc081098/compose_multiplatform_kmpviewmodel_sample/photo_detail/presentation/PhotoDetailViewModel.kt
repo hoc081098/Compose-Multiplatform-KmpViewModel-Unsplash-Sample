@@ -50,15 +50,15 @@ internal class PhotoDetailViewModel(
       .publish {
         merge(
           select {
-            filterIsInstance<PhotoDetailViewIntent.Init>()
+            it.filterIsInstance<PhotoDetailViewIntent.Init>()
               .toPartialStateChangesFlow()
           },
           select {
-            filterIsInstance<PhotoDetailViewIntent.Refresh>()
+            it.filterIsInstance<PhotoDetailViewIntent.Refresh>()
               .toPartialStateChangesFlow()
           },
           select {
-            filterIsInstance<PhotoDetailViewIntent.Retry>()
+            it.filterIsInstance<PhotoDetailViewIntent.Retry>()
               .toPartialStateChangesFlow()
           },
         )
