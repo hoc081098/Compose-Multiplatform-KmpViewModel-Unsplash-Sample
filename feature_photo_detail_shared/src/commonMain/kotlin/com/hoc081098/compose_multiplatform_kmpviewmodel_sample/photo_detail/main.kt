@@ -4,6 +4,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailScreen
@@ -20,7 +21,7 @@ internal val FeaturePhotoDetailModule = module {
 
 @Composable
 internal fun PhotoDetailScreenWithKoin(
-  id: String,
+  route: PhotoDetailRoute,
   modifier: Modifier = Modifier,
 ) {
   val loaded = rememberKoinModules { listOf(FeaturePhotoDetailModule) }
@@ -28,7 +29,7 @@ internal fun PhotoDetailScreenWithKoin(
     MaterialTheme {
       PhotoDetailScreen(
         modifier = modifier,
-        id = id,
+        route = route,
       )
     }
   }

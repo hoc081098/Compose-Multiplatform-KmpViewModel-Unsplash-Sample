@@ -2,7 +2,6 @@ plugins {
   kotlin("multiplatform")
   id("com.android.application")
   id("org.jetbrains.compose")
-  id("kotlin-parcelize")
 }
 
 val koinVersion = "3.4.3"
@@ -18,9 +17,6 @@ kotlin {
         // Koin Android
         implementation("io.insert-koin:koin-android:$koinVersion")
         implementation("io.insert-koin:koin-androidx-compose:3.4.6")
-
-        // Khonshu
-        implementation("com.freeletics.khonshu:navigation-compose:0.16.1")
       }
     }
   }

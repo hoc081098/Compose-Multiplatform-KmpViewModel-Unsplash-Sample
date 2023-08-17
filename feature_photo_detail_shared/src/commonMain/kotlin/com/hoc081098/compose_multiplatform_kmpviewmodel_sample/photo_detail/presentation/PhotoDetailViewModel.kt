@@ -1,6 +1,8 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.publish
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.requireNavRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.flowFromSuspend
@@ -31,21 +33,15 @@ internal class PhotoDetailViewModel(
   savedStateHandle: SavedStateHandle,
   private val getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase,
 ) : ViewModel() {
-  internal val id = checkNotNull(savedStateHandle.get<String>(ID_KEY)) {
-    """id must not be null.
-      |For non-Android platforms, you must set id to `SavedStateHandle` with key $ID_KEY,
-      |and pass that `SavedStateHandle` to `PhotoDetailViewModel` constructor.
-      |
-    """.trimMargin()
-  }
+  private val route = savedStateHandle.requireNavRoute<PhotoDetailRoute>()
 
   private val _intentChannel = Channel<PhotoDetailViewIntent>(capacity = 1)
 
   internal val uiStateFlow: StateFlow<PhotoDetailUiState>
 
   init {
-    Napier.d("init $this")
-    addCloseable { Napier.d("close $this") }
+    Napier.d("init route=$route -> $this")
+    addCloseable { Napier.d("close route=$route -> $this") }
 
     uiStateFlow = _intentChannel
       .consumeAsFlow()
@@ -83,7 +79,7 @@ internal class PhotoDetailViewModel(
   private fun Flow<PhotoDetailViewIntent.Init>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     take(1)
       .flatMapConcat {
-        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+        flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
           .map { either ->
             either.fold(
               ifLeft = {
@@ -101,7 +97,7 @@ internal class PhotoDetailViewModel(
   private fun Flow<PhotoDetailViewIntent.Retry>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     filter { uiStateFlow.value is PhotoDetailUiState.Error }
       .flatMapFirst {
-        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+        flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
           .map { either ->
             either.fold(
               ifLeft = {
@@ -122,7 +118,7 @@ internal class PhotoDetailViewModel(
       state is PhotoDetailUiState.Content && !state.isRefreshing
     }
       .flatMapFirst {
-        flowFromSuspend { getPhotoDetailByIdUseCase(id) }
+        flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
           .map { either ->
             either.fold(
               ifLeft = {
@@ -136,10 +132,4 @@ internal class PhotoDetailViewModel(
           .startWith(PhotoDetailPartialStateChange.Refresh.Refreshing)
       }
   //endregion
-
-  companion object {
-    // This key is used by non-Android platforms to set id to SavedStateHandle,
-    // used by Android platform to set id to Bundle (handled by Compose-Navigation).
-    const val ID_KEY = "com.freeletics.khonshu.navigation.ROUTE"
-  }
 }

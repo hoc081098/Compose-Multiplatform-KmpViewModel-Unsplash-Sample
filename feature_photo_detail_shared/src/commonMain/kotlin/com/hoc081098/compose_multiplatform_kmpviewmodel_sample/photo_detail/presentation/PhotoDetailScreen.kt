@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.LoadingIndicator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.collectAsStateWithLifecycleKmp
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.CreatorInfoCard
@@ -29,28 +30,28 @@ import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
 
 @Suppress("NOTHING_TO_INLINE")
-internal expect inline fun photoDetailViewModelCreationExtras(id: String): CreationExtras
+internal expect inline fun photoDetailViewModelCreationExtras(route: PhotoDetailRoute): CreationExtras
 
 @Composable
 private fun photoDetailViewModel(
-  id: String,
+  route: PhotoDetailRoute,
   getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
 ): PhotoDetailViewModel = kmpViewModel(
-  key = "${PhotoDetailViewModel::class.simpleName}_$id",
+  key = "${PhotoDetailViewModel::class.simpleName}_$route",
   factory = {
     PhotoDetailViewModel(
       savedStateHandle = createSavedStateHandle(),
       getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
     )
   },
-  extras = photoDetailViewModelCreationExtras(id = id),
+  extras = photoDetailViewModelCreationExtras(route = route),
 )
 
 @Composable
 internal fun PhotoDetailScreen(
-  id: String,
+  route: PhotoDetailRoute,
   modifier: Modifier = Modifier,
-  viewModel: PhotoDetailViewModel = photoDetailViewModel(id = id),
+  viewModel: PhotoDetailViewModel = photoDetailViewModel(route = route),
 ) {
   val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycleKmp()
 

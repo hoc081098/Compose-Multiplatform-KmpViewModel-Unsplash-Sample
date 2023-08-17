@@ -40,6 +40,7 @@ kotlin {
 
         api(project(":common_shared"))
         api(project(":common_ui_shared"))
+        api(project(":navigation_shared"))
 
         // Ktor
         implementation("io.ktor:ktor-client-core:$ktorVersion")

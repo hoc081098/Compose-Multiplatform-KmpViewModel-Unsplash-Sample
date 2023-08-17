@@ -1,6 +1,7 @@
 plugins {
   kotlin("multiplatform")
   id("com.android.library")
+  id("kotlin-parcelize")
 }
 
 val ktorVersion = "2.3.3"
@@ -41,6 +42,9 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
+        implementation(project(":common_shared"))
+
+        api("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
       }
     }
     val commonTest by getting {
@@ -48,12 +52,19 @@ kotlin {
         implementation(kotlin("test"))
       }
     }
+
+    val androidMain by getting {
+      dependencies {
+        // Khonshu
+        api("com.freeletics.khonshu:navigation-compose:0.16.1")
+      }
+    }
   }
 }
 
 android {
   compileSdk = (findProperty("android.compileSdk") as String).toInt()
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared"
 
   defaultConfig {
     minSdk = (findProperty("android.minSdk") as String).toInt()
