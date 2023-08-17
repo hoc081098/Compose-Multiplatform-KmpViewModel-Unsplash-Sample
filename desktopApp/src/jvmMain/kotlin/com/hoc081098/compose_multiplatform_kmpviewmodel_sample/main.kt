@@ -10,16 +10,27 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.Phot
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.SearchPhotoScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
+import java.util.logging.Level
+import java.util.logging.SimpleFormatter
+import java.util.logging.StreamHandler
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
 
 fun main() {
   startKoin {
-    logger(PrintLogger(level = Level.DEBUG))
+    logger(PrintLogger(level = KoinLoggerLevel.DEBUG))
   }
 
-  Napier.base(DebugAntilog())
+  Napier.base(
+    DebugAntilog(
+      handler = listOf(
+        StreamHandler(System.out, SimpleFormatter()).apply {
+          level = Level.ALL
+        },
+      ),
+    ),
+  )
 
   application {
     var id by remember { mutableStateOf(null as String?) }

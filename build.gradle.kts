@@ -15,7 +15,7 @@ val ktlintVersion = "0.50.0"
 
 allprojects {
   configurations.all {
-    resolutionStrategy.eachDependency {->
+    resolutionStrategy.eachDependency { ->
       if (requested.group == "io.github.hoc081098") {
         // Check for updates every build
         resolutionStrategy.cacheChangingModulesFor(30, TimeUnit.MINUTES)
