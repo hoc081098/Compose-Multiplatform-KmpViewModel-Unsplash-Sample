@@ -20,5 +20,5 @@ data class PhotoCreator(
   val id: String,
   val username: String,
   val name: String,
-  val smallProfileImageUrl: String,
+  val mediumProfileImageUrl: String?,
 )

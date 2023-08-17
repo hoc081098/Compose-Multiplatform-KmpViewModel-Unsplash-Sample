@@ -37,7 +37,7 @@ internal sealed interface PhotoDetailUiState {
     val id: String,
     val username: String,
     val name: String,
-    val smallProfileImageUrl: String,
+    val mediumProfileImageUrl: String?,
   )
 
   companion object {
@@ -59,7 +59,7 @@ internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi {
       id = creator.id,
       username = creator.username,
       name = creator.name,
-      smallProfileImageUrl = creator.smallProfileImageUrl,
+      mediumProfileImageUrl = creator.mediumProfileImageUrl,
     ),
   )
 }

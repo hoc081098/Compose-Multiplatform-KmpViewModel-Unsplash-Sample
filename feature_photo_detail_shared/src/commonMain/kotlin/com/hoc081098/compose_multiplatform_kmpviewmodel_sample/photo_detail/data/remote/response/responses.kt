@@ -48,12 +48,12 @@ internal data class UnsplashUserResponse(
   @SerialName(value = "id") val id: String,
   @SerialName(value = "name") val name: String,
   @SerialName(value = "username") val username: String,
-  @SerialName(value = "profileImage") val profileImage: ProfileImage,
+  @SerialName(value = "profile_image") val profileImage: ProfileImage?,
 ) {
   @Serializable
   data class ProfileImage(
-    @SerialName(value = "small") val small: String,
-    @SerialName(value = "medium") val medium: String,
-    @SerialName(value = "large") val large: String,
+    @SerialName(value = "small") val small: String?,
+    @SerialName(value = "medium") val medium: String?,
+    @SerialName(value = "large") val large: String?,
   )
 }

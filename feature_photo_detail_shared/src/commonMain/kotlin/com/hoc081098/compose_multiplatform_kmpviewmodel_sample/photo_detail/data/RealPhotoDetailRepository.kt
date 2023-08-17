@@ -45,6 +45,6 @@ private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail = PhotoDetail(
     id = user.id,
     username = user.username,
     name = user.name,
-    smallProfileImageUrl = user.profileImage.small,
+    mediumProfileImageUrl = user.profileImage?.medium,
   ),
 )

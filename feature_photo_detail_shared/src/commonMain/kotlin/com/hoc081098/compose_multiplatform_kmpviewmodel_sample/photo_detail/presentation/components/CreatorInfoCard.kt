@@ -4,6 +4,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -22,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -45,28 +48,43 @@ internal fun CreatorInfoCard(
     Row(
       modifier = Modifier
         .fillMaxWidth()
-        .padding(8.dp),
+        .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
-      KamelImage(
-        modifier = Modifier.size(65.dp),
-        resource = asyncPainterResource(data = creator.smallProfileImageUrl),
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        animationSpec = tween(),
-        onLoading = {
-          LoadingIndicator(
-            modifier = Modifier.matchParentSize(),
-          )
-        },
-        onFailure = {
+      if (creator.mediumProfileImageUrl != null) {
+        KamelImage(
+          modifier = Modifier
+            .size(65.dp)
+            .clip(CircleShape),
+          resource = asyncPainterResource(data = creator.mediumProfileImageUrl),
+          contentDescription = null,
+          contentScale = ContentScale.Crop,
+          animationSpec = tween(),
+          onLoading = {
+            LoadingIndicator(
+              modifier = Modifier.matchParentSize(),
+            )
+          },
+          onFailure = {
+            Icon(
+              modifier = Modifier.align(Alignment.Center),
+              imageVector = Icons.Default.Person,
+              contentDescription = null,
+            )
+          },
+        )
+      } else {
+        Box(
+          modifier = Modifier.size(65.dp),
+          contentAlignment = Alignment.Center,
+        ) {
           Icon(
             modifier = Modifier.align(Alignment.Center),
             imageVector = Icons.Default.Person,
             contentDescription = null,
           )
-        },
-      )
+        }
+      }
 
       Spacer(modifier = Modifier.width(8.dp))
 
