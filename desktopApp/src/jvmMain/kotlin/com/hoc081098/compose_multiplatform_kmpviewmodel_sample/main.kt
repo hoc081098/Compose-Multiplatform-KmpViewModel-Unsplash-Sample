@@ -15,6 +15,7 @@ import java.util.logging.SimpleFormatter
 import java.util.logging.StreamHandler
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level as KoinLoggerLevel
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import org.koin.core.logger.PrintLogger
 
 fun main() {
@@ -49,7 +50,7 @@ fun main() {
         onCloseRequest = { id = null },
       ) {
         PhotoDetailScreen(
-          id = it,
+          route = PhotoDetailRoute(id = it),
         )
       }
     }
