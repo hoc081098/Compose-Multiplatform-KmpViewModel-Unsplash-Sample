@@ -15,6 +15,7 @@ class MyApp : Application() {
     startKoin {
       androidLogger(level = Level.DEBUG)
       androidContext(this@MyApp)
+      modules(NavigationModule)
     }
 
     Napier.base(DebugAntilog())
