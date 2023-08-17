@@ -1,6 +1,6 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data
 
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.BuildKonfig
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.BuildKonfig
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response.SearchPhotosResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

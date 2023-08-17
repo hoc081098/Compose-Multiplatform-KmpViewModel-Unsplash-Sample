@@ -1,6 +1,6 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.remote
 
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.BuildKonfig
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.BuildKonfig
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.remote.response.CoverPhotoResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

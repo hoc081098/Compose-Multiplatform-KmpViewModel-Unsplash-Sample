@@ -3,7 +3,6 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.BuildKonfig
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
