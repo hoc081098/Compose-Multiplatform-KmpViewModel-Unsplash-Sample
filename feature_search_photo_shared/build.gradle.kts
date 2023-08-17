@@ -164,7 +164,7 @@ android {
 // ---------------------------- BUILD KONFIG ----------------------------
 
 buildkonfig {
-  packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
+  packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo"
   defaultConfigs {
     buildConfigField(
       type = FieldSpec.Type.STRING,

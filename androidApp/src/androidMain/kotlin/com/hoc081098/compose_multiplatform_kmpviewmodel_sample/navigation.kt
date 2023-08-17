@@ -15,7 +15,7 @@ import org.koin.core.qualifier.qualifier
 import org.koin.dsl.module
 
 @Parcelize
-data object SearchPhotosRoute : NavRoute, NavRoot
+data object SearchPhotoRoute : NavRoute, NavRoot
 
 @Parcelize
 data class PhotoDetailRoute(val id: String) : NavRoute
@@ -29,7 +29,7 @@ val NavigationModule = module {
 
   single(AllDestinationsQualifier) {
     setOf(
-      ScreenDestination<SearchPhotosRoute> {
+      ScreenDestination<SearchPhotoRoute> {
         NavigationSetup(koinInject())
 
         val navEventNavigator = koinInject<NavEventNavigator>()

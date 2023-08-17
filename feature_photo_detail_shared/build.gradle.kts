@@ -124,7 +124,7 @@ kotlin {
 
 android {
   compileSdk = (findProperty("android.compileSdk") as String).toInt()
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail"
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   sourceSets["main"].res.srcDirs("src/androidMain/res")
@@ -150,7 +150,7 @@ android {
 // ---------------------------- BUILD KONFIG ----------------------------
 
 buildkonfig {
-  packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
+  packageName = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail"
   defaultConfigs {
     buildConfigField(
       type = FieldSpec.Type.STRING,
