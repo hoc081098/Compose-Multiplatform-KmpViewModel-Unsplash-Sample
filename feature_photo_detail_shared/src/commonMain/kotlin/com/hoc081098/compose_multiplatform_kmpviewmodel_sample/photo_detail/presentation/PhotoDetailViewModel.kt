@@ -8,6 +8,7 @@ import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
 import io.github.aakira.napier.Napier
+import kotlin.jvm.JvmName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
@@ -47,6 +49,7 @@ internal class PhotoDetailViewModel(
 
     uiStateFlow = _intentChannel
       .consumeAsFlow()
+      .onEach { Napier.d(message = "intent $it", tag = "PhotoDetailViewModel") }
       .publish {
         merge(
           select {
@@ -76,6 +79,7 @@ internal class PhotoDetailViewModel(
   }
 
   //region View intent processors
+  @JvmName("initIntentFlowToPartialStateChangesFlow")
   private fun Flow<PhotoDetailViewIntent.Init>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     take(1)
       .flatMapConcat {
@@ -93,6 +97,7 @@ internal class PhotoDetailViewModel(
           .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
       }
 
+  @JvmName("retryIntentFlowToPartialStateChangesFlow")
   private fun Flow<PhotoDetailViewIntent.Retry>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     filter { uiStateFlow.value is PhotoDetailUiState.Error }
       .flatMapFirst {
@@ -110,6 +115,7 @@ internal class PhotoDetailViewModel(
           .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
       }
 
+  @JvmName("refreshIntentFlowToPartialStateChangesFlow")
   private fun Flow<PhotoDetailViewIntent.Refresh>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.Refresh> =
     filter {
       val state = uiStateFlow.value

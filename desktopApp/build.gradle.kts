@@ -13,6 +13,8 @@ kotlin {
         implementation(compose.desktop.currentOs)
         implementation(project(":feature_search_photo_shared"))
         implementation(project(":feature_photo_detail_shared"))
+
+        implementation("org.slf4j:slf4j-reload4j:2.0.7")
       }
     }
   }

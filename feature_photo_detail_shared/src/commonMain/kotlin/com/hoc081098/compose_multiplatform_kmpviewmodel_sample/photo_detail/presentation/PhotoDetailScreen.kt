@@ -27,8 +27,8 @@ import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
 
-@Composable
-internal expect fun photoDetailViewModelCreationExtras(id: String): CreationExtras
+@Suppress("NOTHING_TO_INLINE")
+internal expect inline fun photoDetailViewModelCreationExtras(id: String): CreationExtras
 
 @Composable
 private fun photoDetailViewModel(

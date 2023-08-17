@@ -6,6 +6,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoCreator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetail
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailRepository
+import io.github.aakira.napier.Napier
 import org.koin.core.annotation.Singleton
 
 @Singleton(
@@ -21,7 +22,15 @@ internal class RealPhotoDetailRepository(
     unsplashApi
       .getPhotoDetailById(id)
       .toPhotoDetail()
-  }.mapLeft(photoDetailErrorMapper)
+  }
+    .onLeft {
+      Napier.e(
+        throwable = it,
+        tag = "RealPhotoDetailRepository",
+        message = "getPhotoDetailById($id) failed",
+      )
+    }
+    .mapLeft(photoDetailErrorMapper)
 }
 
 private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail = PhotoDetail(
