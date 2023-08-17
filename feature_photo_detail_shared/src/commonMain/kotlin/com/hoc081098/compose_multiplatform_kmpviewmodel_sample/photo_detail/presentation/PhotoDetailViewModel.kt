@@ -40,8 +40,8 @@ internal class PhotoDetailViewModel(
   internal val uiStateFlow: StateFlow<PhotoDetailUiState>
 
   init {
-    Napier.d("init route=$route -> $this")
-    addCloseable { Napier.d("close route=$route -> $this") }
+    Napier.d("init route=$route -> $this", tag = "PhotoDetailViewModel")
+    addCloseable { Napier.d("close route=$route -> $this", tag = "PhotoDetailViewModel") }
 
     uiStateFlow = _intentChannel
       .consumeAsFlow()

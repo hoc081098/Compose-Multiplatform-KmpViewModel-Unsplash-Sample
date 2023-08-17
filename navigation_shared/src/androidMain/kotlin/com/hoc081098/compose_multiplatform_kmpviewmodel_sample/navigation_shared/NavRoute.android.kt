@@ -2,5 +2,6 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_share
 
 import android.os.Parcelable
 
-actual interface NavRoute : com.freeletics.khonshu.navigation.NavRoute, Parcelable
-actual interface NavRoot : com.freeletics.khonshu.navigation.NavRoot, Parcelable
+actual sealed interface BaseRoute : Parcelable
+actual interface NavRoute : com.freeletics.khonshu.navigation.NavRoute, Parcelable, BaseRoute
+actual interface NavRoot : com.freeletics.khonshu.navigation.NavRoot, Parcelable, BaseRoute

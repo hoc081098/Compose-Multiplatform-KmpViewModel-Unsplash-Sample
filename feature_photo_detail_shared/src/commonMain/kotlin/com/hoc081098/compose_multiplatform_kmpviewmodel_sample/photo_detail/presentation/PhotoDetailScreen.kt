@@ -3,14 +3,24 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.pre
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
@@ -50,6 +60,7 @@ private fun photoDetailViewModel(
 @Composable
 internal fun PhotoDetailScreen(
   route: PhotoDetailRoute,
+  onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
   viewModel: PhotoDetailViewModel = photoDetailViewModel(route = route),
 ) {
@@ -69,56 +80,77 @@ internal fun PhotoDetailScreen(
     modifier = modifier,
     uiState = uiState,
     onRetry = { processIntent(PhotoDetailViewIntent.Retry) },
+    onNavigationBack = onNavigationBack,
   )
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun PhotoDetailContent(
   uiState: PhotoDetailUiState,
   onRetry: () -> Unit,
+  onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  Box(
-    modifier = modifier
-      .fillMaxSize()
-      .background(color = MaterialTheme.colorScheme.background),
-  ) {
-    when (uiState) {
-      PhotoDetailUiState.Loading -> {
-        LoadingIndicator(
-          modifier = Modifier.matchParentSize(),
-        )
-      }
-
-      is PhotoDetailUiState.Error -> {
-        ErrorMessageAndRetryButton(
-          modifier = Modifier.matchParentSize(),
-          onRetry = onRetry,
-          errorMessage = when (uiState.error) {
-            PhotoDetailError.NetworkError -> "Network error"
-            PhotoDetailError.ServerError -> "Server error"
-            PhotoDetailError.TimeoutError -> "Timeout error"
-            PhotoDetailError.Unexpected -> "Unexpected error"
-          },
-        )
-      }
-
-      is PhotoDetailUiState.Content -> {
-        val detail = uiState.photoDetail
-
-        Column(
-          modifier = Modifier
-            .matchParentSize()
-            .verticalScroll(rememberScrollState()),
-        ) {
-          Spacer(modifier = Modifier.height(16.dp))
-
-          CreatorInfoCard(
-            modifier = Modifier
-              .fillMaxWidth()
-              .padding(horizontal = 16.dp),
-            creator = detail.creator,
+  Scaffold(
+    topBar = {
+      CenterAlignedTopAppBar(
+        title = { Text(text = "Photo detail") },
+        navigationIcon = {
+          IconButton(onClick = onNavigationBack) {
+            Icon(
+              imageVector = Icons.Default.ArrowBack,
+              contentDescription = "Back",
+            )
+          }
+        },
+      )
+    },
+  ) { padding ->
+    Box(
+      modifier = modifier
+        .fillMaxSize()
+        .padding(padding)
+        .consumeWindowInsets(padding)
+        .background(color = MaterialTheme.colorScheme.background),
+    ) {
+      when (uiState) {
+        PhotoDetailUiState.Loading -> {
+          LoadingIndicator(
+            modifier = Modifier.matchParentSize(),
           )
+        }
+
+        is PhotoDetailUiState.Error -> {
+          ErrorMessageAndRetryButton(
+            modifier = Modifier.matchParentSize(),
+            onRetry = onRetry,
+            errorMessage = when (uiState.error) {
+              PhotoDetailError.NetworkError -> "Network error"
+              PhotoDetailError.ServerError -> "Server error"
+              PhotoDetailError.TimeoutError -> "Timeout error"
+              PhotoDetailError.Unexpected -> "Unexpected error"
+            },
+          )
+        }
+
+        is PhotoDetailUiState.Content -> {
+          val detail = uiState.photoDetail
+
+          Column(
+            modifier = Modifier
+              .matchParentSize()
+              .verticalScroll(rememberScrollState()),
+          ) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CreatorInfoCard(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+              creator = detail.creator,
+            )
+          }
         }
       }
     }

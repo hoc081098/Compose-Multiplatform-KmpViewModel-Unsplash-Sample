@@ -49,8 +49,8 @@ internal class SearchPhotoViewModel(
     )
 
   init {
-    Napier.d("init $this")
-    addCloseable { Napier.d("close $this") }
+    Napier.d(message = "init $this", tag = "SearchPhotoViewModel")
+    addCloseable { Napier.d(message = "close $this", tag = "SearchPhotoViewModel") }
   }
 
   fun search(term: String) {

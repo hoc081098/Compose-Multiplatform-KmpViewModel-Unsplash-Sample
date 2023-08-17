@@ -2,5 +2,6 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_share
 
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 
-actual interface NavRoute : Parcelable
-actual interface NavRoot : Parcelable
+actual sealed interface BaseRoute : Parcelable
+actual interface NavRoute : BaseRoute, Parcelable
+actual interface NavRoot : BaseRoute, Parcelable

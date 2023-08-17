@@ -3,16 +3,19 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_share
 import androidx.compose.runtime.Immutable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 
-@Immutable
 /**
  * Copied from [com.freeletics.khonshu.navigation.NavRoute](https://github.com/freeletics/khonshu/blob/b14ca695f36f5f7165f7c8f435f487f356f53cd6/navigation/src/commonMain/kotlin/com/freeletics/khonshu/navigation/NavRoute.kt#L5)
- *
+ */
+expect sealed interface BaseRoute : Parcelable
+
+@Immutable
+/**
  * Represents the route to a destination.
  *
  * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
  * available to the target screens.
  */
-expect interface NavRoute : Parcelable
+expect interface NavRoute : Parcelable, BaseRoute
 
 @Immutable
 /**
@@ -23,4 +26,4 @@ expect interface NavRoute : Parcelable
  * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
  * available to the target screens.
  */
-expect interface NavRoot : Parcelable
+expect interface NavRoot : Parcelable, BaseRoute
