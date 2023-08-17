@@ -140,6 +140,6 @@ internal class PhotoDetailViewModel(
   companion object {
     // This key is used by non-Android platforms to set id to SavedStateHandle,
     // used by Android platform to set id to Bundle (handled by Compose-Navigation).
-    const val ID_KEY = "id"
+    const val ID_KEY = "com.freeletics.khonshu.navigation.ROUTE"
   }
 }

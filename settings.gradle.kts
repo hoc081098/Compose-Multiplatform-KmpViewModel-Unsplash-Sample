@@ -6,6 +6,7 @@ include(":feature_search_photo_shared")
 include(":feature_photo_detail_shared")
 include(":common_shared")
 include(":common_ui_shared")
+include(":navigation_shared")
 
 pluginManagement {
   repositories {

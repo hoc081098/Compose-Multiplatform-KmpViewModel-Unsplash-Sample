@@ -202,11 +202,6 @@ buildkonfig {
 dependencies {
   val koinKspCompiler = "io.insert-koin:koin-ksp-compiler:$koinKspVersion"
   add("kspCommonMainMetadata", koinKspCompiler)
-//    add("kspAndroid", koinKspCompiler)
-//    add("kspDesktop", koinKspCompiler)
-//    add("kspIosX64", koinKspCompiler)
-//    add("kspIosArm64", koinKspCompiler)
-//    add("kspIosSimulatorArm64", koinKspCompiler)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
