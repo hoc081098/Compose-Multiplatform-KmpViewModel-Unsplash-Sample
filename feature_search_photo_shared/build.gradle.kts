@@ -74,7 +74,7 @@ kotlin {
         // KMP View Model
         implementation("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
         implementation("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
-        implementation("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
+        api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
 
         // KotlinX DateTime
         implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")

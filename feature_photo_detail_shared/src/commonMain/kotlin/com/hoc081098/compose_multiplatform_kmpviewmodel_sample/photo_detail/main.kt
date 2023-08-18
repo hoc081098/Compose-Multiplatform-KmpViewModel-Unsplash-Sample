@@ -2,13 +2,13 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailScreen
+import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
@@ -25,18 +25,18 @@ internal fun PhotoDetailScreenWithKoin(
   route: PhotoDetailRoute,
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
+  clearViewModelRegistry: ClearViewModelRegistry? = null,
 ) {
   val loaded = rememberKoinModules { listOf(FeaturePhotoDetailModule) }
 
   if (loaded) {
-    key(route) {
-      MaterialTheme {
-        PhotoDetailScreen(
-          modifier = modifier,
-          route = route,
-          onNavigationBack = onNavigationBack,
-        )
-      }
+    MaterialTheme {
+      PhotoDetailScreen(
+        modifier = modifier,
+        route = route,
+        clearViewModelRegistry = clearViewModelRegistry,
+        onNavigationBack = onNavigationBack,
+      )
     }
   }
 }

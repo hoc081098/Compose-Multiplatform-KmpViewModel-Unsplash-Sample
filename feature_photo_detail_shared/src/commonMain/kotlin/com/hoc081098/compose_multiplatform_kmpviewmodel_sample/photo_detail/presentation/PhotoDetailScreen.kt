@@ -35,6 +35,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.doma
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.CreatorInfoCard
 import com.hoc081098.kmp.viewmodel.CreationExtras
+import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
@@ -45,6 +46,7 @@ internal expect inline fun photoDetailViewModelCreationExtras(route: PhotoDetail
 @Composable
 private fun photoDetailViewModel(
   route: PhotoDetailRoute,
+  clearViewModelRegistry: ClearViewModelRegistry?,
   getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
 ): PhotoDetailViewModel = kmpViewModel(
   key = "${PhotoDetailViewModel::class.simpleName}_$route",
@@ -62,7 +64,11 @@ internal fun PhotoDetailScreen(
   route: PhotoDetailRoute,
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
-  viewModel: PhotoDetailViewModel = photoDetailViewModel(route = route),
+  clearViewModelRegistry: ClearViewModelRegistry? = null,
+  viewModel: PhotoDetailViewModel = photoDetailViewModel(
+    route = route,
+    clearViewModelRegistry = clearViewModelRegistry,
+  ),
 ) {
   val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycleKmp()
 

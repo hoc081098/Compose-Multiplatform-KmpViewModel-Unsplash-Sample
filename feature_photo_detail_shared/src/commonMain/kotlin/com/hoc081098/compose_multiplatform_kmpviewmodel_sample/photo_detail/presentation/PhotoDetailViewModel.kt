@@ -2,7 +2,7 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.pre
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.publish
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.requireNavRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.requireRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.flowFromSuspend
@@ -33,7 +33,7 @@ internal class PhotoDetailViewModel(
   savedStateHandle: SavedStateHandle,
   private val getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase,
 ) : ViewModel() {
-  private val route = savedStateHandle.requireNavRoute<PhotoDetailRoute>()
+  private val route = savedStateHandle.requireRoute<PhotoDetailRoute>()
 
   private val _intentChannel = Channel<PhotoDetailViewIntent>(capacity = 1)
 

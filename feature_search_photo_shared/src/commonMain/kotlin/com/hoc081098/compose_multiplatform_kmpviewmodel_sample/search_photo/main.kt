@@ -7,6 +7,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rem
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoScreen
+import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
@@ -22,6 +23,7 @@ internal val FeatureSearchPhotoModule = module {
 internal fun SearchPhotoScreenWithKoin(
   navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
+  clearViewModelRegistry: ClearViewModelRegistry? = null,
 ) {
   val loaded = rememberKoinModules(unloadModules = true) { listOf(FeatureSearchPhotoModule) }
 
@@ -29,6 +31,7 @@ internal fun SearchPhotoScreenWithKoin(
     MaterialTheme {
       SearchPhotoScreen(
         modifier = modifier,
+        clearViewModelRegistry = clearViewModelRegistry,
         navigateToPhotoDetail = navigateToPhotoDetail,
       )
     }
