@@ -1,7 +1,10 @@
+import org.jetbrains.compose.ComposeBuildConfig
+
 plugins {
   kotlin("multiplatform")
   id("com.android.library")
   id("kotlin-parcelize")
+  id("org.jetbrains.compose")
 }
 
 val ktorVersion = "2.3.3"
@@ -44,7 +47,14 @@ kotlin {
       dependencies {
         implementation(project(":common_shared"))
 
+        api(compose.runtime)
+        api("org.jetbrains.compose.runtime:runtime-saveable:${ComposeBuildConfig.composeVersion}")
+
+        api("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
         api("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
+        api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
+
+        implementation("com.benasher44:uuid:0.8.0")
       }
     }
     val commonTest by getting {

@@ -8,7 +8,6 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailScreen
-import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
@@ -25,7 +24,6 @@ internal fun PhotoDetailScreenWithKoin(
   route: PhotoDetailRoute,
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
-  clearViewModelRegistry: ClearViewModelRegistry? = null,
 ) {
   val loaded = rememberKoinModules { listOf(FeaturePhotoDetailModule) }
 
@@ -34,7 +32,6 @@ internal fun PhotoDetailScreenWithKoin(
       PhotoDetailScreen(
         modifier = modifier,
         route = route,
-        clearViewModelRegistry = clearViewModelRegistry,
         onNavigationBack = onNavigationBack,
       )
     }

@@ -35,18 +35,15 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.doma
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.components.PhotoGridCell
-import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
 
 @Composable
 private fun searchPhotoViewModel(
-  clearViewModelRegistry: ClearViewModelRegistry?,
   searchPhotoUseCase: SearchPhotoUseCase = koinInject(),
 ): SearchPhotoViewModel =
   kmpViewModel(
-    clearViewModelRegistry = clearViewModelRegistry,
     factory = {
       SearchPhotoViewModel(
         savedStateHandle = createSavedStateHandle(),
@@ -60,10 +57,7 @@ private fun searchPhotoViewModel(
 internal fun SearchPhotoScreen(
   navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
-  clearViewModelRegistry: ClearViewModelRegistry? = null,
-  viewModel: SearchPhotoViewModel = searchPhotoViewModel(
-    clearViewModelRegistry = clearViewModelRegistry,
-  ),
+  viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
 ) {
   val state by viewModel.stateFlow.collectAsStateWithLifecycleKmp()
   val searchTerm by viewModel
