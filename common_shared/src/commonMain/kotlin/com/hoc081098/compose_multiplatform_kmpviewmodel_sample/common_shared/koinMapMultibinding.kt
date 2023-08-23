@@ -28,7 +28,7 @@ inline fun <reified K, reified V> Module.declareMapMultibinding(
   qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
 ) = single(qualifier = qualifier) { MapMultibinding<K, V>() }
 
-@Suppress("RedundantUnitExpression") // Keep for readability
+@Suppress("RedundantUnitExpression", "RemoveExplicitTypeArguments") // Keep for readability
 @OptIn(InternalCoroutinesApi::class)
 inline fun <reified K, reified V> Module.intoMapMultibinding(
   key: K,

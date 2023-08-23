@@ -28,7 +28,7 @@ inline fun <reified V> Module.declareSetMultibinding(
   qualifier: StringQualifier = defaultSetMultibindingQualifier<V>(),
 ) = single(qualifier = qualifier) { SetMultibinding<V>() }
 
-@Suppress("RedundantUnitExpression") // Keep for readability
+@Suppress("RedundantUnitExpression", "RemoveExplicitTypeArguments") // Keep for readability
 @OptIn(InternalCoroutinesApi::class)
 inline fun <reified V> Module.intoSetMultibinding(
   key: V,
