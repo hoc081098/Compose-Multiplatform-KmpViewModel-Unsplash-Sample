@@ -19,7 +19,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.StackEntry
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.WeakReference
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.rememberNavigationExecutor
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.weakReference
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.weaken
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
@@ -84,7 +84,7 @@ private fun <T : BaseRoute> Show(
       .getOrCreate(SaveableCloseable::class) {
         SaveableCloseable(
           entry.id.value,
-          saveableStateHolder.weakReference(),
+          saveableStateHolder.weaken(),
         )
       }
   }
@@ -94,7 +94,7 @@ private fun <T : BaseRoute> Show(
       .storeFor(entry.id)
       .getOrCreate(ViewModelStoreOwnerCloseable::class) {
         ViewModelStoreOwnerCloseable(
-          DefaultViewModelStoreOwner().weakReference(),
+          DefaultViewModelStoreOwner().weaken(),
         )
       }
       .viewModelStoreOwnerRef
