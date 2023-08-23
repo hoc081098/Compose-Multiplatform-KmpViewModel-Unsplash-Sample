@@ -19,23 +19,23 @@ import org.koin.dsl.onClose
 @JvmField
 internal val Lock = SynchronizedObject()
 
-class Multibinding<K, V> : MutableMap<K, V> by mutableMapOf()
+class MapMultibinding<K, V> : MutableMap<K, V> by mutableMapOf()
 
-inline fun <reified K, reified V> defaultMultibindingQualifier(): StringQualifier =
+inline fun <reified K, reified V> defaultMapMultibindingQualifier(): StringQualifier =
   named("${K::class}_${V::class}")
 
-inline fun <reified K, reified V> Module.declareMultibinding(
-  qualifier: StringQualifier = defaultMultibindingQualifier<K, V>(),
-) = single(qualifier = qualifier) { Multibinding<K, V>() }
+inline fun <reified K, reified V> Module.declareMapMultibinding(
+  qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
+) = single(qualifier = qualifier) { MapMultibinding<K, V>() }
 
 @Suppress("RedundantUnitExpression") // Keep for readability
 @OptIn(InternalCoroutinesApi::class)
-inline fun <reified K, reified V> Module.intoMultibinding(
+inline fun <reified K, reified V> Module.intoMapMultibinding(
   key: K,
-  multibindingQualifier: StringQualifier = defaultMultibindingQualifier<K, V>(),
+  multibindingQualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
   crossinline definition: Definition<V>,
 ) {
-  var multibinding = null as Multibinding<K, V>?
+  var multibinding = null as MapMultibinding<K, V>?
 
   single<Unit>(
     qualifier = named("${multibindingQualifier.value}_$key"),
@@ -53,15 +53,15 @@ inline fun <reified K, reified V> Module.intoMultibinding(
   }
 }
 
-inline fun <reified K, reified V> Scope.getMultibinding(
-  qualifier: StringQualifier = defaultMultibindingQualifier<K, V>(),
+inline fun <reified K, reified V> Scope.getMapMultibinding(
+  qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
 ): Map<K, V> =
-  get<Multibinding<K, V>>(qualifier = qualifier).toMap()
+  get<MapMultibinding<K, V>>(qualifier = qualifier).toMap()
 
 @Composable
-inline fun <reified K, reified V> koinInjectMultibinding(
-  qualifier: StringQualifier = defaultMultibindingQualifier<K, V>(),
+inline fun <reified K, reified V> koinInjectMapMultibinding(
+  qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
   scope: Scope = LocalKoinScope.current,
 ): Map<K, V> = remember(scope, qualifier) {
-  scope.getMultibinding(qualifier = qualifier)
+  scope.getMapMultibinding(qualifier = qualifier)
 }

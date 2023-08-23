@@ -6,8 +6,8 @@ import com.freeletics.khonshu.navigation.NavEventNavigator
 import com.freeletics.khonshu.navigation.compose.NavDestination
 import com.freeletics.khonshu.navigation.compose.NavigationSetup
 import com.freeletics.khonshu.navigation.compose.ScreenDestination
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.declareMultibinding
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.intoMultibinding
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.declareMapMultibinding
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.intoMapMultibinding
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
@@ -24,9 +24,9 @@ val AllDestinationsQualifier = qualifier("AllDestinationsQualifier")
 val NavigationModule = module {
   singleOf(::NavEventNavigator)
 
-  declareMultibinding<BaseRoute, NavDestination>(qualifier = AllDestinationsQualifier)
+  declareMapMultibinding<BaseRoute, NavDestination>(qualifier = AllDestinationsQualifier)
 
-  intoMultibinding(
+  intoMapMultibinding(
     key = SearchPhotoRoute::class.java,
     multibindingQualifier = AllDestinationsQualifier,
   ) {
@@ -45,7 +45,7 @@ val NavigationModule = module {
     }
   }
 
-  intoMultibinding(
+  intoMapMultibinding(
     key = PhotoDetailRoute::class.java,
     multibindingQualifier = AllDestinationsQualifier,
   ) {
