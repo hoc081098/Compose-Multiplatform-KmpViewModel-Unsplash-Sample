@@ -17,7 +17,9 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.MultiStackNavigationExecutor
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.NavigationExecutor
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.StackEntry
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.WeakReference
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.rememberNavigationExecutor
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.weakReference
 import com.hoc081098.kmp.viewmodel.Closeable
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
@@ -86,7 +88,10 @@ private fun <T : BaseRoute> Show(
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
-        SaveableCloseable(entry.id.value, Ref(saveableStateHolder))
+        SaveableCloseable(
+          entry.id.value,
+          saveableStateHolder.weakReference(),
+        )
       }
   }
 
@@ -94,7 +99,9 @@ private fun <T : BaseRoute> Show(
     executor
       .storeFor(entry.id)
       .getOrCreate(ViewModelStoreOwnerCloseable::class) {
-        ViewModelStoreOwnerCloseable(Ref(DefaultViewModelStoreOwner()))
+        ViewModelStoreOwnerCloseable(
+          DefaultViewModelStoreOwner().weakReference(),
+        )
       }
       .viewModelStoreOwnerRef
       .get()
@@ -105,16 +112,6 @@ private fun <T : BaseRoute> Show(
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
       entry.destination.content(entry.route)
     }
-  }
-}
-
-internal class Ref<T>(value: T) {
-  private var value: T? = value
-
-  fun get(): T? = value
-
-  fun clear() {
-    value = null
   }
 }
 
@@ -134,7 +131,7 @@ internal class DefaultViewModelStoreOwner : ViewModelStoreOwner {
 }
 
 internal class ViewModelStoreOwnerCloseable(
-  @JvmField val viewModelStoreOwnerRef: Ref<DefaultViewModelStoreOwner>,
+  @JvmField val viewModelStoreOwnerRef: WeakReference<DefaultViewModelStoreOwner>,
 ) : Closeable {
   override fun close() {
     viewModelStoreOwnerRef.get()?.clearIfInitialized()
@@ -144,7 +141,7 @@ internal class ViewModelStoreOwnerCloseable(
 
 internal class SaveableCloseable(
   @JvmField val id: String,
-  @JvmField val saveableStateHolderRef: Ref<SaveableStateHolder>,
+  @JvmField val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
   override fun close() {
     saveableStateHolderRef.get()?.removeState(id)
