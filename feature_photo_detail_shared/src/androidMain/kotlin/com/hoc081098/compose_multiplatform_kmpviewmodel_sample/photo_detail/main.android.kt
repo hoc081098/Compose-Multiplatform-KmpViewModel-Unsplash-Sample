@@ -7,11 +7,13 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 @Composable
 fun PhotoDetailScreen(
   route: PhotoDetailRoute,
+  onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
   PhotoDetailScreenWithKoin(
     modifier = modifier,
     route = route,
+    onNavigationBack = onNavigationBack,
   )
 }
 
