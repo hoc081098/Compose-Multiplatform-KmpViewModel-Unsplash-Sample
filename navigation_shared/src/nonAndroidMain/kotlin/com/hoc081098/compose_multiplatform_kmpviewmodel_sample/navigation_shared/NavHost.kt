@@ -30,17 +30,11 @@ import kotlinx.coroutines.flow.map
 
 /**
  * Create a new `NavHost` containing all given [destinations]. [startRoute] will be used as the
- * start destination of the graph. Use [com.freeletics.khonshu.navigation.NavEventNavigator] and
+ * start destination of the graph. Use [NavEventNavigator] and
  * [NavigationSetup] to change what is shown in [NavHost].
  *
- * To support deep links a set of [DeepLinkHandlers][DeepLinkHandler] can be passed in optionally.
- * These will be used to build the correct back stack when the current `Activity` was launched with
- * an `ACTION_VIEW` `Intent` that contains an url in it's data. [deepLinkPrefixes] can be used to
- * provide a default set of url patterns that should be matched by any [DeepLinkHandler] that
- * doesn't provide its own [DeepLinkHandler.prefixes].
- *
  * The [destinationChangedCallback] can be used to be notified when the current destination
- * changes. Note that this will not be invoked when navigating to a [ActivityDestination].
+ * changes.
  */
 @OptIn(InternalNavigationApi::class)
 @Composable
