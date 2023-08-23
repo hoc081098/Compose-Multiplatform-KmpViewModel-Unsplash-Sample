@@ -25,7 +25,7 @@ internal fun PhotoDetailScreenWithKoin(
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val loaded = rememberKoinModules { listOf(FeaturePhotoDetailModule) }
+  val loaded = rememberKoinModules(unloadModules = true) { listOf(FeaturePhotoDetailModule) }
 
   if (loaded) {
     MaterialTheme {
