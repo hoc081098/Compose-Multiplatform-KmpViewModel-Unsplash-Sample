@@ -9,11 +9,12 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoot
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoute
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import kotlin.jvm.JvmField
 
 @InternalNavigationApi
 internal class MultiStackNavigationExecutor(
   private val stack: MultiStack,
-  internal val viewModel: StoreViewModel,
+  @JvmField internal val viewModel: StoreViewModel,
 ) : NavigationExecutor {
 
   @Suppress("unused") // TODO

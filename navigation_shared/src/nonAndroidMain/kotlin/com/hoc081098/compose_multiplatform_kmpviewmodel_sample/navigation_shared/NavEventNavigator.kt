@@ -1,3 +1,7 @@
+/**
+ * Copied from [com.freeletics.khonshu.navigation.NavEventNavigator.kt](https://github.com/freeletics/khonshu/blob/de0e8f812d89303ac347119d5c448bc40224d4f2/navigation/src/androidMain/kotlin/com/freeletics/khonshu/navigation/NavEventNavigator.kt).
+ */
+
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.DestinationId
@@ -14,10 +18,6 @@ import kotlinx.coroutines.flow.flow
  * without keeping references to Android framework classes that might leak. It also improves
  * the testability of your navigation logic since it is possible to just write test that
  * the correct events were emitted.
- *
- * For back press handling based on logic [backPresses] is available. Activity results and
- * permission requests can be handled through [registerForActivityResult]/[navigateForResult]
- * and [registerForPermissionsResult]/[requestPermissions] respectively.
  */
 @OptIn(InternalNavigationApi::class)
 public open class NavEventNavigator {
