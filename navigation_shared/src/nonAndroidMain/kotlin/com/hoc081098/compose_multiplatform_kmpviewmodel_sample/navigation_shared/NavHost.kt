@@ -19,8 +19,10 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.StackEntry
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal.rememberNavigationExecutor
 import com.hoc081098.kmp.viewmodel.Closeable
-import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistry
-import com.hoc081098.kmp.viewmodel.compose.ClearViewModelRegistryProvider
+import com.hoc081098.kmp.viewmodel.ViewModelStore
+import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
+import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
+import kotlin.jvm.JvmField
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -80,16 +82,26 @@ private fun <T : BaseRoute> Show(
   //   it is available when the destination is cleared. Which, because of animations,
   //   only happens after this leaves composition. Which means we can't rely on
   //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-  val clearViewModelRegistry = remember(entry, executor, saveableStateHolder) {
+  remember(entry, executor, saveableStateHolder) {
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
         SaveableCloseable(entry.id.value, Ref(saveableStateHolder))
       }
-      .clearViewModelRegistry
   }
 
-  ClearViewModelRegistryProvider(clearViewModelRegistry) {
+  val viewModelStoreOwner = remember(entry, executor) {
+    executor
+      .storeFor(entry.id)
+      .getOrCreate(ViewModelStoreOwnerCloseable::class) {
+        ViewModelStoreOwnerCloseable(Ref(DefaultViewModelStoreOwner()))
+      }
+      .viewModelStoreOwnerRef
+      .get()
+      ?: EmptyViewModelStoreOwner
+  }
+
+  ViewModelStoreOwnerProvider(viewModelStoreOwner) {
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
       entry.destination.content(entry.route)
     }
@@ -106,24 +118,35 @@ internal class Ref<T>(value: T) {
   }
 }
 
-internal class ClearViewModelRegistryCloseable(
-  private val clearViewModelRegistryRef: ClearViewModelRegistry,
+internal object EmptyViewModelStoreOwner : ViewModelStoreOwner {
+  override val viewModelStore get() = throw IllegalStateException("Should not be called")
+}
+
+internal class DefaultViewModelStoreOwner : ViewModelStoreOwner {
+  private val viewModelStoreLazy = lazy(LazyThreadSafetyMode.NONE) { ViewModelStore() }
+  override val viewModelStore: ViewModelStore by viewModelStoreLazy
+
+  fun clearIfInitialized() {
+    if (viewModelStoreLazy.isInitialized()) {
+      viewModelStore.clear()
+    }
+  }
+}
+
+internal class ViewModelStoreOwnerCloseable(
+  @JvmField val viewModelStoreOwnerRef: Ref<DefaultViewModelStoreOwner>,
 ) : Closeable {
   override fun close() {
-    clearViewModelRegistryRef.clear()
+    viewModelStoreOwnerRef.get()?.clearIfInitialized()
+    viewModelStoreOwnerRef.clear()
   }
-
-  fun getClearViewModelRegistry(): ClearViewModelRegistry = clearViewModelRegistryRef
 }
 
 internal class SaveableCloseable(
-  private val id: String,
-  private val saveableStateHolderRef: Ref<SaveableStateHolder>,
+  @JvmField val id: String,
+  @JvmField val saveableStateHolderRef: Ref<SaveableStateHolder>,
 ) : Closeable {
-  val clearViewModelRegistry = ClearViewModelRegistry()
-
   override fun close() {
-    clearViewModelRegistry.clear()
     saveableStateHolderRef.get()?.removeState(id)
     saveableStateHolderRef.clear()
   }
