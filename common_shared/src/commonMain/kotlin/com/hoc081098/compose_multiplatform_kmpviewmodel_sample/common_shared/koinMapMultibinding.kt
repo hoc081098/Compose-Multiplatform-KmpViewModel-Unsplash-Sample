@@ -17,7 +17,7 @@ import org.koin.dsl.onClose
 @OptIn(InternalCoroutinesApi::class)
 @PublishedApi
 @JvmField
-internal val Lock = SynchronizedObject()
+internal val MapLock = SynchronizedObject()
 
 class MapMultibinding<K, V> : MutableMap<K, V> by mutableMapOf()
 
@@ -41,13 +41,13 @@ inline fun <reified K, reified V> Module.intoMapMultibinding(
     qualifier = named("${multibindingQualifier.value}_$key"),
     createdAtStart = true,
   ) {
-    synchronized(Lock) {
+    synchronized(MapLock) {
       multibinding = get(multibindingQualifier)
       multibinding!![key] = definition(it)
     }
     Unit
   }.onClose {
-    synchronized(Lock) {
+    synchronized(MapLock) {
       multibinding?.remove(key)
     }
   }
