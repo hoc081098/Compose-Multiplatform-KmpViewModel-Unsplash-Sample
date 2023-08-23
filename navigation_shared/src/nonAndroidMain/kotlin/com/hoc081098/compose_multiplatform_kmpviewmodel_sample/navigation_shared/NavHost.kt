@@ -73,6 +73,19 @@ private fun <T : BaseRoute> Show(
   executor: MultiStackNavigationExecutor,
   saveableStateHolder: SaveableStateHolder,
 ) {
+  // Before `SaveableCloseable` to make sure that the `SaveableStateHolder` is available
+  val viewModelStoreOwner = remember(entry, executor) {
+    executor
+      .storeFor(entry.id)
+      .getOrCreate(ViewModelStoreOwnerCloseable::class) {
+        ViewModelStoreOwnerCloseable(
+          DefaultViewModelStoreOwner().weaken(),
+        )
+      }
+      .viewModelStoreOwnerRef
+      .get()!!
+  }
+
   // From AndroidX Navigation:
   //   Stash a reference to the SaveableStateHolder in the Store so that
   //   it is available when the destination is cleared. Which, because of animations,
@@ -89,28 +102,11 @@ private fun <T : BaseRoute> Show(
       }
   }
 
-  val viewModelStoreOwner = remember(entry, executor) {
-    executor
-      .storeFor(entry.id)
-      .getOrCreate(ViewModelStoreOwnerCloseable::class) {
-        ViewModelStoreOwnerCloseable(
-          DefaultViewModelStoreOwner().weaken(),
-        )
-      }
-      .viewModelStoreOwnerRef
-      .get()
-      ?: EmptyViewModelStoreOwner
-  }
-
   ViewModelStoreOwnerProvider(viewModelStoreOwner) {
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
       entry.destination.content(entry.route)
     }
   }
-}
-
-internal object EmptyViewModelStoreOwner : ViewModelStoreOwner {
-  override val viewModelStore get() = throw IllegalStateException("Should not be called")
 }
 
 internal class DefaultViewModelStoreOwner : ViewModelStoreOwner {
