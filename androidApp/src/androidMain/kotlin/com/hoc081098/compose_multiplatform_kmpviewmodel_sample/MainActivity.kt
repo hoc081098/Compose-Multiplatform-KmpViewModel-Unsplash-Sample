@@ -4,10 +4,12 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
+import com.freeletics.khonshu.navigation.BaseRoute
+import com.freeletics.khonshu.navigation.compose.NavDestination
 import com.freeletics.khonshu.navigation.compose.NavHost
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.koinInjectMultibinding
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import io.github.aakira.napier.Napier
-import org.koin.compose.koinInject
 
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +18,10 @@ class MainActivity : AppCompatActivity() {
     setContent {
       NavHost(
         startRoute = SearchPhotoRoute,
-        destinations = koinInject(AllDestinationsQualifier),
+        destinations = koinInjectMultibinding<BaseRoute, NavDestination>(AllDestinationsQualifier)
+          .let { multibinding ->
+            remember(multibinding) { multibinding.values.toSet() }
+          },
         destinationChangedCallback = remember {
           {
               route ->
