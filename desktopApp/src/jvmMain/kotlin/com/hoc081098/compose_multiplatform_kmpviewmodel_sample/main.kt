@@ -60,7 +60,10 @@ fun main() {
       value = true
     }
 
-    Window(onCloseRequest = ::exitApplication) {
+    Window(
+      onCloseRequest = ::exitApplication,
+      title = "KmpViewModel Compose Multiplatform",
+    ) {
       if (!loaded.value) {
         Box(Modifier.fillMaxSize().background(Color.White)) {}
         return@Window
