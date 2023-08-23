@@ -1,3 +1,6 @@
+/**
+ * Copied from [com.freeletics.khonshu.navigation.internal.NavEvent.kt](https://github.com/freeletics/khonshu/blob/de0e8f812d89303ac347119d5c448bc40224d4f2/navigation/src/androidMain/kotlin/com/freeletics/khonshu/navigation/internal/NavEvent.kt)
+ */
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.internal
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoot

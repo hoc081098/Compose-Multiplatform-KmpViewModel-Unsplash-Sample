@@ -1,11 +1,12 @@
+/**
+ * Copied from [com.freeletics.khonshu.navigation.NavRoute](https://github.com/freeletics/khonshu/blob/b14ca695f36f5f7165f7c8f435f487f356f53cd6/navigation/src/commonMain/kotlin/com/freeletics/khonshu/navigation/NavRoute.kt#L5)
+ */
+
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 
 import androidx.compose.runtime.Immutable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 
-/**
- * Copied from [com.freeletics.khonshu.navigation.NavRoute](https://github.com/freeletics/khonshu/blob/b14ca695f36f5f7165f7c8f435f487f356f53cd6/navigation/src/commonMain/kotlin/com/freeletics/khonshu/navigation/NavRoute.kt#L5)
- */
 expect sealed interface BaseRoute : Parcelable
 
 @Immutable

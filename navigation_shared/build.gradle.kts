@@ -23,7 +23,7 @@ kotlin {
     common {
       group("nonAndroid") {
         withJvm()
-        withIos()
+        withNative()
       }
     }
   }
