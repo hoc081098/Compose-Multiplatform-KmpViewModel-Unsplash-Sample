@@ -13,6 +13,7 @@ pluginManagement {
     gradlePluginPortal()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
   }
 
   plugins {
@@ -41,6 +42,7 @@ dependencyResolutionManagement {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
 }
