@@ -11,6 +11,8 @@ kotlin {
     val jvmMain by getting {
       dependencies {
         implementation(compose.desktop.currentOs)
+        implementation(compose.material3)
+
         implementation(project(":feature_search_photo_shared"))
         implementation(project(":feature_photo_detail_shared"))
 

@@ -3,8 +3,11 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Window
@@ -33,7 +36,7 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 fun main() {
-  val job = CoroutineScope(Dispatchers.IO).launch {
+  val initJob = CoroutineScope(Dispatchers.IO).launch {
     Napier.base(
       DebugAntilog(
         handler = listOf(
@@ -55,8 +58,8 @@ fun main() {
   }
 
   application {
-    val loaded = produceState(false) {
-      job.join()
+    val isInitializationComplete by produceState(initialValue = false, initJob) {
+      initJob.join()
       value = true
     }
 
@@ -64,8 +67,18 @@ fun main() {
       onCloseRequest = ::exitApplication,
       title = "KmpViewModel Compose Multiplatform",
     ) {
-      if (!loaded.value) {
-        Box(Modifier.fillMaxSize().background(Color.White)) {}
+      if (!isInitializationComplete) {
+        Box(
+          modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+          contentAlignment = Alignment.Center,
+        ) {
+          Text(
+            text = "Loading...",
+            modifier = Modifier,
+          )
+        }
         return@Window
       }
 

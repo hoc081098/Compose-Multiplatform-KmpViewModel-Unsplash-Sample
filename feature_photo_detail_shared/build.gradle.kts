@@ -32,9 +32,9 @@ kotlin {
       kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
       dependencies {
-        implementation(compose.runtime)
-        implementation(compose.foundation)
-        implementation(compose.material3)
+        api(compose.runtime)
+        api(compose.foundation)
+        api(compose.material3)
         @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
         implementation(compose.components.resources)
 
