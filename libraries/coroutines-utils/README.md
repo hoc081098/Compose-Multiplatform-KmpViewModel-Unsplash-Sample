@@ -10,4 +10,6 @@
 
 ## Content
 
+- `AppCoroutineDispatchers`.
+
 - `Flow<T>.publish(selector: suspend SelectorScope<T>.() -> Flow<R>)`.

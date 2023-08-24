@@ -52,11 +52,11 @@ kotlin {
         @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
         implementation(compose.components.resources)
 
-        api(project(":common_shared"))
         api(project(":common_ui_shared"))
         api(project(":navigation_shared"))
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))
+        implementation(project(":libraries:compose-stable-wrappers"))
 
         // Ktor
         implementation("io.ktor:ktor-client-core:$ktorVersion")

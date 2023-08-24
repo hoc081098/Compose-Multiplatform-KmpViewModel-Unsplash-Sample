@@ -5,6 +5,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response.CoverPhotoResponse
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.CoverPhoto
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoRepository
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Singleton
 
@@ -25,6 +26,13 @@ internal class RealSearchPhotoRepository(
           .searchPhotos(query)
           .results
           .map(CoverPhotoResponse::toCoverPhoto)
+      }
+      .onLeft {
+        Napier.e(
+          throwable = it,
+          tag = "RealSearchPhotoRepository",
+          message = "search($query) failed",
+        )
       }
       .mapLeft(searchPhotoErrorMapper)
   }

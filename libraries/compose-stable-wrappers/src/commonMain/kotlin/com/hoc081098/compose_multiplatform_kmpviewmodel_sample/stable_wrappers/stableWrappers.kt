@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.stable_wrappers
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable

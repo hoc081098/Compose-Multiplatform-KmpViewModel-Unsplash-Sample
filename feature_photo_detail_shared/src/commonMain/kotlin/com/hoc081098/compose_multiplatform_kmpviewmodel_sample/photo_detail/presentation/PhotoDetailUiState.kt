@@ -2,11 +2,12 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.pre
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.ImmutableWrapper
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetail
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoCreatorUi
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoDetailUi
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.stable_wrappers.ImmutableWrapper
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.stable_wrappers.toImmutableWrapper
 import kotlinx.datetime.Instant
 
 @Immutable
@@ -52,9 +53,9 @@ internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi {
     fullUrl = fullUrl,
     description = description,
     alternativeDescription = alternativeDescription,
-    createdAt = ImmutableWrapper(createdAt),
-    updatedAt = ImmutableWrapper(updatedAt),
-    promotedAt = ImmutableWrapper(promotedAt),
+    createdAt = createdAt.toImmutableWrapper(),
+    updatedAt = updatedAt.toImmutableWrapper(),
+    promotedAt = promotedAt.toImmutableWrapper(),
     creator = PhotoCreatorUi(
       id = creator.id,
       username = creator.username,

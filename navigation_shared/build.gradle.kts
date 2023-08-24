@@ -45,7 +45,7 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation(project(":common_shared"))
+        // implementation(project(":common_shared"))
 
         api(compose.runtime)
         api("org.jetbrains.compose.runtime:runtime-saveable:${ComposeBuildConfig.composeVersion}")

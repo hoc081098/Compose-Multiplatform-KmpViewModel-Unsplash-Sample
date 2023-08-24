@@ -4,12 +4,12 @@ include(":androidApp")
 include(":desktopApp")
 include(":feature_search_photo_shared")
 include(":feature_photo_detail_shared")
-include(":common_shared")
 include(":common_ui_shared")
 include(":navigation_shared")
 include(":libraries:koin-utils")
 include(":libraries:koin-compose-utils")
 include(":libraries:coroutines-utils")
+include(":libraries:compose-stable-wrappers")
 
 pluginManagement {
   repositories {

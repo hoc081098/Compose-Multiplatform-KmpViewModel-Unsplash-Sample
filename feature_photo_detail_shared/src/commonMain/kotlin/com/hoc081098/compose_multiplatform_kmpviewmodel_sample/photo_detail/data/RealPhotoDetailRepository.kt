@@ -1,12 +1,14 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data
 
 import arrow.core.Either
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.remote.UnsplashApi
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.remote.response.CoverPhotoResponse
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoCreator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetail
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailRepository
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Singleton
 
 @Singleton(
@@ -17,20 +19,24 @@ import org.koin.core.annotation.Singleton
 internal class RealPhotoDetailRepository(
   private val unsplashApi: UnsplashApi,
   private val photoDetailErrorMapper: PhotoDetailErrorMapper,
+  private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) : PhotoDetailRepository {
-  override suspend fun getPhotoDetailById(id: String) = Either.catch {
-    unsplashApi
-      .getPhotoDetailById(id)
-      .toPhotoDetail()
+  override suspend fun getPhotoDetailById(id: String) = withContext(appCoroutineDispatchers.io) {
+    Either
+      .catch {
+        unsplashApi
+          .getPhotoDetailById(id)
+          .toPhotoDetail()
+      }
+      .onLeft {
+        Napier.e(
+          throwable = it,
+          tag = "RealPhotoDetailRepository",
+          message = "getPhotoDetailById($id) failed",
+        )
+      }
+      .mapLeft(photoDetailErrorMapper)
   }
-    .onLeft {
-      Napier.e(
-        throwable = it,
-        tag = "RealPhotoDetailRepository",
-        message = "getPhotoDetailById($id) failed",
-      )
-    }
-    .mapLeft(photoDetailErrorMapper)
 }
 
 private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail = PhotoDetail(
