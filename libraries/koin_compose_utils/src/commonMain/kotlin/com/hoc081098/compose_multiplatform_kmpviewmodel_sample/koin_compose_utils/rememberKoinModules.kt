@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls

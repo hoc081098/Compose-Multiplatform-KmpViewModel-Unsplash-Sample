@@ -7,11 +7,13 @@ include(":feature_photo_detail_shared")
 include(":common_shared")
 include(":common_ui_shared")
 include(":navigation_shared")
+include(":libraries:koin_utils")
+include(":libraries:koin_compose_utils")
 
 pluginManagement {
   repositories {
     gradlePluginPortal()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     google()
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
   }
@@ -41,7 +43,7 @@ dependencyResolutionManagement {
   repositories {
     google()
     mavenCentral()
-    maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
