@@ -24,7 +24,7 @@ kotlin {
         api(compose.runtime)
 
         // Koin utils
-        api(project(":libraries:koin_utils"))
+        api(project(":libraries:koin-utils"))
 
         // Koin
         api("io.insert-koin:koin-core:$koinVersion")

@@ -6,7 +6,7 @@
 - Compose Multiplatform plugin.
 - Depends on
   - `compose-runtime`.
-  - `project(":libraries:koin_utils")`
+  - `project(":libraries:koin-utils")`
   - `koin-core`.
   - `koin-compose`.
 

@@ -7,8 +7,8 @@ include(":feature_photo_detail_shared")
 include(":common_shared")
 include(":common_ui_shared")
 include(":navigation_shared")
-include(":libraries:koin_utils")
-include(":libraries:koin_compose_utils")
+include(":libraries:koin-utils")
+include(":libraries:koin-compose-utils")
 
 pluginManagement {
   repositories {
