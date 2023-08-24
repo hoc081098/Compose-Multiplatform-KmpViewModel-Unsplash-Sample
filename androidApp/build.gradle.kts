@@ -16,6 +16,7 @@ kotlin {
         implementation(project(":feature_photo_detail_shared"))
         implementation(project(":libraries:koin-utils"))
         implementation(project(":libraries:koin-compose-utils"))
+        implementation(project(":libraries:coroutines-utils"))
 
         // Koin Android
         implementation("io.insert-koin:koin-android:$koinVersion")
