@@ -2,8 +2,10 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
@@ -38,12 +40,14 @@ internal fun PhotoDetailScreenWithKoin(
   }
 }
 
+@Immutable
 enum class BuildFlavor {
   DEV,
   PROD,
   ;
 
   companion object {
+    @Stable
     val Current: BuildFlavor by lazy {
       when (BuildKonfig.FLAVOR) {
         "dev" -> DEV

@@ -2,8 +2,10 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.rememberKoinModules
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoScreen
@@ -35,12 +37,14 @@ internal fun SearchPhotoScreenWithKoin(
   }
 }
 
+@Immutable
 enum class BuildFlavor {
   DEV,
   PROD,
   ;
 
   companion object {
+    @Stable
     val Current: BuildFlavor by lazy {
       when (BuildKonfig.FLAVOR) {
         "dev" -> DEV
