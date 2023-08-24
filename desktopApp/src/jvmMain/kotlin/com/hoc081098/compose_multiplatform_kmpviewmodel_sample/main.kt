@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavEventNavigator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavHost
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavigationSetup
@@ -52,6 +53,7 @@ fun main() {
       modules(
         module {
           singleOf(::NavEventNavigator)
+          singleOf(::AppCoroutineDispatchers)
         },
       )
     }

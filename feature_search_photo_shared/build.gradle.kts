@@ -17,6 +17,7 @@ val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.4.3"
 val koinKspVersion = "1.2.2"
+val koinComposeVersion = "1.0.4"
 val arrowKtVersion = "1.2.0"
 
 kotlin {
@@ -86,6 +87,8 @@ kotlin {
 
         // Koin
         implementation("io.insert-koin:koin-annotations:$koinKspVersion")
+        implementation("io.insert-koin:koin-core:$koinVersion")
+        implementation("io.insert-koin:koin-compose:$koinComposeVersion")
 
         // Arrow-kt
         implementation("io.arrow-kt:arrow-core:$arrowKtVersion")
@@ -96,6 +99,9 @@ kotlin {
 
         // Kamel Image
         implementation("media.kamel:kamel-image:0.7.1")
+
+        // Napier
+        api("io.github.aakira:napier:2.6.1")
       }
     }
     val androidMain by getting {
