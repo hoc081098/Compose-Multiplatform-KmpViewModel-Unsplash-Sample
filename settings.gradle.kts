@@ -9,6 +9,7 @@ include(":common_ui_shared")
 include(":navigation_shared")
 include(":libraries:koin-utils")
 include(":libraries:koin-compose-utils")
+include(":libraries:coroutines-utils")
 
 pluginManagement {
   repositories {

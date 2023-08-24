@@ -42,6 +42,7 @@ kotlin {
         api(project(":common_ui_shared"))
         api(project(":navigation_shared"))
         implementation(project(":libraries:koin-compose-utils"))
+        implementation(project(":libraries:coroutines-utils"))
 
         // Ktor
         implementation("io.ktor:ktor-client-core:$ktorVersion")

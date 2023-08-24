@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils
 
 import com.hoc081098.flowext.defer
 import com.hoc081098.flowext.interval

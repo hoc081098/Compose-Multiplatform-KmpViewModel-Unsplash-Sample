@@ -83,8 +83,8 @@ private fun <T : BaseRoute> Show(
         )
       }
       .viewModelStoreOwnerRef
-      .get()!!
-  }
+      .get()
+  } ?: return // viewModelStoreOwner is null, means this entry is not visible anymore
 
   // From AndroidX Navigation:
   //   Stash a reference to the SaveableStateHolder in the Store so that
