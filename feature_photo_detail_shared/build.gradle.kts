@@ -182,7 +182,12 @@ buildkonfig {
     buildConfigField(
       type = FieldSpec.Type.STRING,
       name = "UNSPLASH_CLIENT_ID",
-      value = rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"],
+      value = if (isCiBuild) {
+        logger.info("CI build, ignore checking existence of local.properties file")
+        "none"
+      } else {
+        rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
+      },
     )
     buildConfigField(
       type = FieldSpec.Type.STRING,
@@ -233,3 +238,6 @@ fun Project.readPropertiesFile(pathFromRootProject: String): PropertiesMap = Pro
   .map { it.key as String to it.value as String }
   .toMap()
   .toPropertiesMap()
+
+val Project.isCiBuild: Boolean
+  get() = providers.environmentVariable("CI").orNull == "true"
