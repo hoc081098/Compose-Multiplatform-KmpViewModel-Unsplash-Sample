@@ -31,6 +31,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.EmptyVie
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.LoadingIndicator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.collectAsStateWithLifecycleKmp
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
@@ -58,11 +59,12 @@ internal fun SearchPhotoScreen(
   navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
   viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
+  appCoroutineDispatchers: AppCoroutineDispatchers = koinInject(),
 ) {
   val state by viewModel.stateFlow.collectAsStateWithLifecycleKmp()
   val searchTerm by viewModel
     .searchTermStateFlow
-    .collectAsStateWithLifecycleKmp(context = viewModel.viewModelScope.coroutineContext)
+    .collectAsStateWithLifecycleKmp(context = appCoroutineDispatchers.immediateMain)
 
   Column(
     modifier = modifier.fillMaxSize()

@@ -88,25 +88,27 @@ fun main() {
         startRoute = SearchPhotoRoute,
         destinations = setOf(
           ScreenDestination<SearchPhotoRoute> {
-            NavigationSetup(koinInject())
+            val navigator = koinInject<NavEventNavigator>()
 
-            val navEventNavigator = koinInject<NavEventNavigator>()
+            NavigationSetup(navigator)
 
             SearchPhotoScreen(
-              navigateToPhotoDetail = remember(navEventNavigator) {
+              navigateToPhotoDetail = remember(navigator) {
                 {
-                  navEventNavigator.navigateTo(PhotoDetailRoute(id = it))
+                    id ->
+                  navigator.navigateTo(PhotoDetailRoute(id = id))
                 }
               },
             )
           },
           ScreenDestination<PhotoDetailRoute> {
             val navigator = koinInject<NavEventNavigator>()
+
             NavigationSetup(navigator)
 
             PhotoDetailScreen(
               route = it,
-              onNavigationBack = { navigator.navigateBack() },
+              onNavigationBack = remember(navigator) { navigator::navigateBack },
             )
           },
         ),
