@@ -51,7 +51,7 @@ kotlin {
 
     val androidMain by getting {
       dependencies {
-        // AndroidX Lifecycle Compose Runtime
+        // AndroidX Lifecycle Runtime Compose
         api(libs.androidx.lifecycle.runtime.compose)
       }
     }
