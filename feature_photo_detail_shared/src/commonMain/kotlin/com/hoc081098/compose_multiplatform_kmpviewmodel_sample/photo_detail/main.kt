@@ -2,8 +2,11 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
@@ -36,6 +39,13 @@ internal fun PhotoDetailScreenWithKoin(
         route = route,
         onNavigationBack = onNavigationBack,
       )
+    }
+  } else {
+    // Once loaded, call `onNavigationBack` to go back to the previous screen.
+    val currentNavigationBack by rememberUpdatedState(onNavigationBack)
+    DisposableEffect(Unit) {
+      currentNavigationBack()
+      onDispose { }
     }
   }
 }

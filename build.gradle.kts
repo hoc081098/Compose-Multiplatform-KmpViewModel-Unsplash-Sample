@@ -1,17 +1,20 @@
 plugins {
   // this is necessary to avoid the plugins to be loaded multiple times
   // in each subproject's classloader
-  kotlin("multiplatform").apply(false)
-  id("com.android.application").apply(false)
-  id("com.android.library").apply(false)
-  id("org.jetbrains.compose").apply(false)
-  kotlin("plugin.serialization").apply(false)
-  id("com.codingfeline.buildkonfig").apply(false)
-  id("com.google.devtools.ksp").apply(false)
-  id("com.diffplug.gradle.spotless").apply(false)
+  alias(libs.plugins.kotlin.multiplatform) apply false
+  alias(libs.plugins.kotlin.serialization) apply false
+
+  alias(libs.plugins.android.app) apply false
+  alias(libs.plugins.android.library) apply false
+
+  alias(libs.plugins.jetbrains.compose.mutiplatform) apply false
+
+  alias(libs.plugins.buildkonfig) apply false
+  alias(libs.plugins.ksp) apply false
+  alias(libs.plugins.spotless) apply false
 }
 
-val ktlintVersion = "0.50.0"
+val ktlintVersion = libs.versions.ktlint.get()
 
 allprojects {
   configurations.all {
