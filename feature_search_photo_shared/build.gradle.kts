@@ -58,6 +58,7 @@ kotlin {
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))
         implementation(project(":libraries:compose-stable-wrappers"))
+        implementation(project(":libraries:compose-lifecycle-utils"))
 
         // Ktor
         implementation("io.ktor:ktor-client-core:$ktorVersion")

@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose_lifecycle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
@@ -15,7 +15,7 @@ enum class LifecycleState {
 }
 
 @Composable
-expect fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
+expect inline fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
   minActiveState: LifecycleState = LifecycleState.STARTED,
   context: CoroutineContext = EmptyCoroutineContext,
 ): State<T>

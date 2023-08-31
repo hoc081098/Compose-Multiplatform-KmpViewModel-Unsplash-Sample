@@ -10,6 +10,7 @@ include(":libraries:koin-utils")
 include(":libraries:koin-compose-utils")
 include(":libraries:coroutines-utils")
 include(":libraries:compose-stable-wrappers")
+include(":libraries:compose-lifecycle-utils")
 
 pluginManagement {
   repositories {

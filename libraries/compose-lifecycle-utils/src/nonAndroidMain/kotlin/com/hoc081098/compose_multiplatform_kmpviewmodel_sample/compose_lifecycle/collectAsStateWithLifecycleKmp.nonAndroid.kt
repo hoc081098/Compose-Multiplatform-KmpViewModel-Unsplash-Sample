@@ -1,4 +1,4 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose_lifecycle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -7,7 +7,7 @@ import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-actual fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
+actual inline fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
   minActiveState: LifecycleState,
   context: CoroutineContext,
 ): State<T> = collectAsState(context = context)
