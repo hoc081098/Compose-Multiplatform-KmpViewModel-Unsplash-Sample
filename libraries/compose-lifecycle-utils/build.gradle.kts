@@ -1,14 +1,15 @@
 plugins {
-  kotlin("multiplatform")
-  id("com.android.library")
-  id("org.jetbrains.compose")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.jetbrains.compose.mutiplatform)
 }
-
-val coroutinesVersion = "1.7.3"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
 
   targetHierarchy.default {
     common {
@@ -22,7 +23,7 @@ kotlin {
   androidTarget {
     compilations.all {
       kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
       }
     }
   }
@@ -39,7 +40,7 @@ kotlin {
         api(compose.runtime)
 
         // KotlinX Coroutines
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+        api(libs.kotlinx.coroutines.core)
       }
     }
     val commonTest by getting {
@@ -51,7 +52,7 @@ kotlin {
     val androidMain by getting {
       dependencies {
         // AndroidX Lifecycle Compose Runtime
-        implementation("androidx.lifecycle:lifecycle-runtime-compose:2.6.1")
+        api(libs.androidx.lifecycle.runtime.compose)
       }
     }
   }
@@ -59,9 +60,10 @@ kotlin {
 
 android {
   namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose-lifecycle-utils"
-  compileSdk = (findProperty("android.compileSdk") as String).toInt()
+
+  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
-    minSdk = (findProperty("android.minSdk") as String).toInt()
+    minSdk = libs.versions.android.min.map { it.toInt() }.get()
   }
 
   buildFeatures {
@@ -69,7 +71,7 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
   }
 }
