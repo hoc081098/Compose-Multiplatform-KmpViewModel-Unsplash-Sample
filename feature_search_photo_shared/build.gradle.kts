@@ -1,4 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.isCiBuild
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.readPropertiesFile
 
 plugins {
@@ -224,6 +225,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
     dependsOn("kspCommonMainKotlinMetadata")
   }
 }
-
-val Project.isCiBuild: Boolean
-  get() = providers.environmentVariable("CI").orNull == "true"
