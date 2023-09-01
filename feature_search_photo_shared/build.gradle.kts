@@ -1,5 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
-import java.util.Properties
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.readPropertiesFile
 
 plugins {
   kotlin("multiplatform")
@@ -10,6 +10,7 @@ plugins {
   id("com.codingfeline.buildkonfig")
   id("com.google.devtools.ksp")
 }
+
 
 val ktorVersion = "2.3.3"
 val kotlinxSerializationVersion = "1.6.0-RC"
@@ -223,35 +224,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
     dependsOn("kspCommonMainKotlinMetadata")
   }
 }
-
-// ---------------------------- UTILS ----------------------------
-
-interface PropertiesMap : Map<String, String> {
-  override operator fun get(key: String): String
-}
-
-private class DefaultPropertiesMap(val inner: Map<String, String>) : PropertiesMap, Map<String, String> by inner {
-  override fun get(key: String): String = inner[key] ?: error("Key $key not found")
-}
-
-fun Map<String, String>.toPropertiesMap(): PropertiesMap = DefaultPropertiesMap(this)
-
-fun Project.readPropertiesFile(pathFromRootProject: String): PropertiesMap = Properties().apply {
-  load(
-    rootProject
-      .file(pathFromRootProject)
-      .apply {
-        check(exists()) {
-          "$pathFromRootProject file not found. " +
-            "Create $pathFromRootProject file from root project."
-        }
-      }
-      .reader(),
-  )
-}
-  .map { it.key as String to it.value as String }
-  .toMap()
-  .toPropertiesMap()
 
 val Project.isCiBuild: Boolean
   get() = providers.environmentVariable("CI").orNull == "true"

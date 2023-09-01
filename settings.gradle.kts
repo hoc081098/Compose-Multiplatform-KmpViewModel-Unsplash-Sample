@@ -1,5 +1,14 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
+val copyToBuildSrc = { sourcePath: String ->
+  rootDir.resolve(sourcePath).copyRecursively(
+    target = rootDir.resolve("buildSrc").resolve(sourcePath),
+    overwrite = true,
+  )
+  println("[DONE] copied $sourcePath")
+}
+arrayOf("gradle.properties", "gradle/wrapper").forEach(copyToBuildSrc)
+
 rootProject.name = "KmpViewModel-Compose-Multiplatform"
 
 include(":androidApp")
