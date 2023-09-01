@@ -1,13 +1,13 @@
 plugins {
-  kotlin("multiplatform")
+  alias(libs.plugins.kotlin.multiplatform)
 }
-
-val koinVersion = "3.4.3"
-val atomicfuVersion = "0.22.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
 
   targetHierarchy.default()
 
@@ -21,10 +21,10 @@ kotlin {
     val commonMain by getting {
       dependencies {
         // Koin
-        api("io.insert-koin:koin-core:$koinVersion")
+        api(libs.koin.core)
 
         // AtomicFu
-        api("org.jetbrains.kotlinx:atomicfu:$atomicfuVersion")
+        api(libs.kotlinx.atomicfu)
       }
     }
     val commonTest by getting {
