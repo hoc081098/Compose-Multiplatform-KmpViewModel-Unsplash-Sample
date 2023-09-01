@@ -1,10 +1,13 @@
 plugins {
-  kotlin("multiplatform")
+  alias(libs.plugins.kotlin.multiplatform)
 }
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
 
   targetHierarchy.default()
 
