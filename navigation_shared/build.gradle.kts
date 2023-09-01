@@ -54,7 +54,7 @@ kotlin {
         api("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
         api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
 
-        implementation("com.benasher44:uuid:0.8.0")
+        implementation("com.benasher44:uuid:0.8.1")
       }
     }
     val commonTest by getting {
