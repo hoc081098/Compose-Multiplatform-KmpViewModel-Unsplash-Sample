@@ -1,13 +1,13 @@
 plugins {
-  kotlin("multiplatform")
+  alias(libs.plugins.kotlin.multiplatform)
 }
-
-val coroutinesVersion = "1.7.3"
-val flowExtVersion = "0.7.1"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
 
   targetHierarchy.default()
 
@@ -21,10 +21,10 @@ kotlin {
     val commonMain by getting {
       dependencies {
         // KotlinX Coroutines
-        api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+        api(libs.kotlinx.coroutines.core)
 
         // FlowExt
-        api("io.github.hoc081098:FlowExt:$flowExtVersion")
+        api(libs.flow.ext)
       }
     }
     val commonTest by getting {
