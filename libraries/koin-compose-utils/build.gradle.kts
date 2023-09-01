@@ -1,14 +1,14 @@
 plugins {
-  kotlin("multiplatform")
-  id("org.jetbrains.compose")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.jetbrains.compose.mutiplatform)
 }
-
-val koinVersion = "3.4.3"
-val koinComposeVersion = "1.0.4"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
 
   targetHierarchy.default()
 
@@ -24,11 +24,11 @@ kotlin {
         api(compose.runtime)
 
         // Koin utils
-        api(project(":libraries:koin-utils"))
+        api(projects.libraries.koinUtils)
 
         // Koin
-        api("io.insert-koin:koin-core:$koinVersion")
-        api("io.insert-koin:koin-compose:$koinComposeVersion")
+        api(libs.koin.core)
+        api(libs.koin.compose)
       }
     }
     val commonTest by getting {

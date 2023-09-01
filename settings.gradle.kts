@@ -1,4 +1,6 @@
-rootProject.name = "KmpViewModel Compose Multiplatform"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+rootProject.name = "KmpViewModel-Compose-Multiplatform"
 
 include(":androidApp")
 include(":desktopApp")
@@ -29,4 +31,8 @@ dependencyResolutionManagement {
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
     maven(url = "https://s01.oss.sonatype.org/content/repositories/snapshots/")
   }
+}
+
+plugins {
+  id("org.gradle.toolchains.foojay-resolver-convention") version("0.6.0")
 }
