@@ -12,7 +12,6 @@ plugins {
   id("com.google.devtools.ksp")
 }
 
-
 val ktorVersion = "2.3.3"
 val kotlinxSerializationVersion = "1.6.0-RC"
 val coroutinesVersion = "1.7.3"

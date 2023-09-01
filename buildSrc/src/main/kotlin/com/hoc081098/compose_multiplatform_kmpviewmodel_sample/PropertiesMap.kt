@@ -20,7 +20,7 @@ fun Project.readPropertiesFile(pathFromRootProject: String): PropertiesMap = Pro
       .apply {
         check(exists()) {
           "$pathFromRootProject file not found. " +
-              "Create $pathFromRootProject file from root project."
+            "Create $pathFromRootProject file from root project."
         }
       }
       .reader(),
