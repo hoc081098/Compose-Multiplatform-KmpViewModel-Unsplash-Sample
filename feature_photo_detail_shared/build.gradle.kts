@@ -9,6 +9,7 @@ plugins {
   kotlin("plugin.serialization")
   id("com.codingfeline.buildkonfig")
   id("com.google.devtools.ksp")
+  id("compose_multiplatform_kmpviewmodel_sample.empty")
 }
 
 val ktorVersion = "2.3.3"

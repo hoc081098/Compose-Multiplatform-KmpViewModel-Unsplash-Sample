@@ -1,13 +1,13 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-val copyToBuildSrc = { sourcePath: String ->
+val copyToBuildLogic = { sourcePath: String ->
   rootDir.resolve(sourcePath).copyRecursively(
-    target = rootDir.resolve("buildSrc").resolve(sourcePath),
+    target = rootDir.resolve("build-logic").resolve(sourcePath),
     overwrite = true,
   )
   println("[DONE] copied $sourcePath")
 }
-arrayOf("gradle.properties", "gradle/wrapper").forEach(copyToBuildSrc)
+arrayOf("gradle.properties", "gradle/wrapper").forEach(copyToBuildLogic)
 
 rootProject.name = "KmpViewModel-Compose-Multiplatform"
 
@@ -24,6 +24,8 @@ include(":libraries:compose-stable-wrappers")
 include(":libraries:compose-lifecycle-utils")
 
 pluginManagement {
+  includeBuild("build-logic")
+
   repositories {
     gradlePluginPortal()
     maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
