@@ -41,7 +41,7 @@ kotlin {
         @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
         implementation(compose.components.resources)
 
-        api(project(":common_ui_shared"))
+        api(projects.core.commonUiShared)
         api(project(":navigation_shared"))
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))

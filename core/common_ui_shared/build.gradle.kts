@@ -1,19 +1,15 @@
 plugins {
-  kotlin("multiplatform")
-  id("org.jetbrains.compose")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.jetbrains.compose.mutiplatform)
 }
-
-val ktorVersion = "2.3.3"
-val kotlinxSerializationVersion = "1.6.0-RC"
-val coroutinesVersion = "1.7.3"
-val kmpViewModel = "0.4.1-SNAPSHOT"
-val koinVersion = "3.4.3"
-val koinKspVersion = "1.2.2"
-val arrowKtVersion = "1.2.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
+
   targetHierarchy.default()
 
   jvm()
