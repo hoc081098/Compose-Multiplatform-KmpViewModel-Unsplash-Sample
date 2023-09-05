@@ -125,7 +125,7 @@ kotlin {
         implementation(compose.desktop.common)
 
         // Ktor
-        implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+        implementation("io.ktor:ktor-client-java:$ktorVersion")
 
         // KotlinX Coroutines
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
