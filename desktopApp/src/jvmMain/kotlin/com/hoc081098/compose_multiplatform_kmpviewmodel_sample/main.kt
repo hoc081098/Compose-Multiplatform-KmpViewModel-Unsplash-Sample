@@ -1,6 +1,5 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
-import org.koin.core.logger.Level as KoinLoggerLevel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,14 +15,8 @@ import androidx.compose.ui.window.application
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.CommonModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.theme.AppTheme
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.koinInjectSetMultibinding
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavEventNavigator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavHost
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavigationSetup
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.ScreenDestination
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.SearchPhotoScreen
 import io.github.aakira.napier.DebugAntilog
 import io.github.aakira.napier.Napier
 import java.util.logging.Level
@@ -32,10 +25,9 @@ import java.util.logging.StreamHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
-import org.koin.dsl.module
 
 fun main() {
   val initJob = CoroutineScope(Dispatchers.IO).launch {
@@ -48,7 +40,6 @@ fun main() {
         ),
       ),
     )
-
 
     startKoin {
       logger(PrintLogger(level = KoinLoggerLevel.DEBUG))

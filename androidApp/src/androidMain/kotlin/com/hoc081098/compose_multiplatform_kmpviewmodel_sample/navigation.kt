@@ -39,7 +39,9 @@ val NavigationModule = module {
       SearchPhotoScreen(
         route = route,
         navigateToPhotoDetail = remember(navigator) {
-          { navigator.navigateTo(PhotoDetailRoute(id = it)) }
+          {
+            navigator.navigateTo(PhotoDetailRoute(id = it))
+          }
         },
       )
     }
