@@ -19,6 +19,7 @@ kotlin {
         implementation(project(":libraries:coroutines-utils"))
 
         implementation(projects.core.commonUiShared)
+        implementation(projects.core.navigationShared)
 
         // Koin Android
         implementation("io.insert-koin:koin-android:$koinVersion")

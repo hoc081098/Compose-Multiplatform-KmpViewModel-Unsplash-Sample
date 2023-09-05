@@ -1,8 +1,8 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.publish
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.requireRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.flowFromSuspend

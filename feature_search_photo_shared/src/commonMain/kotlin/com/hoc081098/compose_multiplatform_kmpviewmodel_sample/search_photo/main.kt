@@ -7,7 +7,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModulesForRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.SearchPhotoRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoScreen

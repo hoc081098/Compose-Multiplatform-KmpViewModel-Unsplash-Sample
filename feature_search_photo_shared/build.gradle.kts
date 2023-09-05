@@ -55,7 +55,7 @@ kotlin {
         implementation(compose.components.resources)
 
         api(projects.core.commonUiShared)
-        api(project(":navigation_shared"))
+        api(projects.core.navigationShared)
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))
         implementation(project(":libraries:compose-stable-wrappers"))
