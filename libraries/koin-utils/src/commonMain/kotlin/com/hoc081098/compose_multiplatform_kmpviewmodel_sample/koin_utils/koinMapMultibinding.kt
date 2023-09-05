@@ -8,6 +8,7 @@ import org.koin.core.qualifier.StringQualifier
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 import org.koin.dsl.onClose
+import org.koin.ext.getFullName
 
 class MapMultibinding<K, V> {
   private val map = atomic(emptyMap<K, V>())
@@ -48,7 +49,7 @@ class MapMultibinding<K, V> {
 }
 
 inline fun <reified K, reified V> defaultMapMultibindingQualifier(): StringQualifier =
-  named("${K::class}_${V::class}")
+  named("MapMultibinding<${K::class.getFullName()},${V::class.getFullName()}>")
 
 inline fun <reified K, reified V> Module.declareMapMultibinding(
   qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
@@ -64,7 +65,7 @@ inline fun <reified K, reified V> Module.intoMapMultibinding(
   var multibinding by atomic<MapMultibinding<K, V>?>(null)
 
   single<Unit>(
-    qualifier = named("${multibindingQualifier.value}_$key"),
+    qualifier = named("${multibindingQualifier.value}::$key"),
     createdAtStart = true,
   ) {
     multibinding = get<MapMultibinding<K, V>>(multibindingQualifier).apply {

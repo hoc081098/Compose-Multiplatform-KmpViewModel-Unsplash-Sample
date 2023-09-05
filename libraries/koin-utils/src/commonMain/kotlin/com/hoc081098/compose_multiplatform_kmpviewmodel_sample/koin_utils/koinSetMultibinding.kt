@@ -8,6 +8,7 @@ import org.koin.core.qualifier.StringQualifier
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 import org.koin.dsl.onClose
+import org.koin.ext.getFullName
 
 class SetMultibinding<V> {
   private val set = atomic(emptySet<V>())
@@ -48,7 +49,7 @@ class SetMultibinding<V> {
 }
 
 inline fun <reified V> defaultSetMultibindingQualifier(): StringQualifier =
-  named("${V::class}")
+  named("SetMultibinding<${V::class.getFullName()}>")
 
 inline fun <reified V> Module.declareSetMultibinding(
   qualifier: StringQualifier = defaultSetMultibindingQualifier<V>(),
@@ -64,11 +65,11 @@ inline fun <reified V> Module.intoSetMultibinding(
   var multibinding by atomic<SetMultibinding<V>?>(null)
 
   single<Unit>(
-    qualifier = named("${multibindingQualifier.value}_$key"),
+    qualifier = named("${multibindingQualifier.value}::$key"),
     createdAtStart = true,
   ) {
     multibinding = get<SetMultibinding<V>>(multibindingQualifier).apply {
-      multibinding!! += definition(it)
+      this += definition(it)
     }
     Unit
   }.onClose {

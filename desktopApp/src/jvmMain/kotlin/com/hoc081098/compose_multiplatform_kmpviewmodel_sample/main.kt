@@ -15,6 +15,7 @@ import androidx.compose.ui.window.application
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.CommonModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.theme.AppTheme
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.koinInjectSetMultibinding
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavDestination
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavHost
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import io.github.aakira.napier.DebugAntilog
