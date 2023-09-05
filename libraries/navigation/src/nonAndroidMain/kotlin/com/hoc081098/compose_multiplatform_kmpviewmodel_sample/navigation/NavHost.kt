@@ -95,8 +95,8 @@ private fun <T : BaseRoute> Show(
       .viewModelStoreOwnerState
   }.value ?: run {
     println("----------------------------------- START NAVIGATION [1] -----------------------------------")
-    println(executor.visibleEntries.value.joinToString(separator = "\n"))
-    println(entry)
+    println("visibleEntries=${executor.visibleEntries.value.joinToString(separator = "\n") { " --> $it" }}")
+    println("entry=$entry")
     println("viewModelStoreOwner is null")
     println("----------------------------------- END NAVIGATION [1] -----------------------------------")
     return
@@ -104,9 +104,9 @@ private fun <T : BaseRoute> Show(
 
   SideEffect {
     println("----------------------------------- START NAVIGATION [2] -----------------------------------")
-    println(executor.visibleEntries.value.joinToString(separator = "\n"))
-    println(entry)
-    println(viewModelStoreOwner)
+    println("visibleEntries=${executor.visibleEntries.value.joinToString(separator = "\n") { " --> $it" }}")
+    println("entry=$entry")
+    println("viewModelStoreOwner=$viewModelStoreOwner")
     println("----------------------------------- END NAVIGATION [2] -----------------------------------")
   }
 
