@@ -1,18 +1,17 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModules
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailScreen
+import io.github.aakira.napier.Napier
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
@@ -30,22 +29,23 @@ internal fun PhotoDetailScreenWithKoin(
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val loaded = rememberKoinModules(unloadModules = true) { listOf(FeaturePhotoDetailModule) }
+  val loaded by rememberKoinModules(
+    route = route,
+    unloadModules = true,
+  ) { listOf(FeaturePhotoDetailModule) }
 
   if (loaded) {
-    MaterialTheme {
-      PhotoDetailScreen(
-        modifier = modifier,
-        route = route,
-        onNavigationBack = onNavigationBack,
-      )
-    }
+    PhotoDetailScreen(
+      modifier = modifier,
+      route = route,
+      onNavigationBack = onNavigationBack,
+    )
   } else {
-    // Once loaded, call `onNavigationBack` to go back to the previous screen.
-    val currentNavigationBack by rememberUpdatedState(onNavigationBack)
-    DisposableEffect(Unit) {
-      currentNavigationBack()
-      onDispose { }
+    SideEffect {
+      Napier.d(
+        message = "PhotoDetailScreenWithKoin: unloaded",
+        tag = "PhotoDetailScreenWithKoin",
+      )
     }
   }
 }

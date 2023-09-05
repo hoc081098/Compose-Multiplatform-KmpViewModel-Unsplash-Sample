@@ -31,6 +31,7 @@ uri = "0.0.14"
 flow-ext = "0.7.1"
 koin-core = "3.4.3"
 koin-compose = "1.0.4"
+uuid = "0.8.0"
 
 inject = "1"
 dagger = "2.48"
@@ -97,6 +98,7 @@ uri = { module = "com.eygraber:uri-kmp-android", version.ref = "uri" }
 flow-ext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
+uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

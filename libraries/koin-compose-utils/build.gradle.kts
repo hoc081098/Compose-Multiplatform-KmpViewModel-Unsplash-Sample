@@ -22,6 +22,7 @@ kotlin {
     val commonMain by getting {
       dependencies {
         api(compose.runtime)
+        api(compose.runtimeSaveable)
 
         // Koin utils
         api(projects.libraries.koinUtils)
@@ -29,6 +30,8 @@ kotlin {
         // Koin
         api(libs.koin.core)
         api(libs.koin.compose)
+
+        api(projects.navigationShared)
       }
     }
     val commonTest by getting {

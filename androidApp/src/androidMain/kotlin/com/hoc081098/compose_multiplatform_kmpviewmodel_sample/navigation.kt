@@ -31,12 +31,13 @@ val NavigationModule = module {
     key = SearchPhotoRoute::class.java,
     multibindingQualifier = AllDestinationsQualifier,
   ) {
-    ScreenDestination<SearchPhotoRoute> {
+    ScreenDestination<SearchPhotoRoute> { route ->
       val navEventNavigator = koinInject<NavEventNavigator>()
 
       NavigationSetup(navEventNavigator)
 
       SearchPhotoScreen(
+        route = route,
         navigateToPhotoDetail = remember(navEventNavigator) {
           {
             navEventNavigator.navigateTo(PhotoDetailRoute(id = it))
@@ -50,13 +51,13 @@ val NavigationModule = module {
     key = PhotoDetailRoute::class.java,
     multibindingQualifier = AllDestinationsQualifier,
   ) {
-    ScreenDestination<PhotoDetailRoute> {
+    ScreenDestination<PhotoDetailRoute> { route ->
       val navEventNavigator = koinInject<NavEventNavigator>()
 
       NavigationSetup(navEventNavigator)
 
       PhotoDetailScreen(
-        route = it,
+        route = route,
         onNavigationBack = remember(navEventNavigator) { navEventNavigator::navigateBack },
       )
     }

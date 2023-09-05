@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.theme.AppTheme
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavEventNavigator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavHost
@@ -69,50 +70,55 @@ fun main() {
       onCloseRequest = ::exitApplication,
       title = "KmpViewModel Compose Multiplatform",
     ) {
-      if (!isInitializationComplete) {
-        Box(
-          modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-          contentAlignment = Alignment.Center,
-        ) {
-          Text(
-            text = "Loading...",
-            modifier = Modifier,
-          )
+      AppTheme {
+        if (!isInitializationComplete) {
+          Box(
+            modifier = Modifier
+              .fillMaxSize()
+              .background(Color.White),
+            contentAlignment = Alignment.Center,
+          ) {
+            Text(text = "Loading...")
+          }
+          return@AppTheme
         }
-        return@Window
+
+        NavHost(
+          startRoute = SearchPhotoRoute,
+          destinations = setOf(
+            ScreenDestination<SearchPhotoRoute> { route ->
+              val navigator = koinInject<NavEventNavigator>()
+
+              NavigationSetup(navigator)
+
+              SearchPhotoScreen(
+                route = route,
+                navigateToPhotoDetail = remember(navigator) {
+                  {
+                      id ->
+                    navigator.navigateTo(PhotoDetailRoute(id = id))
+                  }
+                },
+              )
+            },
+            ScreenDestination<PhotoDetailRoute> { route ->
+              val navigator = koinInject<NavEventNavigator>()
+
+              NavigationSetup(navigator)
+
+              PhotoDetailScreen(
+                route = route,
+                onNavigationBack = remember(navigator) { navigator::navigateBack },
+              )
+            },
+          ),
+          destinationChangedCallback = remember {
+            {
+              println("Destination changed: $it")
+            }
+          },
+        )
       }
-
-      NavHost(
-        startRoute = SearchPhotoRoute,
-        destinations = setOf(
-          ScreenDestination<SearchPhotoRoute> {
-            val navigator = koinInject<NavEventNavigator>()
-
-            NavigationSetup(navigator)
-
-            SearchPhotoScreen(
-              navigateToPhotoDetail = remember(navigator) {
-                {
-                    id ->
-                  navigator.navigateTo(PhotoDetailRoute(id = id))
-                }
-              },
-            )
-          },
-          ScreenDestination<PhotoDetailRoute> {
-            val navigator = koinInject<NavEventNavigator>()
-
-            NavigationSetup(navigator)
-
-            PhotoDetailScreen(
-              route = it,
-              onNavigationBack = remember(navigator) { navigator::navigateBack },
-            )
-          },
-        ),
-      )
     }
   }
 }

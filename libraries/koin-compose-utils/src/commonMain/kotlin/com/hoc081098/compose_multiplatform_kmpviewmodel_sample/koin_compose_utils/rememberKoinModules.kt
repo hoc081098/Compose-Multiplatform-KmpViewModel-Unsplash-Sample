@@ -2,9 +2,11 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_uti
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
-import androidx.compose.runtime.RememberObserver
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.BaseRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.rememberCloseable
+import com.hoc081098.kmp.viewmodel.Closeable
 import org.koin.compose.getKoin
 import org.koin.core.Koin
 import org.koin.core.module.Module
@@ -20,62 +22,49 @@ import org.koin.core.module.Module
  */
 @Composable
 inline fun rememberKoinModules(
-  unloadOnForgotten: Boolean? = null,
-  unloadOnAbandoned: Boolean? = null,
+  route: BaseRoute,
   unloadModules: Boolean = false,
   crossinline modules: @DisallowComposableCalls () -> List<Module> = { emptyList() },
-): Boolean {
+): State<Boolean> {
   val koin = getKoin()
-  val loadedState = remember(koin) { mutableStateOf(false) }
 
-  remember(koin) {
+  val compositionKoinModuleLoader = rememberCloseable(route) {
     CompositionKoinModuleLoader(
       modules = modules(),
       koin = koin,
-      unloadOnForgotten = unloadOnForgotten ?: unloadModules,
-      unloadOnAbandoned = unloadOnAbandoned ?: unloadModules,
-      onLoaded = { loadedState.value = true },
-      onUnloaded = { loadedState.value = false },
+      unloadOnClose = unloadModules,
+      route = route,
     )
   }
 
-  return loadedState.value
+  return compositionKoinModuleLoader.loadedState
 }
 
-class CompositionKoinModuleLoader(
+@PublishedApi
+internal class CompositionKoinModuleLoader(
   private val modules: List<Module>,
   private val koin: Koin,
-  private val unloadOnForgotten: Boolean,
-  private val unloadOnAbandoned: Boolean,
-  onLoaded: () -> Unit,
-  private val onUnloaded: () -> Unit,
-) : RememberObserver {
+  private val unloadOnClose: Boolean,
+  private val route: BaseRoute,
+) : Closeable {
+  private val _loadedState = mutableStateOf(false)
+  val loadedState: State<Boolean> get() = _loadedState
 
   init {
-    koin.logger.debug("$this -> load modules")
+    koin.logger.debug("$this -> load modules route=$route")
     koin.loadModules(modules)
-    onLoaded()
+    _loadedState.value = true
   }
 
-  override fun onRemembered() {
-    // Nothing to do
-  }
-
-  override fun onForgotten() {
-    if (unloadOnForgotten) {
-      unloadModules()
-    }
-  }
-
-  override fun onAbandoned() {
-    if (unloadOnAbandoned) {
+  override fun close() {
+    if (unloadOnClose) {
       unloadModules()
     }
   }
 
   private fun unloadModules() {
-    koin.logger.debug("$this -> unload modules")
+    koin.logger.debug("$this -> unload modules route=$route")
     koin.unloadModules(modules)
-    onUnloaded()
+    _loadedState.value = false
   }
 }

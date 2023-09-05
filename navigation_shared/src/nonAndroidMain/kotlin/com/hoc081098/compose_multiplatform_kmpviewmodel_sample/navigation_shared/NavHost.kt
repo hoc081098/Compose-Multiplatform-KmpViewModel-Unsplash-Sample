@@ -7,7 +7,9 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
@@ -73,33 +75,27 @@ private fun <T : BaseRoute> Show(
   executor: MultiStackNavigationExecutor,
   saveableStateHolder: SaveableStateHolder,
 ) {
-  // Before `SaveableCloseable` to make sure that the `SaveableStateHolder` is available
-  val viewModelStoreOwner = remember(entry, executor) {
-    executor
-      .storeFor(entry.id)
-      .getOrCreate(ViewModelStoreOwnerCloseable::class) {
-        ViewModelStoreOwnerCloseable(
-          DefaultViewModelStoreOwner().weaken(),
-        )
-      }
-      .viewModelStoreOwnerRef
-      .get()
-  } ?: return // viewModelStoreOwner is null, means this entry is not visible anymore
-
   // From AndroidX Navigation:
   //   Stash a reference to the SaveableStateHolder in the Store so that
   //   it is available when the destination is cleared. Which, because of animations,
   //   only happens after this leaves composition. Which means we can't rely on
   //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-  remember(entry, executor, saveableStateHolder) {
+  val viewModelStoreOwner = remember(entry, executor, saveableStateHolder) {
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
         SaveableCloseable(
-          entry.id.value,
-          saveableStateHolder.weaken(),
+          id = entry.id.value,
+          saveableStateHolderRef = saveableStateHolder.weaken(),
         )
       }
+      .viewModelStoreOwner
+  } ?: run {
+    println("----------------------------------- START NAVIGATION -----------------------------------")
+    println(executor.visibleEntries.value.joinToString(separator = "\n"))
+    println(entry)
+    println("----------------------------------- END NAVIGATION -----------------------------------")
+    return
   }
 
   ViewModelStoreOwnerProvider(viewModelStoreOwner) {
@@ -120,22 +116,23 @@ internal class DefaultViewModelStoreOwner : ViewModelStoreOwner {
   }
 }
 
-internal class ViewModelStoreOwnerCloseable(
-  @JvmField val viewModelStoreOwnerRef: WeakReference<DefaultViewModelStoreOwner>,
-) : Closeable {
-  override fun close() {
-    viewModelStoreOwnerRef.get()?.clearIfInitialized()
-    viewModelStoreOwnerRef.clear()
-  }
-}
-
 internal class SaveableCloseable(
   @JvmField val id: String,
   @JvmField val saveableStateHolderRef: WeakReference<SaveableStateHolder>,
 ) : Closeable {
+  private val viewModelStoreOwnerRef: MutableState<DefaultViewModelStoreOwner?> =
+    mutableStateOf(DefaultViewModelStoreOwner())
+
+  val viewModelStoreOwner by viewModelStoreOwnerRef::value
+
   override fun close() {
+    val storeOwner = viewModelStoreOwnerRef.value
+
     saveableStateHolderRef.get()?.removeState(id)
+    viewModelStoreOwnerRef.value = null
+
     saveableStateHolderRef.clear()
+    storeOwner?.clearIfInitialized()
   }
 }
 

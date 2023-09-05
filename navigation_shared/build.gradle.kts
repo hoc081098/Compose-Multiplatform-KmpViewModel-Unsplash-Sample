@@ -1,5 +1,3 @@
-import org.jetbrains.compose.ComposeBuildConfig
-
 plugins {
   kotlin("multiplatform")
   id("com.android.library")
@@ -45,16 +43,12 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        // implementation(project(":common_shared"))
-
         api(compose.runtime)
-        api("org.jetbrains.compose.runtime:runtime-saveable:${ComposeBuildConfig.composeVersion}")
+        api(compose.runtimeSaveable)
 
         api("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
         api("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
         api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
-
-        implementation("com.benasher44:uuid:0.8.0")
       }
     }
     val commonTest by getting {
@@ -67,6 +61,12 @@ kotlin {
       dependencies {
         // Khonshu
         api("com.freeletics.khonshu:navigation-compose:0.16.1")
+      }
+    }
+
+    val nonAndroidMain by getting {
+      dependencies {
+        implementation(libs.uuid)
       }
     }
   }

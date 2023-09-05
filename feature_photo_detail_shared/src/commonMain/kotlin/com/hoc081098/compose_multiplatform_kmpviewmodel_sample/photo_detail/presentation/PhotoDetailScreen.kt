@@ -1,6 +1,5 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -18,7 +17,6 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,8 +25,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.ErrorMessageAndRetryButton
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.LoadingIndicator
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.ErrorMessageAndRetryButton
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.LoadingIndicator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose_lifecycle.collectAsStateWithLifecycleKmp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
@@ -111,8 +109,7 @@ private fun PhotoDetailContent(
       modifier = modifier
         .fillMaxSize()
         .padding(padding)
-        .consumeWindowInsets(padding)
-        .background(color = MaterialTheme.colorScheme.background),
+        .consumeWindowInsets(padding),
     ) {
       when (uiState) {
         PhotoDetailUiState.Loading -> {

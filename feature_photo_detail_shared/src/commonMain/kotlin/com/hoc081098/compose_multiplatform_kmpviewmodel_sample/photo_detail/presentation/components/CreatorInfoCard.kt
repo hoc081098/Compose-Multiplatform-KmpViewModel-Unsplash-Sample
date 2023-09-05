@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.commonUi.LoadingIndicator
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.LoadingIndicator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource

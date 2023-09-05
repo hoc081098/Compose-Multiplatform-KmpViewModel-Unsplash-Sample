@@ -18,6 +18,8 @@ kotlin {
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))
 
+        implementation(projects.core.commonUiShared)
+
         // Koin Android
         implementation("io.insert-koin:koin-android:$koinVersion")
         implementation("io.insert-koin:koin-androidx-compose:3.4.6")
