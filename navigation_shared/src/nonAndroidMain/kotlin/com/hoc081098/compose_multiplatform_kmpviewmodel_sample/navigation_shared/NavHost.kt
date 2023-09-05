@@ -9,6 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.ProvidableCompositionLocal
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
@@ -80,7 +81,7 @@ private fun <T : BaseRoute> Show(
   //   it is available when the destination is cleared. Which, because of animations,
   //   only happens after this leaves composition. Which means we can't rely on
   //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-  val viewModelStoreOwner = remember(entry, executor, saveableStateHolder) {
+  val viewModelStoreOwnerState = remember(entry, executor, saveableStateHolder) {
     executor
       .storeFor(entry.id)
       .getOrCreate(SaveableCloseable::class) {
@@ -89,8 +90,8 @@ private fun <T : BaseRoute> Show(
           saveableStateHolderRef = saveableStateHolder.weaken(),
         )
       }
-      .viewModelStoreOwner
-  } ?: run {
+      .viewModelStoreOwnerState
+  }.value ?: run {
     println("----------------------------------- START NAVIGATION -----------------------------------")
     println(executor.visibleEntries.value.joinToString(separator = "\n"))
     println(entry)
@@ -98,7 +99,7 @@ private fun <T : BaseRoute> Show(
     return
   }
 
-  ViewModelStoreOwnerProvider(viewModelStoreOwner) {
+  ViewModelStoreOwnerProvider(viewModelStoreOwnerState) {
     saveableStateHolder.SaveableStateProvider(entry.id.value) {
       entry.destination.content(entry.route)
     }
@@ -123,7 +124,7 @@ internal class SaveableCloseable(
   private val viewModelStoreOwnerRef: MutableState<DefaultViewModelStoreOwner?> =
     mutableStateOf(DefaultViewModelStoreOwner())
 
-  val viewModelStoreOwner by viewModelStoreOwnerRef::value
+  val viewModelStoreOwnerState: State<DefaultViewModelStoreOwner?> = viewModelStoreOwnerRef
 
   override fun close() {
     val storeOwner = viewModelStoreOwnerRef.value
