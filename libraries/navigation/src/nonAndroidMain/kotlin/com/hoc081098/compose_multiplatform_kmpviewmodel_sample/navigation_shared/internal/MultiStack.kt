@@ -12,6 +12,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.ContentDestination
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoot
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoute
+import kotlinx.collections.immutable.ImmutableList
 
 @InternalNavigationApi
 internal class MultiStack(
@@ -23,9 +24,9 @@ internal class MultiStack(
   private val idGenerator: () -> String,
 ) {
 
-  private val visibleEntryState: MutableState<List<StackEntry<*>>> =
+  private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
     mutableStateOf(currentStack.computeVisibleEntries())
-  val visibleEntries: State<List<StackEntry<*>>>
+  val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = visibleEntryState
 
   private val canNavigateBackState: MutableState<Boolean> =

@@ -1,6 +1,7 @@
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.parcelize)
   alias(libs.plugins.jetbrains.compose.mutiplatform)
 }
 
@@ -38,9 +39,11 @@ kotlin {
     val commonMain by getting {
       dependencies {
         api(compose.runtime)
+        api(compose.runtimeSaveable)
 
-        // KotlinX Coroutines
-        api(libs.kotlinx.coroutines.core)
+        api(libs.kmp.viewmodel)
+        api(libs.kmp.viewmodel.savedstate)
+        api(libs.kmp.viewmodel.compose)
       }
     }
     val commonTest by getting {
@@ -51,27 +54,34 @@ kotlin {
 
     val androidMain by getting {
       dependencies {
-        // AndroidX Lifecycle Runtime Compose
-        api(libs.androidx.lifecycle.runtime.compose)
+        // Khonshu
+        api(libs.khonshu.navigation.compose)
+      }
+    }
+
+    val nonAndroidMain by getting {
+      dependencies {
+        implementation(libs.uuid)
+        implementation(libs.kotlinx.collections.immutable)
       }
     }
   }
 }
 
 android {
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.libraries.compose-lifecycle-utils"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.libraries.navigation"
 
   compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
     minSdk = libs.versions.android.min.map { it.toInt() }.get()
   }
 
-  buildFeatures {
-    buildConfig = false
-  }
-
   compileOptions {
     sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
     targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+  }
+
+  buildFeatures {
+    buildConfig = false
   }
 }

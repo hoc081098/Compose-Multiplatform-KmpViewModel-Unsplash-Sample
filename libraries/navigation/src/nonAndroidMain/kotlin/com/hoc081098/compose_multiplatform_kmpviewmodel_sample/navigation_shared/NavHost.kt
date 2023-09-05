@@ -29,6 +29,7 @@ import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
 import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
 import kotlin.jvm.JvmField
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
@@ -61,7 +62,7 @@ fun NavHost(
 @InternalNavigationApi
 @Composable
 private fun Show(
-  entries: List<StackEntry<*>>,
+  entries: ImmutableList<StackEntry<*>>,
   executor: MultiStackNavigationExecutor,
   saveableStateHolder: SaveableStateHolder,
 ) {

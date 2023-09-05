@@ -1,5 +1,6 @@
 [versions]
 kotlin = "1.9.0"
+kotlinx-collections-immutable = "0.3.5"
 kotlinx-coroutines = "1.7.3"
 kotlinx-atomicfu = "0.22.0"
 
@@ -32,6 +33,9 @@ flow-ext = "0.7.1"
 koin-core = "3.4.3"
 koin-compose = "1.0.4"
 uuid = "0.8.0"
+
+kmp-viewmodel = "0.4.1-SNAPSHOT"
+khonshu = "0.16.1"
 
 inject = "1"
 dagger = "2.48"
@@ -66,6 +70,7 @@ kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotl
 kotlin-test-annotations = { module = "org.jetbrains.kotlin:kotlin-test-annotations-common", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinx-collections-immutable" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kotlinx-atomicfu" }
@@ -99,6 +104,11 @@ flow-ext = { module = "io.github.hoc081098:FlowExt", version.ref = "flow-ext" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin-core" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-compose" }
 uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
+
+kmp-viewmodel = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "kmp-viewmodel" }
+kmp-viewmodel-savedstate = { module = "io.github.hoc081098:kmp-viewmodel-savedstate", version.ref = "kmp-viewmodel" }
+kmp-viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "kmp-viewmodel" }
+khonshu-navigation-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }

@@ -10,7 +10,7 @@ import com.hoc081098.kmp.viewmodel.Closeable
 
 @OptIn(InternalNavigationApi::class)
 @Composable
-actual inline fun <reified T : Closeable> rememberCloseable(
+actual inline fun <reified T : Closeable> rememberCloseableForRoute(
   route: BaseRoute,
   crossinline factory: @DisallowComposableCalls () -> T,
 ): T {
@@ -18,15 +18,7 @@ actual inline fun <reified T : Closeable> rememberCloseable(
 
   return remember(executor, route) {
     executor
-      .storeFor(route.asKhonshuNavRoute().destinationId)
+      .storeFor(route.asKhonshuBaseRoute().destinationId)
       .getOrCreate(T::class) { factory() }
   }
-}
-
-@PublishedApi
-@Suppress("NOTHING_TO_INLINE")
-internal inline fun BaseRoute.asKhonshuNavRoute(): com.freeletics.khonshu.navigation.BaseRoute = when (this) {
-  is NavRoot -> this
-  is NavRoute -> this
-  else -> throw IllegalStateException("Unknown route type: $this")
 }

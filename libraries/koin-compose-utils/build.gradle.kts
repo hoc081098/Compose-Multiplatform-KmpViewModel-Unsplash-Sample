@@ -27,11 +27,12 @@ kotlin {
         // Koin utils
         api(projects.libraries.koinUtils)
 
+        // Navigation
+        api(projects.libraries.navigation)
+
         // Koin
         api(libs.koin.core)
         api(libs.koin.compose)
-
-        api(projects.navigationShared)
       }
     }
     val commonTest by getting {

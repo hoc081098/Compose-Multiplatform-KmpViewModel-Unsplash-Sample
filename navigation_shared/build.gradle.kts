@@ -1,35 +1,22 @@
 plugins {
-  kotlin("multiplatform")
-  id("com.android.library")
-  id("kotlin-parcelize")
-  id("org.jetbrains.compose")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.kotlin.parcelize)
 }
-
-val ktorVersion = "2.3.3"
-val kotlinxSerializationVersion = "1.6.0-RC"
-val coroutinesVersion = "1.7.3"
-val kmpViewModel = "0.4.1-SNAPSHOT"
-val koinVersion = "3.4.3"
-val koinKspVersion = "1.2.2"
-val arrowKtVersion = "1.2.0"
 
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
-  jvmToolchain(17)
-
-  targetHierarchy.default {
-    common {
-      group("nonAndroid") {
-        withJvm()
-        withNative()
-      }
-    }
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
   }
+
+  targetHierarchy.default()
 
   androidTarget {
     compilations.all {
       kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
       }
     }
   }
@@ -43,12 +30,8 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        api(compose.runtime)
-        api(compose.runtimeSaveable)
-
-        api("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
-        api("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
-        api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
+        api(projects.libraries.navigation)
+        compileOnly("org.jetbrains.compose.runtime:runtime:${org.jetbrains.compose.ComposeBuildConfig.composeVersion}")
       }
     }
     val commonTest by getting {
@@ -56,34 +39,23 @@ kotlin {
         implementation(kotlin("test"))
       }
     }
-
-    val androidMain by getting {
-      dependencies {
-        // Khonshu
-        api("com.freeletics.khonshu:navigation-compose:0.16.1")
-      }
-    }
-
-    val nonAndroidMain by getting {
-      dependencies {
-        implementation(libs.uuid)
-      }
-    }
   }
 }
 
 android {
-  compileSdk = (findProperty("android.compileSdk") as String).toInt()
   namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared"
 
+  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
-    minSdk = (findProperty("android.minSdk") as String).toInt()
+    minSdk = libs.versions.android.min.map { it.toInt() }.get()
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
   }
 
-  buildFeatures {}
+  buildFeatures {
+    buildConfig = false
+  }
 }

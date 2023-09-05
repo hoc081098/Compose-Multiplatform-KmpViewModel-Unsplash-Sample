@@ -7,18 +7,18 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_share
 import androidx.compose.runtime.Immutable
 import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 
+@Immutable
 expect sealed interface BaseRoute : Parcelable
 
-@Immutable
 /**
  * Represents the route to a destination.
  *
  * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
  * available to the target screens.
  */
+@Immutable
 expect interface NavRoute : Parcelable, BaseRoute
 
-@Immutable
 /**
  * This is similar to a [NavRoute] but represents the route to the start destination used in
  * a backstack. When you navigate to a [NavRoot] the current backstack is saved and removed
@@ -27,4 +27,5 @@ expect interface NavRoute : Parcelable, BaseRoute
  * The instance of this will be put into the navigation arguments as a [Parcelable] and is then
  * available to the target screens.
  */
+@Immutable
 expect interface NavRoot : Parcelable, BaseRoute

@@ -3,6 +3,7 @@ plugins {
   // in each subproject's classloader
   alias(libs.plugins.kotlin.multiplatform) apply false
   alias(libs.plugins.kotlin.serialization) apply false
+  alias(libs.plugins.kotlin.parcelize) apply false
 
   alias(libs.plugins.android.app) apply false
   alias(libs.plugins.android.library) apply false

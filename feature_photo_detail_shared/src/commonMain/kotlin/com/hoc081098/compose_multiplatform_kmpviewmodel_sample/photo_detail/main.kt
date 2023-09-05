@@ -6,7 +6,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModules
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModulesForRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.domainModule
@@ -29,7 +29,7 @@ internal fun PhotoDetailScreenWithKoin(
   onNavigationBack: () -> Unit,
   modifier: Modifier = Modifier,
 ) {
-  val loaded by rememberKoinModules(
+  val loaded by rememberKoinModulesForRoute(
     route = route,
     unloadModules = true,
   ) { listOf(FeaturePhotoDetailModule) }

@@ -7,6 +7,7 @@
 - Depends on
   - `compose-runtime`.
   - `project(":libraries:koin-utils")`
+  - `project(":libraries:navigation")`
   - `koin-core`.
   - `koin-compose`.
 

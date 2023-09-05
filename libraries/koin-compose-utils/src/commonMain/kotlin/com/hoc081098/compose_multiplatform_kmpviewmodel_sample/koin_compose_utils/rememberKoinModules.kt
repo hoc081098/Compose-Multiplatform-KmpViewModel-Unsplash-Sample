@@ -5,7 +5,7 @@ import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.BaseRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.rememberCloseable
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.rememberCloseableForRoute
 import com.hoc081098.kmp.viewmodel.Closeable
 import org.koin.compose.getKoin
 import org.koin.core.Koin
@@ -21,14 +21,14 @@ import org.koin.core.module.Module
  * @author Arnaud Giuliani
  */
 @Composable
-inline fun rememberKoinModules(
+inline fun rememberKoinModulesForRoute(
   route: BaseRoute,
   unloadModules: Boolean = false,
   crossinline modules: @DisallowComposableCalls () -> List<Module> = { emptyList() },
 ): State<Boolean> {
   val koin = getKoin()
 
-  val compositionKoinModuleLoader = rememberCloseable(route) {
+  val compositionKoinModuleLoader = rememberCloseableForRoute(route) {
     CompositionKoinModuleLoader(
       modules = modules(),
       koin = koin,

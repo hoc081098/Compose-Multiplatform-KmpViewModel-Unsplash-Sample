@@ -97,7 +97,7 @@ kotlin {
         implementation("io.arrow-kt:arrow-fx-coroutines:$arrowKtVersion")
 
         // KotlinX Immutable Collections
-        implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
+        implementation(libs.kotlinx.collections.immutable)
 
         // Kamel Image
         implementation("media.kamel:kamel-image:0.7.1")

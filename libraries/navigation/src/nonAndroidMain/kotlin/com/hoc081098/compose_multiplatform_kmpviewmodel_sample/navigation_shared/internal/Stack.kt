@@ -10,6 +10,9 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoot
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.ScreenDestination
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.adapters.ImmutableListAdapter
+import kotlinx.collections.immutable.toImmutableList
 
 @InternalNavigationApi
 internal class Stack private constructor(
@@ -31,9 +34,9 @@ internal class Stack private constructor(
     return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
   }
 
-  fun computeVisibleEntries(): List<StackEntry<*>> {
+  fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
-      return stack.toList()
+      return stack.toImmutableList()
     }
 
     // go through the stack from the top until reaching the first ScreenDestination
@@ -46,7 +49,7 @@ internal class Stack private constructor(
           while (iterator.hasNext()) {
             add(iterator.next())
           }
-        }
+        }.let(::ImmutableListAdapter)
       }
     }
 

@@ -10,6 +10,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.NavRoute
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import kotlin.jvm.JvmField
+import kotlinx.collections.immutable.ImmutableList
 
 @InternalNavigationApi
 internal class MultiStackNavigationExecutor(
@@ -18,7 +19,7 @@ internal class MultiStackNavigationExecutor(
 ) : NavigationExecutor {
 
   @Suppress("unused") // TODO
-  val visibleEntries: State<List<StackEntry<*>>>
+  val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = stack.visibleEntries
 
   @Suppress("unused") // TODO

@@ -9,7 +9,7 @@ import com.hoc081098.kmp.viewmodel.Closeable
 
 @OptIn(InternalNavigationApi::class)
 @Composable
-actual inline fun <reified T : Closeable> rememberCloseable(
+actual inline fun <reified T : Closeable> rememberCloseableForRoute(
   route: BaseRoute,
   crossinline factory: @DisallowComposableCalls () -> T,
 ): T {
