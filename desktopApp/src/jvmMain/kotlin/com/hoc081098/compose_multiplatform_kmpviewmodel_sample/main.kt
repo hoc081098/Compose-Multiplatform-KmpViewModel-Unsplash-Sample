@@ -17,9 +17,9 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavEventNavigator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavHost
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavigationSetup
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.ScreenDestination
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.SearchPhotoRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.SearchPhotoScreen
 import io.github.aakira.napier.DebugAntilog
@@ -95,8 +95,7 @@ fun main() {
                 route = route,
                 navigateToPhotoDetail = remember(navigator) {
                   {
-                      id ->
-                    navigator.navigateTo(PhotoDetailRoute(id = id))
+                    navigator.navigateTo(PhotoDetailRoute(id = it))
                   }
                 },
               )
