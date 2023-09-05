@@ -17,4 +17,4 @@
   - `koinInjectMapMultibinding`
   - `koinInjectSetMultibinding`
 
-- `rememberKoinModules`
+- `rememberKoinModulesForRoute`

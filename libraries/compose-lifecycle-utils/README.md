@@ -2,7 +2,6 @@
 
 ## Dependencies
 
-- Pure Kotlin.
 - Compose Multiplatform plugin.
 - Android Library plugin.
 - Depends on
