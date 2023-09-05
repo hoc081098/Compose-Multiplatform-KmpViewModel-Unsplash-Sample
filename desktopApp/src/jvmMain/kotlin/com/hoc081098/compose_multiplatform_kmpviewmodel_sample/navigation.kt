@@ -2,12 +2,12 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
-import com.freeletics.khonshu.navigation.NavEventNavigator
-import com.freeletics.khonshu.navigation.compose.NavDestination
-import com.freeletics.khonshu.navigation.compose.NavigationSetup
-import com.freeletics.khonshu.navigation.compose.ScreenDestination
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_utils.declareSetMultibinding
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_utils.intoSetMultibinding
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavDestination
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavEventNavigator
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavigationSetup
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.ScreenDestination
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
@@ -39,7 +39,9 @@ val NavigationModule = module {
       SearchPhotoScreen(
         route = route,
         navigateToPhotoDetail = remember(navigator) {
-          { navigator.navigateTo(PhotoDetailRoute(id = it)) }
+          {
+            navigator.navigateTo(PhotoDetailRoute(id = it))
+          }
         },
       )
     }

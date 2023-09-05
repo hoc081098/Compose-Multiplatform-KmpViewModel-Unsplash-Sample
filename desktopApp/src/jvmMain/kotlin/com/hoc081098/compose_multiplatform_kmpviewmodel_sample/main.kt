@@ -1,5 +1,6 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
+import org.koin.core.logger.Level as KoinLoggerLevel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,8 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_shared.CommonModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.theme.AppTheme
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.koinInjectSetMultibinding
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavEventNavigator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavHost
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavigationSetup
@@ -32,9 +34,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import org.koin.core.context.startKoin
-import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 fun main() {
@@ -49,13 +49,13 @@ fun main() {
       ),
     )
 
+
     startKoin {
       logger(PrintLogger(level = KoinLoggerLevel.DEBUG))
+
       modules(
-        module {
-          singleOf(::NavEventNavigator)
-          singleOf(::AppCoroutineDispatchers)
-        },
+        CommonModule,
+        NavigationModule,
       )
     }
   }
@@ -85,32 +85,7 @@ fun main() {
 
         NavHost(
           startRoute = SearchPhotoRoute,
-          destinations = setOf(
-            ScreenDestination<SearchPhotoRoute> { route ->
-              val navigator = koinInject<NavEventNavigator>()
-
-              NavigationSetup(navigator)
-
-              SearchPhotoScreen(
-                route = route,
-                navigateToPhotoDetail = remember(navigator) {
-                  {
-                    navigator.navigateTo(PhotoDetailRoute(id = it))
-                  }
-                },
-              )
-            },
-            ScreenDestination<PhotoDetailRoute> { route ->
-              val navigator = koinInject<NavEventNavigator>()
-
-              NavigationSetup(navigator)
-
-              PhotoDetailScreen(
-                route = route,
-                onNavigationBack = remember(navigator) { navigator::navigateBack },
-              )
-            },
-          ),
+          destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
           destinationChangedCallback = remember {
             {
               println("Destination changed: $it")

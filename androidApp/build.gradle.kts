@@ -18,6 +18,7 @@ kotlin {
         implementation(project(":libraries:koin-compose-utils"))
         implementation(project(":libraries:coroutines-utils"))
 
+        implementation(projects.core.commonShared)
         implementation(projects.core.commonUiShared)
         implementation(projects.core.navigationShared)
 

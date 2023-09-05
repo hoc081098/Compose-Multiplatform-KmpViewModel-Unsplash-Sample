@@ -1,23 +1,27 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
-  kotlin("multiplatform")
-  id("org.jetbrains.compose")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.jetbrains.compose.mutiplatform)
 }
-
-val koinVersion = "3.4.3"
-val koinComposeVersion = "1.0.4"
 
 kotlin {
   jvm()
+
   sourceSets {
     val jvmMain by getting {
       dependencies {
         implementation(compose.desktop.currentOs)
         implementation(compose.material3)
 
+        implementation(projects.core.commonShared)
         implementation(projects.core.commonUiShared)
         implementation(projects.core.navigationShared)
+
+        implementation(projects.libraries.koinUtils)
+        implementation(projects.libraries.koinComposeUtils)
+        implementation(projects.libraries.coroutinesUtils)
+        implementation(projects.libraries.navigation)
 
         implementation(project(":feature_search_photo_shared"))
         implementation(project(":feature_photo_detail_shared"))
@@ -26,9 +30,6 @@ kotlin {
         implementation("org.apache.logging.log4j:log4j-api:2.20.0")
         implementation("org.apache.logging.log4j:log4j-core:2.20.0")
         implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.20.0")
-
-        implementation("io.insert-koin:koin-core:$koinVersion")
-        implementation("io.insert-koin:koin-compose:$koinComposeVersion")
       }
     }
   }
