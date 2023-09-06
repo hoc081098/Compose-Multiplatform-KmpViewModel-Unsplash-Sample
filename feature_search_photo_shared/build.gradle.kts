@@ -13,7 +13,7 @@ plugins {
   id("compose_multiplatform_kmpviewmodel_sample.empty")
 }
 
-val ktorVersion = "2.3.3"
+val ktorVersion = "2.3.4"
 val kotlinxSerializationVersion = "1.6.0-RC"
 val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
