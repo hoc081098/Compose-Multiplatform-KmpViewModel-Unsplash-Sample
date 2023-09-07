@@ -87,7 +87,7 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5")
 
         // Kamel Image
-        implementation("media.kamel:kamel-image:0.7.1")
+        implementation("media.kamel:kamel-image:0.7.3")
 
         // Napier
         api("io.github.aakira:napier:2.6.1")
