@@ -14,7 +14,7 @@ plugins {
 }
 
 val ktorVersion = "2.3.4"
-val kotlinxSerializationVersion = "1.6.0-RC"
+val kotlinxSerializationVersion = "1.6.0"
 val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.4.3"
