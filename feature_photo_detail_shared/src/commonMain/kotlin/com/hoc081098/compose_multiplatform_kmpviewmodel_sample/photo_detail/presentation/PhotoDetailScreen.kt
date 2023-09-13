@@ -32,13 +32,9 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.CreatorInfoCard
-import com.hoc081098.kmp.viewmodel.CreationExtras
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
-
-@Suppress("NOTHING_TO_INLINE")
-internal expect inline fun photoDetailViewModelCreationExtras(route: PhotoDetailRoute): CreationExtras
 
 @Composable
 private fun photoDetailViewModel(
@@ -52,7 +48,6 @@ private fun photoDetailViewModel(
       getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
     )
   },
-  extras = photoDetailViewModelCreationExtras(route = route),
 )
 
 @Composable

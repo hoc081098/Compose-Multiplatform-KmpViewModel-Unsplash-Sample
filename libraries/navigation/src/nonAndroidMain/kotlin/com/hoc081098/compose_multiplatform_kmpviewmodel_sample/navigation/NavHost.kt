@@ -25,8 +25,11 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.intern
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.internal.rememberNavigationExecutor
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.internal.weaken
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.kmp.viewmodel.SavedStateHandle
+import com.hoc081098.kmp.viewmodel.SavedStateHandleFactory
 import com.hoc081098.kmp.viewmodel.ViewModelStore
 import com.hoc081098.kmp.viewmodel.ViewModelStoreOwner
+import com.hoc081098.kmp.viewmodel.compose.SavedStateHandleFactoryProvider
 import com.hoc081098.kmp.viewmodel.compose.ViewModelStoreOwnerProvider
 import kotlin.jvm.JvmField
 import kotlinx.collections.immutable.ImmutableList
@@ -110,9 +113,20 @@ private fun <T : BaseRoute> Show(
     println("----------------------------------- END NAVIGATION [2] -----------------------------------")
   }
 
-  ViewModelStoreOwnerProvider(viewModelStoreOwner) {
-    saveableStateHolder.SaveableStateProvider(entry.id.value) {
-      entry.destination.content(entry.route)
+  val savedStateHandleFactory = remember(entry, executor) {
+    SavedStateHandleFactory {
+      executor.storeFor(entry.id)
+        .getOrCreate(SavedStateHandle::class) {
+          SavedStateHandle().apply { putArguments(entry.route) }
+        }
+    }
+  }
+
+  SavedStateHandleFactoryProvider(savedStateHandleFactory) {
+    ViewModelStoreOwnerProvider(viewModelStoreOwner) {
+      saveableStateHolder.SaveableStateProvider(entry.id.value) {
+        entry.destination.content(entry.route)
+      }
     }
   }
 }
