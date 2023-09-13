@@ -32,6 +32,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.CreatorInfoCard
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.LargePhotoImage
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
 import org.koin.compose.koinInject
@@ -142,6 +143,18 @@ private fun PhotoDetailContent(
                 .padding(horizontal = 16.dp),
               creator = detail.creator,
             )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LargePhotoImage(
+              modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+              url = detail.fullUrl,
+              contentDescription = detail.description,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
           }
         }
       }
