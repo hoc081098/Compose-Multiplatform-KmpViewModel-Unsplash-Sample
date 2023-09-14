@@ -12,53 +12,83 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.rememberCloseableForRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.kmp.viewmodel.Closeable
+import io.kamel.core.config.KamelConfig
+import io.kamel.core.config.takeFrom
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
+import io.kamel.image.config.LocalKamelConfig
+import kotlin.jvm.JvmField
 import kotlin.math.roundToInt
+
+private class KamelConfigWrapperCloseable(@JvmField val kamelConfig: KamelConfig) : Closeable {
+  override fun close() = Unit
+}
 
 @Composable
 fun LargePhotoImage(
+  route: PhotoDetailRoute,
   url: String,
   contentDescription: String?,
   modifier: Modifier = Modifier,
 ) {
-  KamelImage(
-    modifier = modifier
-      .aspectRatio(1f / 0.5f)
-      .clip(RoundedCornerShape(size = 8.dp)),
-    resource = asyncPainterResource(data = url),
-    contentDescription = contentDescription,
-    contentScale = ContentScale.Crop,
-    onLoading = {
-      Column(
-        modifier = Modifier.align(Alignment.Center),
-        horizontalAlignment = Alignment.CenterHorizontally,
-      ) {
-        CircularProgressIndicator(
-          progress = it,
-        )
+  val currentKamelConfig = LocalKamelConfig.current
 
-        Spacer(modifier = Modifier.height(8.dp))
+  val kamelConfigWrapper = rememberCloseableForRoute(route) {
+    KamelConfigWrapperCloseable(
+      KamelConfig {
+        takeFrom(currentKamelConfig)
 
-        Text(
-          text = "${(it * 100).roundToInt()} %",
-          style = MaterialTheme.typography.labelSmall,
-          textAlign = TextAlign.Center,
+        // Disable cache
+        imageBitmapCacheSize = 0
+        imageVectorCacheSize = 0
+        svgCacheSize = 0
+      },
+    )
+  }
+
+  CompositionLocalProvider(LocalKamelConfig provides kamelConfigWrapper.kamelConfig) {
+    KamelImage(
+      modifier = modifier
+        .aspectRatio(1f / 0.5f)
+        .clip(RoundedCornerShape(size = 8.dp)),
+      resource = asyncPainterResource(data = url),
+      contentDescription = contentDescription,
+      contentScale = ContentScale.Crop,
+      onLoading = {
+        Column(
+          modifier = Modifier.align(Alignment.Center),
+          horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+          CircularProgressIndicator(
+            progress = it,
+          )
+
+          Spacer(modifier = Modifier.height(8.dp))
+
+          Text(
+            text = "${(it * 100).roundToInt()} %",
+            style = MaterialTheme.typography.labelSmall,
+            textAlign = TextAlign.Center,
+          )
+        }
+      },
+      onFailure = {
+        Icon(
+          modifier = Modifier.align(Alignment.Center),
+          imageVector = Icons.Default.Person,
+          contentDescription = null,
         )
-      }
-    },
-    onFailure = {
-      Icon(
-        modifier = Modifier.align(Alignment.Center),
-        imageVector = Icons.Default.Person,
-        contentDescription = null,
-      )
-    },
-  )
+      },
+    )
+  }
 }

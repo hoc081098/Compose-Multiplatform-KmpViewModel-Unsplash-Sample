@@ -72,6 +72,7 @@ internal fun PhotoDetailScreen(
 
   PhotoDetailContent(
     modifier = modifier,
+    route = route,
     uiState = uiState,
     onRetry = { processIntent(PhotoDetailViewIntent.Retry) },
     onNavigationBack = onNavigationBack,
@@ -81,6 +82,7 @@ internal fun PhotoDetailScreen(
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun PhotoDetailContent(
+  route: PhotoDetailRoute,
   uiState: PhotoDetailUiState,
   onRetry: () -> Unit,
   onNavigationBack: () -> Unit,
@@ -150,6 +152,7 @@ private fun PhotoDetailContent(
               modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+              route = route,
               url = detail.fullUrl,
               contentDescription = detail.description,
             )
