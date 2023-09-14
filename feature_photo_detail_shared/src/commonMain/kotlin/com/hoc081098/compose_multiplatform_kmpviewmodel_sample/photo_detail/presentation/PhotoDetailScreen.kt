@@ -17,6 +17,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -135,23 +136,27 @@ private fun PhotoDetailContent(
           Column(
             modifier = Modifier
               .matchParentSize()
+              .padding(horizontal = 16.dp)
               .verticalScroll(rememberScrollState()),
           ) {
             Spacer(modifier = Modifier.height(16.dp))
 
             CreatorInfoCard(
-              modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+              modifier = Modifier.fillMaxWidth(),
               creator = detail.creator,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            Text(
+              text = "Size: ${detail.size.width} x ${detail.size.height}",
+              style = MaterialTheme.typography.bodyMedium,
+            )
+
+            Spacer(modifier = Modifier.height(4.dp))
+
             LargePhotoImage(
-              modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+              modifier = Modifier.fillMaxWidth(),
               route = route,
               url = detail.fullUrl,
               contentDescription = detail.description,
