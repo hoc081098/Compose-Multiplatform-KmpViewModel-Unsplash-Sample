@@ -155,6 +155,7 @@ private fun PhotoDetailContent(
               route = route,
               url = detail.fullUrl,
               contentDescription = detail.description,
+              size = detail.size,
             )
 
             Spacer(modifier = Modifier.height(16.dp))

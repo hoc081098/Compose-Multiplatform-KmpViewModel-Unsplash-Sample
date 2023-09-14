@@ -7,6 +7,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.data
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoCreator
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetail
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailRepository
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoSize
 import io.github.aakira.napier.Napier
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Singleton
@@ -52,5 +53,9 @@ private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail = PhotoDetail(
     username = user.username,
     name = user.name,
     mediumProfileImageUrl = user.profileImage?.medium,
+  ),
+  size = PhotoSize(
+    width = width.toUInt(),
+    height = height.toUInt(),
   ),
 )

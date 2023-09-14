@@ -21,7 +21,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.rememberCloseableForRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoSizeUi
 import com.hoc081098.kmp.viewmodel.Closeable
+import io.github.aakira.napier.Napier
 import io.kamel.core.config.KamelConfig
 import io.kamel.core.config.takeFrom
 import io.kamel.image.KamelImage
@@ -31,14 +33,18 @@ import kotlin.jvm.JvmField
 import kotlin.math.roundToInt
 
 private class KamelConfigWrapperCloseable(@JvmField val kamelConfig: KamelConfig) : Closeable {
-  override fun close() = Unit
+  override fun close() {
+    kamelConfig.runCatching { imageVectorCache.clear() }
+    Napier.d(message = "Clear imageVectorCache")
+  }
 }
 
 @Composable
-fun LargePhotoImage(
+internal fun LargePhotoImage(
   route: PhotoDetailRoute,
   url: String,
   contentDescription: String?,
+  size: PhotoSizeUi,
   modifier: Modifier = Modifier,
 ) {
   val currentKamelConfig = LocalKamelConfig.current
@@ -48,8 +54,10 @@ fun LargePhotoImage(
       KamelConfig {
         takeFrom(currentKamelConfig)
 
+        // Cache only 1 image
+        imageBitmapCacheSize = 1
+
         // Disable cache
-        imageBitmapCacheSize = 0
         imageVectorCacheSize = 0
         svgCacheSize = 0
       },
@@ -59,7 +67,7 @@ fun LargePhotoImage(
   CompositionLocalProvider(LocalKamelConfig provides kamelConfigWrapper.kamelConfig) {
     KamelImage(
       modifier = modifier
-        .aspectRatio(1f / 0.5f)
+        .aspectRatio(size.width.toFloat() / size.height.toFloat())
         .clip(RoundedCornerShape(size = 8.dp)),
       resource = asyncPainterResource(data = url),
       contentDescription = contentDescription,

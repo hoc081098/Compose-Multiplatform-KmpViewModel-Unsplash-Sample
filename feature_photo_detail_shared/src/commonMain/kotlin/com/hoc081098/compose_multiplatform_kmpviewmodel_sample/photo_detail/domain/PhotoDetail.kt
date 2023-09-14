@@ -13,6 +13,13 @@ data class PhotoDetail(
   val updatedAt: Instant,
   val promotedAt: Instant?,
   val creator: PhotoCreator,
+  val size: PhotoSize,
+)
+
+@Immutable
+data class PhotoSize(
+  val width: UInt,
+  val height: UInt,
 )
 
 @Immutable

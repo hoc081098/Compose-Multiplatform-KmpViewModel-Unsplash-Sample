@@ -6,6 +6,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.doma
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoCreatorUi
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoDetailUi
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoSizeUi
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.stable_wrappers.ImmutableWrapper
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.stable_wrappers.toImmutableWrapper
 import kotlinx.datetime.Instant
@@ -31,6 +32,13 @@ internal sealed interface PhotoDetailUiState {
     val updatedAt: ImmutableWrapper<Instant>,
     val promotedAt: ImmutableWrapper<Instant?>,
     val creator: PhotoCreatorUi,
+    val size: PhotoSizeUi,
+  )
+
+  @Immutable
+  data class PhotoSizeUi(
+    val width: UInt,
+    val height: UInt,
   )
 
   @Immutable
@@ -61,6 +69,10 @@ internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi {
       username = creator.username,
       name = creator.name,
       mediumProfileImageUrl = creator.mediumProfileImageUrl,
+    ),
+    size = PhotoSizeUi(
+      width = size.width,
+      height = size.height,
     ),
   )
 }
