@@ -82,7 +82,7 @@ kotlin {
         api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
 
         // KotlinX DateTime
-        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
 
         // FlowExt
         implementation("io.github.hoc081098:FlowExt:0.7.1")
