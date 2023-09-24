@@ -4,7 +4,7 @@ plugins {
   id("org.jetbrains.compose")
 }
 
-val koinVersion = "3.4.3"
+val koinVersion = "3.5.0"
 
 kotlin {
   androidTarget()

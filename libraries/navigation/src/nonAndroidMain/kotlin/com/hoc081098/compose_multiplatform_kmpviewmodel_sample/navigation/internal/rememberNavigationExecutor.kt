@@ -11,6 +11,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavDes
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavRoot
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
+import com.hoc081098.kmp.viewmodel.viewModelFactory
 
 @InternalNavigationApi
 @Composable
@@ -19,7 +20,7 @@ internal fun rememberNavigationExecutor(
   destinations: Set<NavDestination>,
 ): MultiStackNavigationExecutor {
   val viewModel = kmpViewModel(
-    factory = { StoreViewModel(globalSavedStateHandle = createSavedStateHandle()) },
+    factory = viewModelFactory { StoreViewModel(globalSavedStateHandle = createSavedStateHandle()) },
   )
 
   return remember(viewModel) {

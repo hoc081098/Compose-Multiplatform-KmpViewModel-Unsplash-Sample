@@ -40,6 +40,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.pres
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.components.PhotoGridCell
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
+import com.hoc081098.kmp.viewmodel.viewModelFactory
 import org.koin.compose.koinInject
 
 @Composable
@@ -47,7 +48,7 @@ private fun searchPhotoViewModel(
   searchPhotoUseCase: SearchPhotoUseCase = koinInject(),
 ): SearchPhotoViewModel =
   kmpViewModel(
-    factory = {
+    factory = viewModelFactory{
       SearchPhotoViewModel(
         savedStateHandle = createSavedStateHandle(),
         searchPhotoUseCase = searchPhotoUseCase,

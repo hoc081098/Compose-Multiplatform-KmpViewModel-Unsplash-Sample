@@ -36,6 +36,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.pres
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.LargePhotoImage
 import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
 import com.hoc081098.kmp.viewmodel.createSavedStateHandle
+import com.hoc081098.kmp.viewmodel.viewModelFactory
 import org.koin.compose.koinInject
 
 @Composable
@@ -44,7 +45,7 @@ private fun photoDetailViewModel(
   getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
 ): PhotoDetailViewModel = kmpViewModel(
   key = "${PhotoDetailViewModel::class.simpleName}_$route",
-  factory = {
+  factory = viewModelFactory{
     PhotoDetailViewModel(
       savedStateHandle = createSavedStateHandle(),
       getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
