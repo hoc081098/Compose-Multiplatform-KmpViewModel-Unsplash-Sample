@@ -48,7 +48,7 @@ private fun searchPhotoViewModel(
   searchPhotoUseCase: SearchPhotoUseCase = koinInject(),
 ): SearchPhotoViewModel =
   kmpViewModel(
-    factory = viewModelFactory{
+    factory = viewModelFactory {
       SearchPhotoViewModel(
         savedStateHandle = createSavedStateHandle(),
         searchPhotoUseCase = searchPhotoUseCase,

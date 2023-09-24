@@ -45,7 +45,7 @@ private fun photoDetailViewModel(
   getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
 ): PhotoDetailViewModel = kmpViewModel(
   key = "${PhotoDetailViewModel::class.simpleName}_$route",
-  factory = viewModelFactory{
+  factory = viewModelFactory {
     PhotoDetailViewModel(
       savedStateHandle = createSavedStateHandle(),
       getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
