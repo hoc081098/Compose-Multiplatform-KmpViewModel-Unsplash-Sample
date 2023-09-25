@@ -9,6 +9,7 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.rememb
 import com.hoc081098.kmp.viewmodel.Closeable
 import org.koin.compose.getKoin
 import org.koin.core.Koin
+import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.module.Module
 
 /**
@@ -40,6 +41,7 @@ inline fun rememberKoinModulesForRoute(
   return compositionKoinModuleLoader.loadedState
 }
 
+@OptIn(KoinInternalApi::class)
 @PublishedApi
 internal class CompositionKoinModuleLoader(
   private val modules: List<Module>,

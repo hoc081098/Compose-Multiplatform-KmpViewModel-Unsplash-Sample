@@ -18,7 +18,7 @@ val coroutinesVersion = "1.7.3"
 val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.5.0"
 val koinKspVersion = "1.3.0"
-val koinComposeVersion = "1.0.4"
+val koinComposeVersion = "1.1.0"
 val arrowKtVersion = "1.2.0"
 
 kotlin {

@@ -13,9 +13,10 @@ import io.github.aakira.napier.Napier
 import java.util.logging.Level
 import java.util.logging.SimpleFormatter
 import java.util.logging.StreamHandler
-import org.koin.core.context.startKoin
+import org.koin.compose.KoinApplication
 import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
+import org.koin.dsl.KoinAppDeclaration
 
 fun main() {
   Napier.base(
@@ -27,7 +28,7 @@ fun main() {
     ),
   )
 
-  startKoin {
+  val koinApplication: KoinAppDeclaration = {
     logger(PrintLogger(level = KoinLoggerLevel.DEBUG))
 
     modules(
@@ -41,16 +42,18 @@ fun main() {
       onCloseRequest = ::exitApplication,
       title = "KmpViewModel Compose Multiplatform",
     ) {
-      AppTheme {
-        NavHost(
-          startRoute = SearchPhotoRoute,
-          destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
-          destinationChangedCallback = remember {
-            {
-              println("Destination changed: $it")
-            }
-          },
-        )
+      KoinApplication(application = koinApplication) {
+        AppTheme {
+          NavHost(
+            startRoute = SearchPhotoRoute,
+            destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
+            destinationChangedCallback = remember {
+              {
+                println("Destination changed: $it")
+              }
+            },
+          )
+        }
       }
     }
   }
