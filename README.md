@@ -6,5 +6,7 @@
 - https://github.com/hoc081098/kmp-viewmodel
 - https://github.com/JetBrains/compose-multiplatform
 
-<video src="https://github.com/hoc081098/hoc081098.github.io/raw/26c3cbf5742c56b6f3fe1acb523ea9838b73a723/Compose-Multiplatform-KmpViewModel-Unsplash-Sample/Screen%20Recording%202023-09-25%20at%207.13.07%20PM.mov">
+<video width="320" height="240" controls>
+  <source src="https://github.com/hoc081098/hoc081098.github.io/raw/26c3cbf5742c56b6f3fe1acb523ea9838b73a723/Compose-Multiplatform-KmpViewModel-Unsplash-Sample/Screen%20Recording%202023-09-25%20at%207.13.07%20PM.mov" type="video/mp4">
+</video>
 
