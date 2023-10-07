@@ -28,7 +28,7 @@ https://user-images.githubusercontent.com/36917223/270357793-11cb7264-59fe-4f58-
 
 - [Freeletics/Khonshu](https://github.com/freeletics/khonshu).
 
-  ## Set up the environment
+### Set up the environment
 
 > **Warning**
 > You need a Mac with macOS to write and run iOS-specific code on simulated or real devices.
@@ -42,7 +42,7 @@ To work with this template, you need the following:
 * The [Kotlin Multiplatform Mobile plugin](https://plugins.jetbrains.com/plugin/14936-kotlin-multiplatform-mobile)
 * The [CocoaPods dependency manager](https://kotlinlang.org/docs/native-cocoapods.html)
 
-### Check your environment
+#### Check your environment
 
 Before you start, use the [KDoctor](https://github.com/Kotlin/kdoctor) tool to ensure that your development environment
 is configured correctly:
@@ -76,42 +76,40 @@ is configured correctly:
 Otherwise, KDoctor will highlight which parts of your setup still need to be configured and will suggest a way to fix
 them.
 
-## Examine the project structure
+#### Examine the project structure
 
 Open the project in Android Studio and switch the view from **Android** to **Project** to see all the files and targets
 belonging to the project
 
-### `desktopApp`
+##### `desktopApp`
 
 This is a Kotlin module that builds into a desktop application. It uses Gradle as the build system. The `desktopApp`
 module depends on and uses the `shared` module as a regular library.
 
-### `androidApp`
+##### `androidApp`
 
 This is a Kotlin module that builds into an Android application. It uses Gradle as the build system.
 The `androidApp` module depends on and uses the `shared` module as a regular Android library.
 
-### `iosApp`
+##### `iosApp`
 
 This is an Xcode project that builds into an iOS application.
 It depends on and uses the `shared` module as a CocoaPods dependency.
 
-## Run your application
+### Run your application
 
-### On desktop
+#### On desktop
 
 To run your desktop application in Android Studio, select `desktopApp` in the list of run configurations and click **Run**:
 
 <img src="readme_images/run_on_desktop.png" height="60px"><br />
-
-<img src="readme_images/desktop_app_running.png" height="300px">
 
 You can also run Gradle tasks in the terminal:
 
 * `./gradlew run` to run application
 * `./gradlew package` to store native distribution into `build/compose/binaries`
 
-### On Android
+#### On Android
 
 To run your application on an Android emulator:
 
@@ -122,8 +120,6 @@ To run your application on an Android emulator:
 
     <img src="readme_images/run_on_android.png" height="60px"><br />      
 
-    <img src="readme_images/android_app_running.png" height="300px">
-
 <details>
   <summary>Alternatively, use Gradle</summary>
 
@@ -131,9 +127,9 @@ To install an Android application on a real Android device or an emulator, run `
 
 </details>
 
-### On iOS
+#### On iOS
 
-#### Running on a simulator
+##### Running on a simulator
 
 To run your application on an iOS simulator in Android Studio, modify the `iosApp` run configuration:
 
@@ -146,11 +142,9 @@ To run your application on an iOS simulator in Android Studio, modify the `iosAp
 
    <img src="readme_images/target_device.png" height="400px">
 
-4. The `iosApp` run configuration is now available. Click **Run** next to your virtual device:
+4. The `iosApp` run configuration is now available. Click **Run** next to your virtual device
 
-   <img src="readme_images/ios_app_running.png" height="300px">
-
-#### Running on a real iOS device
+##### Running on a real iOS device
 
 You can run your Compose Multiplatform application on a real iOS device for free.
 To do so, you'll need the following:
@@ -178,7 +172,7 @@ To do so, you'll need the following:
 
 </details>
 
-##### Finding your Team ID
+###### Finding your Team ID
 
 In the terminal, run `kdoctor --team-ids` to find your Team ID.
 KDoctor will list all Team IDs currently configured on your system, for example:
