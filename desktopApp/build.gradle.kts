@@ -46,8 +46,8 @@ kotlin {
         implementation(projects.libraries.navigation)
 
         // Feature modules
-        implementation(projects.featureSearchPhotoShared)
-        implementation(projects.featurePhotoDetailShared)
+        implementation(projects.features.featureSearchPhotoShared)
+        implementation(projects.features.featurePhotoDetailShared)
 
         implementation("org.apache.logging.log4j:log4j-api:2.20.0")
         implementation("org.apache.logging.log4j:log4j-core:2.20.0")

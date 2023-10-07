@@ -30,8 +30,8 @@ kotlin {
     val androidMain by getting {
       dependencies {
         // Feature modules
-        implementation(projects.featureSearchPhotoShared)
-        implementation(projects.featurePhotoDetailShared)
+        implementation(projects.features.featureSearchPhotoShared)
+        implementation(projects.features.featurePhotoDetailShared)
 
         // Libraries
         implementation(projects.libraries.koinUtils)

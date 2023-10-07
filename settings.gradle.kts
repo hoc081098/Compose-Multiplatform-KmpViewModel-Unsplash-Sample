@@ -13,8 +13,8 @@ rootProject.name = "KmpViewModel-Compose-Multiplatform"
 
 include(":androidApp")
 include(":desktopApp")
-include(":feature_search_photo_shared")
-include(":feature_photo_detail_shared")
+include(":features:feature_search_photo_shared")
+include(":features:feature_photo_detail_shared")
 include(":core:common_shared")
 include(":core:common_ui_shared")
 include(":core:navigation_shared")
