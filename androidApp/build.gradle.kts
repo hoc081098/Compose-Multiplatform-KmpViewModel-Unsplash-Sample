@@ -38,11 +38,10 @@ kotlin {
 }
 
 android {
-  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
-
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
+  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
     applicationId = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample"
     minSdk = libs.versions.android.min.map { it.toInt() }.get()

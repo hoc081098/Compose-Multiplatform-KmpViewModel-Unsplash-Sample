@@ -13,6 +13,11 @@ plugins {
 }
 
 kotlin {
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
+
   androidTarget()
 
   jvm("desktop")
@@ -126,23 +131,20 @@ kotlin {
 }
 
 android {
-  compileSdk = (findProperty("android.compileSdk") as String).toInt()
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.features.photo_detail"
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   sourceSets["main"].res.srcDirs("src/androidMain/res")
   sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
+  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
-    minSdk = (findProperty("android.minSdk") as String).toInt()
-    targetSdk = (findProperty("android.targetSdk") as String).toInt()
+    minSdk = libs.versions.android.min.map { it.toInt() }.get()
   }
+
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-  }
-  kotlin {
-    jvmToolchain(17)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
   }
 
   buildFeatures {
