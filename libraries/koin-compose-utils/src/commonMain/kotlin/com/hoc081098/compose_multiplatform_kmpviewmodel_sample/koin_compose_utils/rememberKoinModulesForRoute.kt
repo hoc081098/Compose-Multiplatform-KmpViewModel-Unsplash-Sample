@@ -29,14 +29,15 @@ inline fun rememberKoinModulesForRoute(
 ): State<Boolean> {
   val koin = getKoin()
 
-  val compositionKoinModuleLoader = rememberCloseableForRoute(route) {
-    CompositionKoinModuleLoader(
-      modules = modules(),
-      koin = koin,
-      unloadOnClose = unloadModules,
-      route = route,
-    )
-  }
+  val compositionKoinModuleLoader =
+    rememberCloseableForRoute(route) {
+      CompositionKoinModuleLoader(
+        modules = modules(),
+        koin = koin,
+        unloadOnClose = unloadModules,
+        route = route,
+      )
+    }
 
   return compositionKoinModuleLoader.loadedState
 }

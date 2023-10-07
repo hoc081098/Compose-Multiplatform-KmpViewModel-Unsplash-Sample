@@ -7,6 +7,5 @@ import org.koin.core.annotation.Factory
 class SearchPhotoUseCase(
   private val searchPhotoRepository: SearchPhotoRepository,
 ) {
-  suspend operator fun invoke(query: String): Either<SearchPhotoError, List<CoverPhoto>> =
-    searchPhotoRepository.search(query)
+  suspend operator fun invoke(query: String): Either<SearchPhotoError, List<CoverPhoto>> = searchPhotoRepository.search(query)
 }

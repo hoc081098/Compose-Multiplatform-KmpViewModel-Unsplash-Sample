@@ -19,15 +19,15 @@ class MainActivity : AppCompatActivity() {
         NavHost(
           startRoute = SearchPhotoRoute,
           destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
-          destinationChangedCallback = remember {
-            {
-                route ->
-              Napier.d(
-                message = "Destination changed: $route",
-                tag = "MainActivity",
-              )
-            }
-          },
+          destinationChangedCallback =
+            remember {
+              { route ->
+                Napier.d(
+                  message = "Destination changed: $route",
+                  tag = "MainActivity",
+                )
+              }
+            },
         )
       }
     }

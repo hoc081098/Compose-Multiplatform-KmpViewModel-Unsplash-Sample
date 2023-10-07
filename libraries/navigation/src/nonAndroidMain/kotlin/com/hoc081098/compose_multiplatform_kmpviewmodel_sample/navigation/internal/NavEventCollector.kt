@@ -9,7 +9,6 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavRou
 
 @OptIn(InternalNavigationApi::class)
 public class NavEventCollector internal constructor() {
-
   private val _navEvents = mutableListOf<NavEvent>()
   internal val navEvents: List<NavEvent> = _navEvents
 
@@ -18,7 +17,10 @@ public class NavEventCollector internal constructor() {
     _navEvents.add(event)
   }
 
-  public fun navigateToRoot(root: NavRoot, restoreRootState: Boolean) {
+  public fun navigateToRoot(
+    root: NavRoot,
+    restoreRootState: Boolean,
+  ) {
     val event = NavEvent.NavigateToRootEvent(root, restoreRootState)
     _navEvents.add(event)
   }
@@ -38,7 +40,10 @@ public class NavEventCollector internal constructor() {
   }
 
   @PublishedApi
-  internal fun <T : NavRoute> navigateBackTo(destination: DestinationId<T>, inclusive: Boolean) {
+  internal fun <T : NavRoute> navigateBackTo(
+    destination: DestinationId<T>,
+    inclusive: Boolean,
+  ) {
     val event = NavEvent.BackToEvent(destination, inclusive)
     _navEvents.add(event)
   }

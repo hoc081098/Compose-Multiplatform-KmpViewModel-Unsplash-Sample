@@ -12,6 +12,7 @@ import org.koin.core.scope.Scope
 inline fun <reified K, reified V> koinInjectMapMultibinding(
   qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
   scope: Scope = getKoinScope(),
-): Map<K, V> = remember(scope, qualifier) {
-  scope.getMapMultibinding(qualifier = qualifier)
-}
+): Map<K, V> =
+  remember(scope, qualifier) {
+    scope.getMapMultibinding(qualifier = qualifier)
+  }

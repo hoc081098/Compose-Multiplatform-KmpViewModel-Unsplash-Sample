@@ -7,7 +7,11 @@ import com.hoc081098.kmp.viewmodel.parcelable.Parcelable
 actual sealed interface BaseRoute : Parcelable
 
 @Immutable
-actual interface NavRoute : BaseRoute, Parcelable
+actual interface NavRoute :
+  BaseRoute,
+  Parcelable
 
 @Immutable
-actual interface NavRoot : BaseRoute, Parcelable
+actual interface NavRoot :
+  BaseRoute,
+  Parcelable

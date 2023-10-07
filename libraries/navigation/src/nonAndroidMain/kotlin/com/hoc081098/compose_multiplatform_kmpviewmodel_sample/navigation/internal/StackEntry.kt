@@ -24,12 +24,15 @@ internal data class StackEntry<T : BaseRoute>(
   val removable
     // cast is needed for the compiler to recognize that the when is exhaustive
     @Suppress("USELESS_CAST")
-    get() = when (route as BaseRoute) {
-      is NavRoute -> true
-      is NavRoot -> false
-      else -> throw IllegalStateException("Unknown route type: $route")
-    }
+    get() =
+      when (route as BaseRoute) {
+        is NavRoute -> true
+        is NavRoot -> false
+        else -> throw IllegalStateException("Unknown route type: $route")
+      }
 
   @JvmInline
-  value class Id(val value: String)
+  value class Id(
+    val value: String,
+  )
 }

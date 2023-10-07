@@ -14,5 +14,8 @@ ktlint_standard_property-naming=disabled
 ktlint_standard_function-naming=disabled
 filename=disabled
 ktlint_experimental=enabled
+ktlint_code_style=ktlint_official
+[*.kts]
+ktlint_standard_function-literal=disabled
 [*.xml]
 indent_size=4

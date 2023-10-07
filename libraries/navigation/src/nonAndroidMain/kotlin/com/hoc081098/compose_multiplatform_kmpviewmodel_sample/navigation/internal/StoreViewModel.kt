@@ -18,13 +18,9 @@ internal class StoreViewModel(
   private val stores = mutableMapOf<StackEntry.Id, NavigationExecutorStore>()
   private val savedStateHandles = mutableMapOf<StackEntry.Id, SavedStateHandle>()
 
-  fun provideStore(id: StackEntry.Id): NavigationExecutor.Store {
-    return stores.getOrPut(id) { NavigationExecutorStore() }
-  }
+  fun provideStore(id: StackEntry.Id): NavigationExecutor.Store = stores.getOrPut(id) { NavigationExecutorStore() }
 
-  fun provideSavedStateHandle(id: StackEntry.Id): SavedStateHandle {
-    return savedStateHandles.getOrPut(id) { SavedStateHandle() }
-  }
+  fun provideSavedStateHandle(id: StackEntry.Id): SavedStateHandle = savedStateHandles.getOrPut(id) { SavedStateHandle() }
 
   fun removeEntry(id: StackEntry.Id) {
     val store = stores.remove(id)

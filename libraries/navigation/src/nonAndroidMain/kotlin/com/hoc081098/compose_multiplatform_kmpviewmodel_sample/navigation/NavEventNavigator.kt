@@ -21,14 +21,14 @@ import kotlinx.coroutines.flow.flow
  */
 @OptIn(InternalNavigationApi::class)
 public open class NavEventNavigator {
-
   private val _navEvents = Channel<NavEvent>(Channel.UNLIMITED)
 
-  public val navEvents: Flow<NavEvent> = flow {
-    for (result in _navEvents) {
-      emit(result)
+  public val navEvents: Flow<NavEvent> =
+    flow {
+      for (result in _navEvents) {
+        emit(result)
+      }
     }
-  }
 
   /**
    * Triggers a new [NavEvent] to navigate to the given [route].
@@ -88,7 +88,10 @@ public open class NavEventNavigator {
   }
 
   @PublishedApi
-  internal fun <T : BaseRoute> navigateBackTo(popUpTo: DestinationId<T>, inclusive: Boolean = false) {
+  internal fun <T : BaseRoute> navigateBackTo(
+    popUpTo: DestinationId<T>,
+    inclusive: Boolean = false,
+  ) {
     val event = NavEvent.BackToEvent(popUpTo, inclusive)
     sendNavEvent(event)
   }

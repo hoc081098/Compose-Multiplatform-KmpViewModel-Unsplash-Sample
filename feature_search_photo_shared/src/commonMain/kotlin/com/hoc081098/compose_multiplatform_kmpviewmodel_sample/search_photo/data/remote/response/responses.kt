@@ -1,4 +1,9 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response
+@file:Suppress(
+  "ktlint:standard:discouraged-comment-location",
+  "ktlint:standard:max-line-length",
+)
+
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.remote.response
 
 import kotlinx.datetime.Instant
 import kotlinx.serialization.SerialName
@@ -7,11 +12,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class UrlsResponse(
   @SerialName(value = "raw") val raw: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3
-  @SerialName(value = "full") val full: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb
-  @SerialName(value = "regular") val regular: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max
-  @SerialName(value = "small") val small: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max
-  @SerialName(value = "thumb") val thumb: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max
-  @SerialName(value = "small_s3") val smallS3: String, // https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1560089000-7433a4ebbd64
+  @SerialName(
+    value = "full",
+  ) val full: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb
+  @SerialName(
+    value = "regular",
+  ) val regular: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max
+  @SerialName(
+    value = "small",
+  ) val small: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max
+  @SerialName(
+    value = "thumb",
+  ) val thumb: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=200&fit=max
+  @SerialName(
+    value = "small_s3",
+  ) val smallS3: String, // https://s3.us-west-2.amazonaws.com/images.unsplash.com/small/photo-1560089000-7433a4ebbd64
 )
 
 @Serializable

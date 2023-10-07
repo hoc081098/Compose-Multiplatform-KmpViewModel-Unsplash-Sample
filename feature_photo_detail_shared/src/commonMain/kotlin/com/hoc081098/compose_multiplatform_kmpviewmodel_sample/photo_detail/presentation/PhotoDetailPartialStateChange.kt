@@ -13,11 +13,15 @@ internal sealed interface PhotoDetailPartialStateChange {
       override fun reduce(state: PhotoDetailUiState) = PhotoDetailUiState.Loading
     }
 
-    data class Error(val error: PhotoDetailError) : InitAndRetry {
+    data class Error(
+      val error: PhotoDetailError,
+    ) : InitAndRetry {
       override fun reduce(state: PhotoDetailUiState) = PhotoDetailUiState.Error(error)
     }
 
-    data class Content(val photoDetail: PhotoDetailUi) : InitAndRetry {
+    data class Content(
+      val photoDetail: PhotoDetailUi,
+    ) : InitAndRetry {
       override fun reduce(state: PhotoDetailUiState) =
         if (state is PhotoDetailUiState.Content) {
           state.copy(photoDetail = photoDetail)
@@ -37,7 +41,9 @@ internal sealed interface PhotoDetailPartialStateChange {
         }
     }
 
-    data class Error(val error: PhotoDetailError) : Refresh {
+    data class Error(
+      val error: PhotoDetailError,
+    ) : Refresh {
       override fun reduce(state: PhotoDetailUiState) =
         if (state is PhotoDetailUiState.Content) {
           state.copy(isRefreshing = false)
@@ -46,7 +52,9 @@ internal sealed interface PhotoDetailPartialStateChange {
         }
     }
 
-    data class Content(val photoDetail: PhotoDetailUi) : Refresh {
+    data class Content(
+      val photoDetail: PhotoDetailUi,
+    ) : Refresh {
       override fun reduce(state: PhotoDetailUiState) =
         PhotoDetailUiState.Content(
           photoDetail = photoDetail,

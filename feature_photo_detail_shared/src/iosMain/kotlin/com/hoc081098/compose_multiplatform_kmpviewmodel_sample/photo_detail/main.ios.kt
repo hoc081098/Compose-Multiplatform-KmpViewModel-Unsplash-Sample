@@ -5,13 +5,12 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared
 import kotlin.experimental.ExperimentalNativeApi
 import platform.UIKit.UIViewController
 
-fun PhotoDetailViewController(
-  route: PhotoDetailRoute,
-): UIViewController = ComposeUIViewController {
-  PhotoDetailScreenWithKoin(
-    route = route,
-  )
-}
+fun PhotoDetailViewController(route: PhotoDetailRoute): UIViewController =
+  ComposeUIViewController {
+    PhotoDetailScreenWithKoin(
+      route = route,
+    )
+  }
 
 @OptIn(ExperimentalNativeApi::class)
 actual fun isDebug(): Boolean = Platform.isDebugBinary

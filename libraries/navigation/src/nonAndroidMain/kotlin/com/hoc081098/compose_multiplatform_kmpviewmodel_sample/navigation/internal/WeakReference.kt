@@ -5,8 +5,11 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.inter
  *
  * Basically just wrapping underlying platform implementations.
  */
-internal expect class WeakReference<T : Any>(referred: T) {
+internal expect class WeakReference<T : Any>(
+  referred: T,
+) {
   public fun get(): T?
+
   public fun clear()
 }
 

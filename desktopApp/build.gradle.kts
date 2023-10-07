@@ -2,12 +2,26 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
-  alias(libs.plugins.jetbrains.compose.mutiplatform)
+  alias(
+    libs
+      .plugins
+      .jetbrains
+      .compose
+      .mutiplatform,
+  )
 }
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    languageVersion.set(
+      JavaLanguageVersion.of(
+        libs
+          .versions
+          .java
+          .toolchain
+          .get(),
+      ),
+    )
     vendor.set(JvmVendorSpec.AZUL)
   }
 

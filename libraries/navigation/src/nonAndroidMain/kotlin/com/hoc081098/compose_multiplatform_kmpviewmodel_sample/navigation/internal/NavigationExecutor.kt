@@ -13,18 +13,36 @@ import kotlin.reflect.KClass
 @InternalNavigationApi
 public interface NavigationExecutor {
   public fun navigate(route: NavRoute)
-  public fun navigate(root: NavRoot, restoreRootState: Boolean)
+
+  public fun navigate(
+    root: NavRoot,
+    restoreRootState: Boolean,
+  )
+
   public fun navigateUp()
+
   public fun navigateBack()
-  public fun <T : BaseRoute> navigateBackTo(destinationId: DestinationId<T>, isInclusive: Boolean)
+
+  public fun <T : BaseRoute> navigateBackTo(
+    destinationId: DestinationId<T>,
+    isInclusive: Boolean,
+  )
+
   public fun resetToRoot(root: NavRoot)
+
   public fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T
+
   public fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle
+
   public fun <T : BaseRoute> storeFor(destinationId: DestinationId<T>): Store
+
   public fun <T : BaseRoute> extra(destinationId: DestinationId<T>): Any
 
   @InternalNavigationApi
   public interface Store {
-    public fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T
+    public fun <T : Any> getOrCreate(
+      key: KClass<T>,
+      factory: () -> T,
+    ): T
   }
 }

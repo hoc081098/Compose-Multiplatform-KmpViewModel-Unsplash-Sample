@@ -11,4 +11,6 @@ data object SearchPhotoRoute : NavRoute, NavRoot
 
 @Immutable
 @Parcelize
-data class PhotoDetailRoute(val id: String) : NavRoute
+data class PhotoDetailRoute(
+  val id: String,
+) : NavRoute

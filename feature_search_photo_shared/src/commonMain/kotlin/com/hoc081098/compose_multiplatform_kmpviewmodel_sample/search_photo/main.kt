@@ -16,12 +16,13 @@ import kotlin.jvm.JvmField
 import org.koin.dsl.module
 
 @JvmField
-internal val FeatureSearchPhotoModule = module {
-  includes(
-    dataModule(),
-    domainModule(),
-  )
-}
+internal val FeatureSearchPhotoModule =
+  module {
+    includes(
+      dataModule(),
+      domainModule(),
+    )
+  }
 
 @Composable
 internal fun SearchPhotoScreenWithKoin(

@@ -22,8 +22,9 @@ internal fun PhotoGridCell(
   modifier: Modifier = Modifier,
 ) {
   Box(
-    modifier = modifier
-      .clickable(onClick = onClick),
+    modifier =
+      modifier
+        .clickable(onClick = onClick),
   ) {
     KamelImage(
       modifier = Modifier.matchParentSize(),

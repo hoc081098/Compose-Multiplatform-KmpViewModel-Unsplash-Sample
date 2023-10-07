@@ -13,7 +13,7 @@ java-target = "17"
 java-toolchain = "17"
 
 gradle-api = "8.3"
-ktlint = "0.50.0"
+ktlint = "1.0.0"
 
 android-gradle = "8.1.2"
 android-min = "24"
@@ -186,4 +186,4 @@ gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 poko = { id = "dev.drewhamilton.poko", version = "0.15.0" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.13.3" }
-spotless={ id = "com.diffplug.gradle.spotless", version = "6.20.0" }
+spotless={ id = "com.diffplug.gradle.spotless", version = "6.22.0" }

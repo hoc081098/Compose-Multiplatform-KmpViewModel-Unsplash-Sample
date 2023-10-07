@@ -12,10 +12,11 @@ import kotlinx.coroutines.flow.StateFlow
 actual inline fun <T> StateFlow<T>.collectAsStateWithLifecycleKmp(
   minActiveState: LifecycleState,
   context: CoroutineContext,
-): State<T> = androidXCollectAsStateWithLifecycle(
-  minActiveState = minActiveState.toAndroidXLifecycleState(),
-  context = context,
-)
+): State<T> =
+  androidXCollectAsStateWithLifecycle(
+    minActiveState = minActiveState.toAndroidXLifecycleState(),
+    context = context,
+  )
 
 @Suppress("NOTHING_TO_INLINE")
 @PublishedApi

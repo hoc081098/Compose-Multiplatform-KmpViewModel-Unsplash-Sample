@@ -74,12 +74,13 @@ private class SimpleSuspendLazy<T : Any>(
   @Volatile
   private var value: T? = null
 
-  suspend fun getValue(): T = value ?: mutex.withLock {
-    value ?: _initializer!!().also {
-      _initializer = null
-      value = it
+  suspend fun getValue(): T =
+    value ?: mutex.withLock {
+      value ?: _initializer!!().also {
+        _initializer = null
+        value = it
+      }
     }
-  }
 
   fun clear() {
     _initializer = null
@@ -90,8 +91,7 @@ private class SimpleSuspendLazy<T : Any>(
 @OptIn(DelicateCoroutinesApi::class, InternalCoroutinesApi::class)
 private class DefaultSelectorScope<T>(
   @JvmField val scope: CoroutineScope,
-) :
-  SynchronizedObject(),
+) : SynchronizedObject(),
   SelectorScope<T>,
   SelectorSharedFlowScope<T> {
   // TODO: atomic
@@ -112,22 +112,20 @@ private class DefaultSelectorScope<T>(
   @JvmField
   val blocks: MutableList<SelectorFunction<T, Any?>> = ArrayList()
 
-  // TODO: atomic
   /**
-   * Indicate that this scope is frozen, all [select] calls after this will throw [IllegalStateException]
+   * Indicate that this scope is frozen, all [select] calls after this will throw [IllegalStateException].
    */
   @Volatile
   @JvmField
-  var isFrozen = false
+  var isFrozen = false // TODO: atomic
 
-  // TODO: atomic
   /**
    * Indicate that a [select] calls is in progress,
-   * all [select] calls inside another [select] block will throw [IllegalStateException]
+   * all [select] calls inside another [select] block will throw [IllegalStateException].
    */
   @JvmField
   @Volatile
-  var isInSelectClause = false
+  var isInSelectClause = false // TODO: atomic
 
   // TODO: atomic
   @JvmField
@@ -135,32 +133,33 @@ private class DefaultSelectorScope<T>(
   var completedCount = 0
 
   // TODO: atomic or sync?
-  override fun <R> select(block: SelectorFunction<T, R>): Flow<R> = synchronized(this) {
-    check(!isInSelectClause) { "select can not be called inside another select" }
-    check(!isFrozen) { "select only can be called inside publish, do not use SelectorScope outside publish" }
+  override fun <R> select(block: SelectorFunction<T, R>): Flow<R> =
+    synchronized(this) {
+      check(!isInSelectClause) { "select can not be called inside another select" }
+      check(!isFrozen) { "select only can be called inside publish, do not use SelectorScope outside publish" }
 
-    isInSelectClause = true
+      isInSelectClause = true
 
-    blocks += block
-    val index = size - 1
+      blocks += block
+      val index = size - 1
 
-    return defer {
-      val cached = synchronized(this) {
-        // Only frozen state can reach here,
-        // that means we collect the output flow after frozen this scope
-        check(isFrozen) { "only frozen state can reach here!" }
+      return defer {
+        val cached =
+          synchronized(this) {
+            // Only frozen state can reach here,
+            // that means we collect the output flow after frozen this scope
+            check(isFrozen) { "only frozen state can reach here!" }
 
-        cachedSelectedFlows
-          ?.get(index)
-          ?: error("It looks like you are trying to collect the select{} flow outside publish, please don't do that!")
-      }
+            cachedSelectedFlows
+              ?.get(index)
+              ?: error("It looks like you are trying to collect the select{} flow outside publish, please don't do that!")
+          }
 
-      @Suppress("UNCHECKED_CAST") // Always safe
-      cached.getValue() as Flow<R>
+        @Suppress("UNCHECKED_CAST") // Always safe
+        cached.getValue() as Flow<R>
+      }.onCompletion { onCompleteASelectedFlow(index) }
+        .also { isInSelectClause = false }
     }
-      .onCompletion { onCompleteASelectedFlow(index) }
-      .also { isInSelectClause = false }
-  }
 
   // TODO: atomic
   private fun onCompleteASelectedFlow(index: Int) {
@@ -177,25 +176,28 @@ private class DefaultSelectorScope<T>(
     }
   }
 
-  override fun Flow<T>.shared(replay: Int): SharedFlow<T> = kotlinXFlowShareIn(
-    scope = scope,
-    started = SharingStarted.Lazily,
-    replay = replay,
-  )
+  override fun Flow<T>.shared(replay: Int): SharedFlow<T> =
+    kotlinXFlowShareIn(
+      scope = scope,
+      started = SharingStarted.Lazily,
+      replay = replay,
+    )
 
   // TODO: synchronized?
-  fun freezeAndInit() = synchronized(this) {
-    val channels = Array(size) { Channel<T>() }.also { this.channels = it }
+  fun freezeAndInit() =
+    synchronized(this) {
+      val channels = Array(size) { Channel<T>() }.also { this.channels = it }
 
-    cachedSelectedFlows = Array(size) { index ->
-      val block = blocks[index]
-      val flow = channels[index].consumeAsFlow()
+      cachedSelectedFlows =
+        Array(size) { index ->
+          val block = blocks[index]
+          val flow = channels[index].consumeAsFlow()
 
-      SimpleSuspendLazy { this.block(flow) }
+          SimpleSuspendLazy { this.block(flow) }
+        }
+
+      isFrozen = true
     }
-
-    isFrozen = true
-  }
 
   private inline val size: Int get() = blocks.size
 
@@ -215,22 +217,24 @@ private class DefaultSelectorScope<T>(
   }
 
   // TODO: synchronized?
-  fun close(e: Throwable?) = synchronized(this) {
-    println("close: $e")
-    for (channel in channels.orEmpty()) {
-      channel.close(e)
+  fun close(e: Throwable?) =
+    synchronized(this) {
+      println("close: $e")
+      for (channel in channels.orEmpty()) {
+        channel.close(e)
+      }
+      channels = null
     }
-    channels = null
-  }
 
   // TODO: synchronized?
-  fun cancel(e: CancellationException) = synchronized(this) {
-    println("cancel: $e")
-    for (channel in channels.orEmpty()) {
-      channel.cancel(e)
+  fun cancel(e: CancellationException) =
+    synchronized(this) {
+      println("cancel: $e")
+      for (channel in channels.orEmpty()) {
+        channel.cancel(e)
+      }
+      channels = null
     }
-    channels = null
-  }
 }
 
 fun <T, R> Flow<T>.publish(selector: suspend SelectorScope<T>.() -> Flow<R>): Flow<R> {
@@ -275,8 +279,7 @@ suspend fun main() {
     emit(3)
     delay(100)
     emit("4")
-  }
-    .onEach { println(">>> onEach: $it") }
+  }.onEach { println(">>> onEach: $it") }
     .publish {
       delay(100)
 
@@ -291,27 +294,28 @@ suspend fun main() {
               timer(value, 50)
                 .withLatestFrom(sharedFlow)
                 .map { it to "shared" }
-            }
-            .takeUntil(sharedFlow.filter { it == 3 })
+            }.takeUntil(sharedFlow.filter { it == 3 })
         },
         select { flow ->
-          flow.filterIsInstance<Int>()
+          flow
+            .filterIsInstance<Int>()
             .filter { it % 2 == 0 }
             .map { it to "even" }
             .take(1)
         },
         select { flow ->
-          flow.filterIsInstance<Int>()
+          flow
+            .filterIsInstance<Int>()
             .filter { it % 2 != 0 }
             .map { it to "odd" }
             .take(1)
         },
         select { flow ->
-          flow.filterIsInstance<String>()
+          flow
+            .filterIsInstance<String>()
             .map { it to "string" }
             .take(1)
         },
       )
-    }
-    .collect(::println)
+    }.collect(::println)
 }

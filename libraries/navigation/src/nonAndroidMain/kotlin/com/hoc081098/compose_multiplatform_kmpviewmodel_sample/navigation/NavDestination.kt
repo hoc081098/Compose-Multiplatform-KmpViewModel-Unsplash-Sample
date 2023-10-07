@@ -27,9 +27,8 @@ internal sealed interface ContentDestination<T : BaseRoute> : NavDestination {
  */
 @OptIn(InternalNavigationApi::class)
 @Suppress("FunctionName")
-public inline fun <reified T : BaseRoute> ScreenDestination(
-  noinline content: @Composable (T) -> Unit,
-): NavDestination = ScreenDestination(DestinationId(T::class), null, content)
+public inline fun <reified T : BaseRoute> ScreenDestination(noinline content: @Composable (T) -> Unit): NavDestination =
+  ScreenDestination(DestinationId(T::class), null, content)
 
 @InternalNavigationApi
 @Suppress("FunctionName")
@@ -53,9 +52,8 @@ internal class ScreenDestination<T : BaseRoute>(
  */
 @OptIn(InternalNavigationApi::class)
 @Suppress("FunctionName")
-public inline fun <reified T : NavRoute> OverlayDestination(
-  noinline content: @Composable (T) -> Unit,
-): NavDestination = OverlayDestination(DestinationId(T::class), null, content)
+public inline fun <reified T : NavRoute> OverlayDestination(noinline content: @Composable (T) -> Unit): NavDestination =
+  OverlayDestination(DestinationId(T::class), null, content)
 
 @InternalNavigationApi
 @Suppress("FunctionName")

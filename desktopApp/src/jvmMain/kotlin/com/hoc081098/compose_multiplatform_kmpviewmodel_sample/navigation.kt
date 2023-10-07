@@ -22,44 +22,46 @@ import org.koin.dsl.module
 val AllDestinationsQualifier = qualifier("AllDestinationsQualifier")
 
 @JvmField
-val NavigationModule = module {
-  singleOf(::NavEventNavigator)
+val NavigationModule =
+  module {
+    singleOf(::NavEventNavigator)
 
-  declareSetMultibinding<NavDestination>(qualifier = AllDestinationsQualifier)
+    declareSetMultibinding<NavDestination>(qualifier = AllDestinationsQualifier)
 
-  intoSetMultibinding(
-    key = SearchPhotoRoute::class.java,
-    multibindingQualifier = AllDestinationsQualifier,
-  ) {
-    ScreenDestination<SearchPhotoRoute> { route ->
-      val navigator = koinInject<NavEventNavigator>()
+    intoSetMultibinding(
+      key = SearchPhotoRoute::class.java,
+      multibindingQualifier = AllDestinationsQualifier,
+    ) {
+      ScreenDestination<SearchPhotoRoute> { route ->
+        val navigator = koinInject<NavEventNavigator>()
 
-      NavigationSetup(navigator)
+        NavigationSetup(navigator)
 
-      SearchPhotoScreen(
-        route = route,
-        navigateToPhotoDetail = remember(navigator) {
-          {
-            navigator.navigateTo(PhotoDetailRoute(id = it))
-          }
-        },
-      )
+        SearchPhotoScreen(
+          route = route,
+          navigateToPhotoDetail =
+            remember(navigator) {
+              {
+                navigator.navigateTo(PhotoDetailRoute(id = it))
+              }
+            },
+        )
+      }
+    }
+
+    intoSetMultibinding(
+      key = PhotoDetailRoute::class.java,
+      multibindingQualifier = AllDestinationsQualifier,
+    ) {
+      ScreenDestination<PhotoDetailRoute> { route ->
+        val navigator = koinInject<NavEventNavigator>()
+
+        NavigationSetup(navigator)
+
+        PhotoDetailScreen(
+          route = route,
+          onNavigationBack = remember(navigator) { navigator::navigateBack },
+        )
+      }
     }
   }
-
-  intoSetMultibinding(
-    key = PhotoDetailRoute::class.java,
-    multibindingQualifier = AllDestinationsQualifier,
-  ) {
-    ScreenDestination<PhotoDetailRoute> { route ->
-      val navigator = koinInject<NavEventNavigator>()
-
-      NavigationSetup(navigator)
-
-      PhotoDetailScreen(
-        route = route,
-        onNavigationBack = remember(navigator) { navigator::navigateBack },
-      )
-    }
-  }
-}

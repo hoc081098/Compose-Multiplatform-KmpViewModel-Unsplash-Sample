@@ -19,19 +19,22 @@ internal fun rememberNavigationExecutor(
   startRoot: NavRoot,
   destinations: Set<NavDestination>,
 ): MultiStackNavigationExecutor {
-  val viewModel = kmpViewModel(
-    factory = viewModelFactory { StoreViewModel(globalSavedStateHandle = createSavedStateHandle()) },
-  )
+  val viewModel =
+    kmpViewModel(
+      factory = viewModelFactory { StoreViewModel(globalSavedStateHandle = createSavedStateHandle()) },
+    )
 
   return remember(viewModel) {
-    val contentDestinations = destinations
-      .filterIsInstance<ContentDestination<*>>()
+    val contentDestinations =
+      destinations
+        .filterIsInstance<ContentDestination<*>>()
 
-    val stack = MultiStack.createWith(
-      startRoot,
-      contentDestinations,
-      viewModel::removeEntry,
-    )
+    val stack =
+      MultiStack.createWith(
+        startRoot,
+        contentDestinations,
+        viewModel::removeEntry,
+      )
 
     MultiStackNavigationExecutor(
       stack = stack,

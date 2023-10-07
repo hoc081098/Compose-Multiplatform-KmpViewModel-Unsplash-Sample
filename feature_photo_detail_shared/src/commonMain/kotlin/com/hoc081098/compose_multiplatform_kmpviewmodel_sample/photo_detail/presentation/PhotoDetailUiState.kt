@@ -20,7 +20,9 @@ internal sealed interface PhotoDetailUiState {
     val isRefreshing: Boolean,
   ) : PhotoDetailUiState
 
-  data class Error(val error: PhotoDetailError) : PhotoDetailUiState
+  data class Error(
+    val error: PhotoDetailError,
+  ) : PhotoDetailUiState
 
   @Immutable
   data class PhotoDetailUi(
@@ -55,8 +57,8 @@ internal sealed interface PhotoDetailUiState {
 }
 
 @Stable
-internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi {
-  return PhotoDetailUi(
+internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi =
+  PhotoDetailUi(
     id = id,
     fullUrl = fullUrl,
     description = description,
@@ -64,15 +66,16 @@ internal fun PhotoDetail.toPhotoDetailUi(): PhotoDetailUi {
     createdAt = createdAt.toImmutableWrapper(),
     updatedAt = updatedAt.toImmutableWrapper(),
     promotedAt = promotedAt.toImmutableWrapper(),
-    creator = PhotoCreatorUi(
-      id = creator.id,
-      username = creator.username,
-      name = creator.name,
-      mediumProfileImageUrl = creator.mediumProfileImageUrl,
-    ),
-    size = PhotoSizeUi(
-      width = size.width,
-      height = size.height,
-    ),
+    creator =
+      PhotoCreatorUi(
+        id = creator.id,
+        username = creator.username,
+        name = creator.name,
+        mediumProfileImageUrl = creator.mediumProfileImageUrl,
+      ),
+    size =
+      PhotoSizeUi(
+        width = size.width,
+        height = size.height,
+      ),
   )
-}

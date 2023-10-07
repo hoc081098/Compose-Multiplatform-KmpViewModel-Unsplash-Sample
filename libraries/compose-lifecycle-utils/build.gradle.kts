@@ -1,13 +1,33 @@
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.jetbrains.compose.mutiplatform)
+  alias(
+    libs
+      .plugins
+      .jetbrains
+      .compose
+      .mutiplatform,
+  )
 }
 
-@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
+@OptIn(
+  org
+    .jetbrains
+    .kotlin
+    .gradle
+    .ExperimentalKotlinGradlePluginApi::class,
+)
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    languageVersion.set(
+      JavaLanguageVersion.of(
+        libs
+          .versions
+          .java
+          .toolchain
+          .get(),
+      ),
+    )
     vendor.set(JvmVendorSpec.AZUL)
   }
 
@@ -23,7 +43,15 @@ kotlin {
   androidTarget {
     compilations.all {
       kotlinOptions {
-        jvmTarget = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
+        jvmTarget =
+          JavaVersion
+            .toVersion(
+              libs
+                .versions
+                .java
+                .target
+                .get(),
+            ).toString()
       }
     }
   }
@@ -52,7 +80,13 @@ kotlin {
     val androidMain by getting {
       dependencies {
         // AndroidX Lifecycle Runtime Compose
-        api(libs.androidx.lifecycle.runtime.compose)
+        api(
+          libs
+            .androidx
+            .lifecycle
+            .runtime
+            .compose,
+        )
       }
     }
   }
@@ -61,9 +95,21 @@ kotlin {
 android {
   namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.libraries.compose-lifecycle-utils"
 
-  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
+  compileSdk =
+    libs
+      .versions
+      .android
+      .compile
+      .map { it.toInt() }
+      .get()
   defaultConfig {
-    minSdk = libs.versions.android.min.map { it.toInt() }.get()
+    minSdk =
+      libs
+        .versions
+        .android
+        .min
+        .map { it.toInt() }
+        .get()
   }
 
   buildFeatures {
@@ -71,7 +117,21 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
-    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    sourceCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
+    targetCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
   }
 }

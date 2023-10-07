@@ -4,10 +4,24 @@ plugins {
   alias(libs.plugins.kotlin.parcelize)
 }
 
-@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
+@OptIn(
+  org
+    .jetbrains
+    .kotlin
+    .gradle
+    .ExperimentalKotlinGradlePluginApi::class,
+)
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    languageVersion.set(
+      JavaLanguageVersion.of(
+        libs
+          .versions
+          .java
+          .toolchain
+          .get(),
+      ),
+    )
     vendor.set(JvmVendorSpec.AZUL)
   }
 
@@ -16,7 +30,15 @@ kotlin {
   androidTarget {
     compilations.all {
       kotlinOptions {
-        jvmTarget = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
+        jvmTarget =
+          JavaVersion
+            .toVersion(
+              libs
+                .versions
+                .java
+                .target
+                .get(),
+            ).toString()
       }
     }
   }
@@ -45,14 +67,40 @@ kotlin {
 android {
   namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared"
 
-  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
+  compileSdk =
+    libs
+      .versions
+      .android
+      .compile
+      .map { it.toInt() }
+      .get()
   defaultConfig {
-    minSdk = libs.versions.android.min.map { it.toInt() }.get()
+    minSdk =
+      libs
+        .versions
+        .android
+        .min
+        .map { it.toInt() }
+        .get()
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
-    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    sourceCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
+    targetCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
   }
 
   buildFeatures {

@@ -5,7 +5,13 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.readPropertiesFil
 plugins {
   alias(libs.plugins.kotlin.multiplatform)
   alias(libs.plugins.android.library)
-  alias(libs.plugins.jetbrains.compose.mutiplatform)
+  alias(
+    libs
+      .plugins
+      .jetbrains
+      .compose
+      .mutiplatform,
+  )
   alias(libs.plugins.kotlin.serialization)
   alias(libs.plugins.buildkonfig)
   alias(libs.plugins.ksp)
@@ -14,7 +20,15 @@ plugins {
 
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    languageVersion.set(
+      JavaLanguageVersion.of(
+        libs
+          .versions
+          .java
+          .toolchain
+          .get(),
+      ),
+    )
     vendor.set(JvmVendorSpec.AZUL)
   }
 
@@ -51,8 +65,20 @@ kotlin {
         implementation(libs.ktor.client.json)
         implementation(libs.ktor.client.logging)
         implementation(libs.ktor.client.serialization)
-        implementation(libs.ktor.client.content.negotiation)
-        implementation(libs.ktor.serialization.kotlinx.json)
+        implementation(
+          libs
+            .ktor
+            .client
+            .content
+            .negotiation,
+        )
+        implementation(
+          libs
+            .ktor
+            .serialization
+            .kotlinx
+            .json,
+        )
 
         // KotlinX Serialization
         implementation(libs.kotlinx.serialization.core)
@@ -137,14 +163,40 @@ android {
   sourceSets["main"].res.srcDirs("src/androidMain/res")
   sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
-  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
+  compileSdk =
+    libs
+      .versions
+      .android
+      .compile
+      .map { it.toInt() }
+      .get()
   defaultConfig {
-    minSdk = libs.versions.android.min.map { it.toInt() }.get()
+    minSdk =
+      libs
+        .versions
+        .android
+        .min
+        .map { it.toInt() }
+        .get()
   }
 
   compileOptions {
-    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
-    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    sourceCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
+    targetCompatibility =
+      JavaVersion.toVersion(
+        libs
+          .versions
+          .java
+          .target
+          .get(),
+      )
   }
 
   buildFeatures {
@@ -178,12 +230,13 @@ buildkonfig {
     buildConfigField(
       type = FieldSpec.Type.STRING,
       name = "UNSPLASH_CLIENT_ID",
-      value = if (isCiBuild) {
-        logger.info("CI build, ignore checking existence of local.properties file")
-        "none"
-      } else {
-        rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
-      },
+      value =
+        if (isCiBuild) {
+          logger.info("CI build, ignore checking existence of local.properties file")
+          "none"
+        } else {
+          rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
+        },
     )
     buildConfigField(
       type = FieldSpec.Type.STRING,

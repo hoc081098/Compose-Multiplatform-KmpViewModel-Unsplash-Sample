@@ -21,10 +21,11 @@ import org.koin.dsl.KoinAppDeclaration
 fun main() {
   Napier.base(
     DebugAntilog(
-      handler = listOf(
-        StreamHandler(System.out, SimpleFormatter())
-          .apply { level = Level.ALL },
-      ),
+      handler =
+        listOf(
+          StreamHandler(System.out, SimpleFormatter())
+            .apply { level = Level.ALL },
+        ),
     ),
   )
 
@@ -47,11 +48,12 @@ fun main() {
           NavHost(
             startRoute = SearchPhotoRoute,
             destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
-            destinationChangedCallback = remember {
-              {
-                println("Destination changed: $it")
-              }
-            },
+            destinationChangedCallback =
+              remember {
+                {
+                  println("Destination changed: $it")
+                }
+              },
           )
         }
       }

@@ -44,16 +44,15 @@ import com.hoc081098.kmp.viewmodel.viewModelFactory
 import org.koin.compose.koinInject
 
 @Composable
-private fun searchPhotoViewModel(
-  searchPhotoUseCase: SearchPhotoUseCase = koinInject(),
-): SearchPhotoViewModel =
+private fun searchPhotoViewModel(searchPhotoUseCase: SearchPhotoUseCase = koinInject()): SearchPhotoViewModel =
   kmpViewModel(
-    factory = viewModelFactory {
-      SearchPhotoViewModel(
-        savedStateHandle = createSavedStateHandle(),
-        searchPhotoUseCase = searchPhotoUseCase,
-      )
-    },
+    factory =
+      viewModelFactory {
+        SearchPhotoViewModel(
+          savedStateHandle = createSavedStateHandle(),
+          searchPhotoUseCase = searchPhotoUseCase,
+        )
+      },
   )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -70,8 +69,9 @@ internal fun SearchPhotoScreen(
     .collectAsStateWithLifecycleKmp(context = appCoroutineDispatchers.immediateMain)
 
   Scaffold(
-    modifier = modifier
-      .fillMaxSize(),
+    modifier =
+      modifier
+        .fillMaxSize(),
     topBar = {
       CenterAlignedTopAppBar(
         title = { Text(text = "Unsplash") },
@@ -79,16 +79,18 @@ internal fun SearchPhotoScreen(
     },
   ) { padding ->
     Column(
-      modifier = Modifier
-        .padding(padding)
-        .consumeWindowInsets(padding),
+      modifier =
+        Modifier
+          .padding(padding)
+          .consumeWindowInsets(padding),
     ) {
       Spacer(modifier = Modifier.height(16.dp))
 
       TextField(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 16.dp),
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         value = searchTerm.orEmpty(),
         onValueChange = remember(viewModel) { viewModel::search },
         label = { Text(text = "Search term") },
@@ -97,18 +99,20 @@ internal fun SearchPhotoScreen(
       Spacer(modifier = Modifier.height(8.dp))
 
       Text(
-        modifier = Modifier
-          .fillMaxWidth()
-          .padding(horizontal = 16.dp),
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
         text = "Submitted term: ${state.submittedTerm.orEmpty()}",
       )
 
       Spacer(modifier = Modifier.height(16.dp))
 
       Box(
-        modifier = Modifier
-          .fillMaxWidth()
-          .weight(1f),
+        modifier =
+          Modifier
+            .fillMaxWidth()
+            .weight(1f),
         contentAlignment = Alignment.Center,
       ) {
         ListContent(
@@ -140,12 +144,13 @@ private fun ListContent(
     ErrorMessageAndRetryButton(
       modifier = modifier,
       onRetry = { },
-      errorMessage = when (error) {
-        SearchPhotoError.NetworkError -> "Network error"
-        SearchPhotoError.ServerError -> "Server error"
-        SearchPhotoError.TimeoutError -> "Timeout error"
-        SearchPhotoError.Unexpected -> "Unexpected error"
-      },
+      errorMessage =
+        when (error) {
+          SearchPhotoError.NetworkError -> "Network error"
+          SearchPhotoError.ServerError -> "Server error"
+          SearchPhotoError.TimeoutError -> "Timeout error"
+          SearchPhotoError.Unexpected -> "Unexpected error"
+        },
     )
     return
   }
@@ -168,10 +173,11 @@ private fun ListContent(
         key = { it.id },
       ) {
         PhotoGridCell(
-          modifier = Modifier
-            .animateItemPlacement()
-            .fillMaxWidth()
-            .aspectRatio(1f),
+          modifier =
+            Modifier
+              .animateItemPlacement()
+              .fillMaxWidth()
+              .aspectRatio(1f),
           photo = it,
           onClick = { onItemClick(it) },
         )

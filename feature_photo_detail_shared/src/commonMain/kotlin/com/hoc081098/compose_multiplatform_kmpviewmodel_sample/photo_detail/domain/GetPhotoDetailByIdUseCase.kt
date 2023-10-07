@@ -7,6 +7,5 @@ import org.koin.core.annotation.Factory
 class GetPhotoDetailByIdUseCase(
   private val repository: PhotoDetailRepository,
 ) {
-  suspend operator fun invoke(id: String): Either<PhotoDetailError, PhotoDetail> =
-    repository.getPhotoDetailById(id)
+  suspend operator fun invoke(id: String): Either<PhotoDetailError, PhotoDetail> = repository.getPhotoDetailById(id)
 }

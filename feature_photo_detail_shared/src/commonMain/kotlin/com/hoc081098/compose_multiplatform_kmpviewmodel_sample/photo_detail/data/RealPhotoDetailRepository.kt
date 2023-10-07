@@ -22,40 +22,42 @@ internal class RealPhotoDetailRepository(
   private val photoDetailErrorMapper: PhotoDetailErrorMapper,
   private val appCoroutineDispatchers: AppCoroutineDispatchers,
 ) : PhotoDetailRepository {
-  override suspend fun getPhotoDetailById(id: String) = withContext(appCoroutineDispatchers.io) {
-    Either
-      .catch {
-        unsplashApi
-          .getPhotoDetailById(id)
-          .toPhotoDetail()
-      }
-      .onLeft {
-        Napier.e(
-          throwable = it,
-          tag = "RealPhotoDetailRepository",
-          message = "getPhotoDetailById($id) failed",
-        )
-      }
-      .mapLeft(photoDetailErrorMapper)
-  }
+  override suspend fun getPhotoDetailById(id: String) =
+    withContext(appCoroutineDispatchers.io) {
+      Either
+        .catch {
+          unsplashApi
+            .getPhotoDetailById(id)
+            .toPhotoDetail()
+        }.onLeft {
+          Napier.e(
+            throwable = it,
+            tag = "RealPhotoDetailRepository",
+            message = "getPhotoDetailById($id) failed",
+          )
+        }.mapLeft(photoDetailErrorMapper)
+    }
 }
 
-private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail = PhotoDetail(
-  id = id,
-  fullUrl = urls.full,
-  description = description,
-  alternativeDescription = altDescription,
-  createdAt = createdAt,
-  updatedAt = updatedAt,
-  promotedAt = promotedAt,
-  creator = PhotoCreator(
-    id = user.id,
-    username = user.username,
-    name = user.name,
-    mediumProfileImageUrl = user.profileImage?.medium,
-  ),
-  size = PhotoSize(
-    width = width.toUInt(),
-    height = height.toUInt(),
-  ),
-)
+private fun CoverPhotoResponse.toPhotoDetail(): PhotoDetail =
+  PhotoDetail(
+    id = id,
+    fullUrl = urls.full,
+    description = description,
+    alternativeDescription = altDescription,
+    createdAt = createdAt,
+    updatedAt = updatedAt,
+    promotedAt = promotedAt,
+    creator =
+      PhotoCreator(
+        id = user.id,
+        username = user.username,
+        name = user.name,
+        mediumProfileImageUrl = user.profileImage?.medium,
+      ),
+    size =
+      PhotoSize(
+        width = width.toUInt(),
+        height = height.toUInt(),
+      ),
+  )

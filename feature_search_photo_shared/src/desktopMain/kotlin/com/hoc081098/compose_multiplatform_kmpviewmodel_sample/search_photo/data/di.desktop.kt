@@ -7,7 +7,7 @@ import org.koin.core.annotation.Singleton
 
 @Singleton
 internal actual fun createHttpClient(json: Json): HttpClient =
-  createHttpClient(
+  com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.remote.createHttpClient(
     engineFactory = Java,
     json = json,
   ) {}

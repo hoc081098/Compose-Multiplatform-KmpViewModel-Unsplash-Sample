@@ -18,29 +18,31 @@ internal fun <T : HttpClientEngineConfig> createHttpClient(
   engineFactory: HttpClientEngineFactory<T>,
   json: Json,
   block: T.() -> Unit,
-): HttpClient = HttpClient(engineFactory) {
-  engine(block)
+): HttpClient =
+  HttpClient(engineFactory) {
+    engine(block)
 
-  install(HttpTimeout) {
-    requestTimeoutMillis = 15_000
-    connectTimeoutMillis = 10_000
-    socketTimeoutMillis = 10_000
-  }
+    install(HttpTimeout) {
+      requestTimeoutMillis = 15_000
+      connectTimeoutMillis = 10_000
+      socketTimeoutMillis = 10_000
+    }
 
-  install(ContentNegotiation) {
-    json(json)
-    register(
-      ContentType.Text.Plain,
-      KotlinxSerializationConverter(json),
-    )
-  }
+    install(ContentNegotiation) {
+      json(json)
+      register(
+        ContentType.Text.Plain,
+        KotlinxSerializationConverter(json),
+      )
+    }
 
-  install(Logging) {
-    level = LogLevel.ALL
-    logger = object : Logger {
-      override fun log(message: String) {
-        Napier.d(message = message, tag = "[HttpClient]")
-      }
+    install(Logging) {
+      level = LogLevel.ALL
+      logger =
+        object : Logger {
+          override fun log(message: String) {
+            Napier.d(message = message, tag = "[HttpClient]")
+          }
+        }
     }
   }
-}

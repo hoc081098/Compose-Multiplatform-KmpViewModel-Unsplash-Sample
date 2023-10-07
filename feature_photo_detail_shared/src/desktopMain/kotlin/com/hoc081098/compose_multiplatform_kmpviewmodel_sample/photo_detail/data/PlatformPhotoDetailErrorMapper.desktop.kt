@@ -9,14 +9,16 @@ import org.koin.core.annotation.Singleton
 
 @Singleton
 internal actual class PlatformPhotoDetailErrorMapper actual constructor() : (Throwable) -> PhotoDetailError? {
-  override fun invoke(t: Throwable): PhotoDetailError? = when (t) {
-    is PhotoDetailError -> t
-    is IOException -> when (t) {
-      is UnknownHostException, is SocketException -> PhotoDetailError.NetworkError
-      is SocketTimeoutException -> PhotoDetailError.TimeoutError
+  override fun invoke(t: Throwable): PhotoDetailError? =
+    when (t) {
+      is PhotoDetailError -> t
+      is IOException ->
+        when (t) {
+          is UnknownHostException, is SocketException -> PhotoDetailError.NetworkError
+          is SocketTimeoutException -> PhotoDetailError.TimeoutError
+          else -> null
+        }
+
       else -> null
     }
-
-    else -> null
-  }
 }

@@ -10,7 +10,9 @@ import kotlin.reflect.KClass
 
 @InternalNavigationApi
 @JvmInline
-public value class DestinationId<T : BaseRoute>(public val route: KClass<T>)
+public value class DestinationId<T : BaseRoute>(
+  public val route: KClass<T>,
+)
 
 @InternalNavigationApi
 public val <T : BaseRoute> T.destinationId: DestinationId<out T>

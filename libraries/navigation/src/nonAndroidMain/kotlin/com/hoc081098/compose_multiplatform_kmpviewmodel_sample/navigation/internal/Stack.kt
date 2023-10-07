@@ -21,18 +21,18 @@ internal class Stack private constructor(
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
-  private val stack = ArrayDeque<StackEntry<*>>(20).also {
-    it.addAll(initialStack)
-  }
+  private val stack =
+    ArrayDeque<StackEntry<*>>(20).also {
+      it.addAll(initialStack)
+    }
 
   val id: DestinationId<*> get() = rootEntry.destinationId
   val rootEntry: StackEntry<*> get() = stack.first()
   val isAtRoot: Boolean get() = !stack.last().removable
 
   @Suppress("UNCHECKED_CAST")
-  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? {
-    return stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
-  }
+  fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T>? =
+    stack.findLast { it.destinationId == destinationId } as StackEntry<T>?
 
   fun computeVisibleEntries(): ImmutableList<StackEntry<*>> {
     if (stack.size == 1) {
@@ -45,11 +45,12 @@ internal class Stack private constructor(
     while (iterator.hasPrevious()) {
       if (iterator.previous().destination is ScreenDestination<*>) {
         val expectedSize = stack.size - iterator.nextIndex()
-        return ArrayList<StackEntry<*>>(expectedSize).apply {
-          while (iterator.hasNext()) {
-            add(iterator.next())
-          }
-        }.let(::ImmutableListAdapter)
+        return ArrayList<StackEntry<*>>(expectedSize)
+          .apply {
+            while (iterator.hasNext()) {
+              add(iterator.next())
+            }
+          }.let(::ImmutableListAdapter)
       }
     }
 
@@ -70,7 +71,10 @@ internal class Stack private constructor(
     onStackEntryRemoved(entry.id)
   }
 
-  fun popUpTo(destinationId: DestinationId<*>, isInclusive: Boolean) {
+  fun popUpTo(
+    destinationId: DestinationId<*>,
+    isInclusive: Boolean,
+  ) {
     while (stack.last().destinationId != destinationId) {
       check(stack.last().removable) { "Route ${destinationId.route} not found on back stack" }
       popInternal()

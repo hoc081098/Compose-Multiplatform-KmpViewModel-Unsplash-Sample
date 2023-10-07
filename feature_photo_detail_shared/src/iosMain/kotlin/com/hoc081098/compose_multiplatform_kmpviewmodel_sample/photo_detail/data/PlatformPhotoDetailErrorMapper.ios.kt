@@ -10,23 +10,26 @@ import platform.Foundation.NSURLErrorNotConnectedToInternet
 
 @Singleton
 internal actual class PlatformPhotoDetailErrorMapper actual constructor() : (Throwable) -> PhotoDetailError? {
-  override fun invoke(t: Throwable): PhotoDetailError? = when (t) {
-    is PhotoDetailError -> t
-    is SocketTimeoutException -> PhotoDetailError.TimeoutError
-    is DarwinHttpRequestException -> when {
-      t.origin.domain == NSURLErrorDomain && t.origin.code in NETWORK_ERROR_CODES ->
-        PhotoDetailError.NetworkError
+  override fun invoke(t: Throwable): PhotoDetailError? =
+    when (t) {
+      is PhotoDetailError -> t
+      is SocketTimeoutException -> PhotoDetailError.TimeoutError
+      is DarwinHttpRequestException ->
+        when {
+          t.origin.domain == NSURLErrorDomain && t.origin.code in NETWORK_ERROR_CODES ->
+            PhotoDetailError.NetworkError
+
+          else -> null
+        }
 
       else -> null
     }
 
-    else -> null
-  }
-
   private companion object {
-    private val NETWORK_ERROR_CODES = setOf(
-      NSURLErrorNotConnectedToInternet,
-      NSURLErrorNetworkConnectionLost,
-    )
+    private val NETWORK_ERROR_CODES =
+      setOf(
+        NSURLErrorNotConnectedToInternet,
+        NSURLErrorNetworkConnectionLost,
+      )
   }
 }

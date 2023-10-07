@@ -12,6 +12,7 @@ import org.koin.core.scope.Scope
 inline fun <reified V> koinInjectSetMultibinding(
   qualifier: StringQualifier = defaultSetMultibindingQualifier<V>(),
   scope: Scope = getKoinScope(),
-): Set<V> = remember(scope, qualifier) {
-  scope.getSetMultibinding(qualifier = qualifier)
-}
+): Set<V> =
+  remember(scope, qualifier) {
+    scope.getSetMultibinding(qualifier = qualifier)
+  }

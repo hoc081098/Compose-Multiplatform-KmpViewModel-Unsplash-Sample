@@ -4,4 +4,9 @@ import com.freeletics.khonshu.navigation.internal.InternalNavigationApi
 
 @OptIn(InternalNavigationApi::class)
 actual val EXTRA_ROUTE: String
-  get() = com.freeletics.khonshu.navigation.EXTRA_ROUTE
+  get() =
+    com
+      .freeletics
+      .khonshu
+      .navigation
+      .EXTRA_ROUTE

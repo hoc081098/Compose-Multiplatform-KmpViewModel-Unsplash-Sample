@@ -43,31 +43,34 @@ internal class PhotoDetailViewModel(
     Napier.d("init route=$route -> $this", tag = "PhotoDetailViewModel")
     addCloseable { Napier.d("close route=$route -> $this", tag = "PhotoDetailViewModel") }
 
-    uiStateFlow = _intentChannel
-      .consumeAsFlow()
-      .onEach { Napier.d(message = "intent $it", tag = "PhotoDetailViewModel") }
-      .publish {
-        merge(
-          select {
-            it.filterIsInstance<PhotoDetailViewIntent.Init>()
-              .toPartialStateChangesFlow()
-          },
-          select {
-            it.filterIsInstance<PhotoDetailViewIntent.Refresh>()
-              .toPartialStateChangesFlow()
-          },
-          select {
-            it.filterIsInstance<PhotoDetailViewIntent.Retry>()
-              .toPartialStateChangesFlow()
-          },
+    uiStateFlow =
+      _intentChannel
+        .consumeAsFlow()
+        .onEach { Napier.d(message = "intent $it", tag = "PhotoDetailViewModel") }
+        .publish {
+          merge(
+            select {
+              it
+                .filterIsInstance<PhotoDetailViewIntent.Init>()
+                .toPartialStateChangesFlow()
+            },
+            select {
+              it
+                .filterIsInstance<PhotoDetailViewIntent.Refresh>()
+                .toPartialStateChangesFlow()
+            },
+            select {
+              it
+                .filterIsInstance<PhotoDetailViewIntent.Retry>()
+                .toPartialStateChangesFlow()
+            },
+          )
+        }.scan(PhotoDetailUiState.INITIAL) { state, change -> change.reduce(state) }
+        .stateIn(
+          scope = viewModelScope,
+          started = SharingStarted.Eagerly,
+          initialValue = PhotoDetailUiState.INITIAL,
         )
-      }
-      .scan(PhotoDetailUiState.INITIAL) { state, change -> change.reduce(state) }
-      .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = PhotoDetailUiState.INITIAL,
-      )
   }
 
   internal fun process(intent: PhotoDetailViewIntent) {
@@ -89,8 +92,7 @@ internal class PhotoDetailViewModel(
                 PhotoDetailPartialStateChange.InitAndRetry.Content(it.toPhotoDetailUi())
               },
             )
-          }
-          .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
+          }.startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
       }
 
   @JvmName("retryIntentFlowToPartialStateChangesFlow")
@@ -107,8 +109,7 @@ internal class PhotoDetailViewModel(
                 PhotoDetailPartialStateChange.InitAndRetry.Content(it.toPhotoDetailUi())
               },
             )
-          }
-          .startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
+          }.startWith(PhotoDetailPartialStateChange.InitAndRetry.Loading)
       }
 
   @JvmName("refreshIntentFlowToPartialStateChangesFlow")
@@ -116,20 +117,18 @@ internal class PhotoDetailViewModel(
     filter {
       val state = uiStateFlow.value
       state is PhotoDetailUiState.Content && !state.isRefreshing
+    }.flatMapFirst {
+      flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
+        .map { either ->
+          either.fold(
+            ifLeft = {
+              PhotoDetailPartialStateChange.Refresh.Error(it)
+            },
+            ifRight = {
+              PhotoDetailPartialStateChange.Refresh.Content(it.toPhotoDetailUi())
+            },
+          )
+        }.startWith(PhotoDetailPartialStateChange.Refresh.Refreshing)
     }
-      .flatMapFirst {
-        flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
-          .map { either ->
-            either.fold(
-              ifLeft = {
-                PhotoDetailPartialStateChange.Refresh.Error(it)
-              },
-              ifRight = {
-                PhotoDetailPartialStateChange.Refresh.Content(it.toPhotoDetailUi())
-              },
-            )
-          }
-          .startWith(PhotoDetailPartialStateChange.Refresh.Refreshing)
-      }
   //endregion
 }

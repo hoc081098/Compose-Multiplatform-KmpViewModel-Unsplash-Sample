@@ -43,15 +43,17 @@ import org.koin.compose.koinInject
 private fun photoDetailViewModel(
   route: PhotoDetailRoute,
   getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
-): PhotoDetailViewModel = kmpViewModel(
-  key = "${PhotoDetailViewModel::class.simpleName}_$route",
-  factory = viewModelFactory {
-    PhotoDetailViewModel(
-      savedStateHandle = createSavedStateHandle(),
-      getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
-    )
-  },
-)
+): PhotoDetailViewModel =
+  kmpViewModel(
+    key = "${PhotoDetailViewModel::class.simpleName}_$route",
+    factory =
+      viewModelFactory {
+        PhotoDetailViewModel(
+          savedStateHandle = createSavedStateHandle(),
+          getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
+        )
+      },
+  )
 
 @Composable
 internal fun PhotoDetailScreen(
@@ -62,10 +64,11 @@ internal fun PhotoDetailScreen(
 ) {
   val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycleKmp()
 
-  val processIntent: (PhotoDetailViewIntent) -> Unit = remember(viewModel) {
-    @Suppress("SuspiciousCallableReferenceInLambda")
-    viewModel::process
-  }
+  val processIntent: (PhotoDetailViewIntent) -> Unit =
+    remember(viewModel) {
+      @Suppress("SuspiciousCallableReferenceInLambda")
+      viewModel::process
+    }
 
   DisposableEffect(processIntent) {
     processIntent(PhotoDetailViewIntent.Init)
@@ -106,10 +109,11 @@ private fun PhotoDetailContent(
     },
   ) { padding ->
     Box(
-      modifier = modifier
-        .fillMaxSize()
-        .padding(padding)
-        .consumeWindowInsets(padding),
+      modifier =
+        modifier
+          .fillMaxSize()
+          .padding(padding)
+          .consumeWindowInsets(padding),
     ) {
       when (uiState) {
         PhotoDetailUiState.Loading -> {
@@ -122,12 +126,13 @@ private fun PhotoDetailContent(
           ErrorMessageAndRetryButton(
             modifier = Modifier.matchParentSize(),
             onRetry = onRetry,
-            errorMessage = when (uiState.error) {
-              PhotoDetailError.NetworkError -> "Network error"
-              PhotoDetailError.ServerError -> "Server error"
-              PhotoDetailError.TimeoutError -> "Timeout error"
-              PhotoDetailError.Unexpected -> "Unexpected error"
-            },
+            errorMessage =
+              when (uiState.error) {
+                PhotoDetailError.NetworkError -> "Network error"
+                PhotoDetailError.ServerError -> "Server error"
+                PhotoDetailError.TimeoutError -> "Timeout error"
+                PhotoDetailError.Unexpected -> "Unexpected error"
+              },
           )
         }
 
@@ -135,10 +140,11 @@ private fun PhotoDetailContent(
           val detail = uiState.photoDetail
 
           Column(
-            modifier = Modifier
-              .matchParentSize()
-              .padding(horizontal = 16.dp)
-              .verticalScroll(rememberScrollState()),
+            modifier =
+              Modifier
+                .matchParentSize()
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
           ) {
             Spacer(modifier = Modifier.height(16.dp))
 

@@ -10,23 +10,26 @@ import platform.Foundation.NSURLErrorNotConnectedToInternet
 
 @Singleton
 internal actual class PlatformSearchPhotoErrorMapper actual constructor() : (Throwable) -> SearchPhotoError? {
-  override fun invoke(t: Throwable): SearchPhotoError? = when (t) {
-    is SearchPhotoError -> t
-    is SocketTimeoutException -> SearchPhotoError.TimeoutError
-    is DarwinHttpRequestException -> when {
-      t.origin.domain == NSURLErrorDomain && t.origin.code in NETWORK_ERROR_CODES ->
-        SearchPhotoError.NetworkError
+  override fun invoke(t: Throwable): SearchPhotoError? =
+    when (t) {
+      is SearchPhotoError -> t
+      is SocketTimeoutException -> SearchPhotoError.TimeoutError
+      is DarwinHttpRequestException ->
+        when {
+          t.origin.domain == NSURLErrorDomain && t.origin.code in NETWORK_ERROR_CODES ->
+            SearchPhotoError.NetworkError
+
+          else -> null
+        }
 
       else -> null
     }
 
-    else -> null
-  }
-
   private companion object {
-    private val NETWORK_ERROR_CODES = setOf(
-      NSURLErrorNotConnectedToInternet,
-      NSURLErrorNetworkConnectionLost,
-    )
+    private val NETWORK_ERROR_CODES =
+      setOf(
+        NSURLErrorNotConnectedToInternet,
+        NSURLErrorNetworkConnectionLost,
+      )
   }
 }

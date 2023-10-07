@@ -26,26 +26,33 @@ internal inline fun dataModule() = DataModule().module
 internal expect fun createHttpClient(json: Json): HttpClient
 
 @Singleton
-internal fun createJson(): Json = Json {
-  serializersModule = SerializersModule {
-    contextual(Instant::class, InstantSerializer)
+internal fun createJson(): Json =
+  Json {
+    serializersModule =
+      SerializersModule {
+        contextual(Instant::class, InstantSerializer)
+      }
+    ignoreUnknownKeys = true
+    coerceInputValues = true
+    prettyPrint = true
+    isLenient = true
+    encodeDefaults = true
+    allowSpecialFloatingPointValues = true
+    allowStructuredMapKeys = true
+    useArrayPolymorphism = false
   }
-  ignoreUnknownKeys = true
-  coerceInputValues = true
-  prettyPrint = true
-  isLenient = true
-  encodeDefaults = true
-  allowSpecialFloatingPointValues = true
-  allowStructuredMapKeys = true
-  useArrayPolymorphism = false
-}
 
 internal object InstantSerializer : KSerializer<Instant> {
-  override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
-    "InstantSerializer",
-    PrimitiveKind.STRING,
-  )
+  override val descriptor: SerialDescriptor =
+    PrimitiveSerialDescriptor(
+      "InstantSerializer",
+      PrimitiveKind.STRING,
+    )
 
-  override fun serialize(encoder: Encoder, value: Instant) = encoder.encodeString(value.toString())
+  override fun serialize(
+    encoder: Encoder,
+    value: Instant,
+  ) = encoder.encodeString(value.toString())
+
   override fun deserialize(decoder: Decoder): Instant = Instant.parse(decoder.decodeString())
 }

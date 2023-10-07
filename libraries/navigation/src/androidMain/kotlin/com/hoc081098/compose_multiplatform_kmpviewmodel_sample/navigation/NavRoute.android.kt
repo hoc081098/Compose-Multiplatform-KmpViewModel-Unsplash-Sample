@@ -7,14 +7,21 @@ import androidx.compose.runtime.Immutable
 actual sealed interface BaseRoute : Parcelable
 
 @Immutable
-actual interface NavRoute : com.freeletics.khonshu.navigation.NavRoute, Parcelable, BaseRoute
+actual interface NavRoute :
+  com.freeletics.khonshu.navigation.NavRoute,
+  Parcelable,
+  BaseRoute
 
 @Immutable
-actual interface NavRoot : com.freeletics.khonshu.navigation.NavRoot, Parcelable, BaseRoute
+actual interface NavRoot :
+  com.freeletics.khonshu.navigation.NavRoot,
+  Parcelable,
+  BaseRoute
 
 @Suppress("NOTHING_TO_INLINE")
-public inline fun BaseRoute.asKhonshuBaseRoute(): com.freeletics.khonshu.navigation.BaseRoute = when (this) {
-  is NavRoot -> this
-  is NavRoute -> this
-  else -> throw IllegalStateException("Unknown route type: $this")
-}
+public inline fun BaseRoute.asKhonshuBaseRoute(): com.freeletics.khonshu.navigation.BaseRoute =
+  when (this) {
+    is NavRoot -> this
+    is NavRoute -> this
+    else -> throw IllegalStateException("Unknown route type: $this")
+  }

@@ -32,7 +32,9 @@ import io.kamel.image.config.LocalKamelConfig
 import kotlin.jvm.JvmField
 import kotlin.math.roundToInt
 
-private class KamelConfigWrapperCloseable(@JvmField val kamelConfig: KamelConfig) : Closeable {
+private class KamelConfigWrapperCloseable(
+  @JvmField val kamelConfig: KamelConfig,
+) : Closeable {
   override fun close() {
     kamelConfig.runCatching { imageVectorCache.clear() }
     Napier.d(message = "Clear imageVectorCache")
@@ -49,26 +51,28 @@ internal fun LargePhotoImage(
 ) {
   val currentKamelConfig = LocalKamelConfig.current
 
-  val kamelConfigWrapper = rememberCloseableForRoute(route) {
-    KamelConfigWrapperCloseable(
-      KamelConfig {
-        takeFrom(currentKamelConfig)
+  val kamelConfigWrapper =
+    rememberCloseableForRoute(route) {
+      KamelConfigWrapperCloseable(
+        KamelConfig {
+          takeFrom(currentKamelConfig)
 
-        // Cache only 1 image
-        imageBitmapCacheSize = 1
+          // Cache only 1 image
+          imageBitmapCacheSize = 1
 
-        // Disable cache
-        imageVectorCacheSize = 0
-        svgCacheSize = 0
-      },
-    )
-  }
+          // Disable cache
+          imageVectorCacheSize = 0
+          svgCacheSize = 0
+        },
+      )
+    }
 
   CompositionLocalProvider(LocalKamelConfig provides kamelConfigWrapper.kamelConfig) {
     KamelImage(
-      modifier = modifier
-        .aspectRatio(size.width.toFloat() / size.height.toFloat())
-        .clip(RoundedCornerShape(size = 8.dp)),
+      modifier =
+        modifier
+          .aspectRatio(size.width.toFloat() / size.height.toFloat())
+          .clip(RoundedCornerShape(size = 8.dp)),
       resource = asyncPainterResource(data = url),
       contentDescription = contentDescription,
       contentScale = ContentScale.Crop,

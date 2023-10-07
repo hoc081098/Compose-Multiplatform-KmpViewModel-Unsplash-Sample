@@ -17,7 +17,9 @@ expect sealed interface BaseRoute : Parcelable
  * available to the target screens.
  */
 @Immutable
-expect interface NavRoute : Parcelable, BaseRoute
+expect interface NavRoute :
+  Parcelable,
+  BaseRoute
 
 /**
  * This is similar to a [NavRoute] but represents the route to the start destination used in
@@ -28,4 +30,6 @@ expect interface NavRoute : Parcelable, BaseRoute
  * available to the target screens.
  */
 @Immutable
-expect interface NavRoot : Parcelable, BaseRoute
+expect interface NavRoot :
+  Parcelable,
+  BaseRoute

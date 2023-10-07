@@ -31,9 +31,7 @@ public fun NavigationSetup(navigator: NavEventNavigator) {
 }
 
 @InternalNavigationApi
-private fun NavigationExecutor.navigate(
-  event: NavEvent,
-) {
+private fun NavigationExecutor.navigate(event: NavEvent) {
   when (event) {
     is NavEvent.NavigateToEvent -> {
       navigate(event.route)

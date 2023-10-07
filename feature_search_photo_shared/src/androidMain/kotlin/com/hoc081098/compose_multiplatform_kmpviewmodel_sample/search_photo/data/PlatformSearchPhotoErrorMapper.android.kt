@@ -9,14 +9,16 @@ import org.koin.core.annotation.Singleton
 
 @Singleton
 internal actual class PlatformSearchPhotoErrorMapper actual constructor() : (Throwable) -> SearchPhotoError? {
-  override fun invoke(t: Throwable): SearchPhotoError? = when (t) {
-    is SearchPhotoError -> t
-    is IOException -> when (t) {
-      is UnknownHostException, is SocketException -> SearchPhotoError.NetworkError
-      is SocketTimeoutException -> SearchPhotoError.TimeoutError
+  override fun invoke(t: Throwable): SearchPhotoError? =
+    when (t) {
+      is SearchPhotoError -> t
+      is IOException ->
+        when (t) {
+          is UnknownHostException, is SocketException -> SearchPhotoError.NetworkError
+          is SocketTimeoutException -> SearchPhotoError.TimeoutError
+          else -> null
+        }
+
       else -> null
     }
-
-    else -> null
-  }
 }

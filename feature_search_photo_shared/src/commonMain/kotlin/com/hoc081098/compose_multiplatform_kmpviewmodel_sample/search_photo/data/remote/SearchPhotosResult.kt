@@ -1,5 +1,8 @@
-package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.response
+@file:Suppress("ktlint:standard:discouraged-comment-location")
 
+package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.remote
+
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.remote.response.CoverPhotoResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

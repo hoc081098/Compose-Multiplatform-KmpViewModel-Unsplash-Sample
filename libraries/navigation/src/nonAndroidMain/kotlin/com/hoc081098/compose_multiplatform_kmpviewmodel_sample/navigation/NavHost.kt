@@ -86,24 +86,24 @@ private fun <T : BaseRoute> Show(
   //   it is available when the destination is cleared. Which, because of animations,
   //   only happens after this leaves composition. Which means we can't rely on
   //   DisposableEffect to clean up this reference (as it'll be cleaned up too early)
-  val viewModelStoreOwner = remember(entry, executor, saveableStateHolder) {
-    executor
-      .storeFor(entry.id)
-      .getOrCreate(SaveableCloseable::class) {
-        SaveableCloseable(
-          id = entry.id.value,
-          saveableStateHolderRef = saveableStateHolder.weaken(),
-        )
-      }
-      .viewModelStoreOwnerState
-  }.value ?: run {
-    println("----------------------------------- START NAVIGATION [1] -----------------------------------")
-    println("visibleEntries=${executor.visibleEntries.value.joinToString(separator = "\n") { " --> $it" }}")
-    println("entry=$entry")
-    println("viewModelStoreOwner is null")
-    println("----------------------------------- END NAVIGATION [1] -----------------------------------")
-    return
-  }
+  val viewModelStoreOwner =
+    remember(entry, executor, saveableStateHolder) {
+      executor
+        .storeFor(entry.id)
+        .getOrCreate(SaveableCloseable::class) {
+          SaveableCloseable(
+            id = entry.id.value,
+            saveableStateHolderRef = saveableStateHolder.weaken(),
+          )
+        }.viewModelStoreOwnerState
+    }.value ?: run {
+      println("----------------------------------- START NAVIGATION [1] -----------------------------------")
+      println("visibleEntries=${executor.visibleEntries.value.joinToString(separator = "\n") { " --> $it" }}")
+      println("entry=$entry")
+      println("viewModelStoreOwner is null")
+      println("----------------------------------- END NAVIGATION [1] -----------------------------------")
+      return
+    }
 
   SideEffect {
     println("----------------------------------- START NAVIGATION [2] -----------------------------------")
@@ -113,14 +113,16 @@ private fun <T : BaseRoute> Show(
     println("----------------------------------- END NAVIGATION [2] -----------------------------------")
   }
 
-  val savedStateHandleFactory = remember(entry, executor) {
-    SavedStateHandleFactory {
-      executor.storeFor(entry.id)
-        .getOrCreate(SavedStateHandle::class) {
-          SavedStateHandle().apply { putArguments(entry.route) }
-        }
+  val savedStateHandleFactory =
+    remember(entry, executor) {
+      SavedStateHandleFactory {
+        executor
+          .storeFor(entry.id)
+          .getOrCreate(SavedStateHandle::class) {
+            SavedStateHandle().apply { putArguments(entry.route) }
+          }
+      }
     }
-  }
 
   SavedStateHandleFactoryProvider(savedStateHandleFactory) {
     ViewModelStoreOwnerProvider(viewModelStoreOwner) {
@@ -185,6 +187,7 @@ private fun DestinationChangedCallback(
 }
 
 @InternalNavigationApi
-val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> = staticCompositionLocalOf {
-  throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
-}
+val LocalNavigationExecutor: ProvidableCompositionLocal<NavigationExecutor> =
+  staticCompositionLocalOf {
+    throw IllegalStateException("Can't use NavEventNavigationHandler outside of a navigator NavHost")
+  }

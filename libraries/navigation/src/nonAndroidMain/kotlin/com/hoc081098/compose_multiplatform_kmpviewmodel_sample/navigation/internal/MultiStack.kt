@@ -23,7 +23,6 @@ internal class MultiStack(
   private val onStackEntryRemoved: (StackEntry.Id) -> Unit,
   private val idGenerator: () -> String,
 ) {
-
   private val visibleEntryState: MutableState<ImmutableList<StackEntry<*>>> =
     mutableStateOf(currentStack.computeVisibleEntries())
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
@@ -51,9 +50,7 @@ internal class MultiStack(
     return null
   }
 
-  private fun getBackStack(root: NavRoot): Stack? {
-    return allStacks.find { it.id == root.destinationId }
-  }
+  private fun getBackStack(root: NavRoot): Stack? = allStacks.find { it.id == root.destinationId }
 
   private fun createBackStack(root: NavRoot): Stack {
     val newStack = Stack.createWith(root, destinations, onStackEntryRemoved, idGenerator)
@@ -72,9 +69,7 @@ internal class MultiStack(
     canNavigateBackState.value = canNavigateBack()
   }
 
-  private fun canNavigateBack(): Boolean {
-    return currentStack.id != startStack.id || !currentStack.isAtRoot
-  }
+  private fun canNavigateBack(): Boolean = currentStack.id != startStack.id || !currentStack.isAtRoot
 
   fun push(route: NavRoute) {
     currentStack.push(route)
@@ -110,21 +105,25 @@ internal class MultiStack(
     updateVisibleDestinations()
   }
 
-  fun push(root: NavRoot, clearTargetStack: Boolean) {
+  fun push(
+    root: NavRoot,
+    clearTargetStack: Boolean,
+  ) {
     val stack = getBackStack(root)
-    currentStack = if (stack != null) {
-      check(currentStack.id != stack.id) {
-        "$root is already the current stack"
-      }
-      if (clearTargetStack) {
-        removeBackStack(stack)
-        createBackStack(root)
+    currentStack =
+      if (stack != null) {
+        check(currentStack.id != stack.id) {
+          "$root is already the current stack"
+        }
+        if (clearTargetStack) {
+          removeBackStack(stack)
+          createBackStack(root)
+        } else {
+          stack
+        }
       } else {
-        stack
+        createBackStack(root)
       }
-    } else {
-      createBackStack(root)
-    }
     if (stack?.id == startStack.id) {
       startStack = currentStack
     }

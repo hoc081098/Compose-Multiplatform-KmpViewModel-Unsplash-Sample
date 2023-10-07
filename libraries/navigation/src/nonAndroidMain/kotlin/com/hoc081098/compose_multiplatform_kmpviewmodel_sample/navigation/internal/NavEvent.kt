@@ -8,7 +8,6 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.NavRou
 
 @InternalNavigationApi
 public sealed interface NavEvent {
-
   @InternalNavigationApi
   public data class NavigateToEvent(
     internal val route: NavRoute,

@@ -27,11 +27,12 @@ data class SearchPhotoUiState(
   )
 
   companion object {
-    val INITIAL = SearchPhotoUiState(
-      photoUiItems = persistentListOf(),
-      isLoading = false,
-      error = null,
-      submittedTerm = null,
-    )
+    val INITIAL =
+      SearchPhotoUiState(
+        photoUiItems = persistentListOf(),
+        isLoading = false,
+        error = null,
+        submittedTerm = null,
+      )
   }
 }

@@ -2,10 +2,24 @@ plugins {
   alias(libs.plugins.kotlin.multiplatform)
 }
 
-@OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
+@OptIn(
+  org
+    .jetbrains
+    .kotlin
+    .gradle
+    .ExperimentalKotlinGradlePluginApi::class,
+)
 kotlin {
   jvmToolchain {
-    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    languageVersion.set(
+      JavaLanguageVersion.of(
+        libs
+          .versions
+          .java
+          .toolchain
+          .get(),
+      ),
+    )
     vendor.set(JvmVendorSpec.AZUL)
   }
 

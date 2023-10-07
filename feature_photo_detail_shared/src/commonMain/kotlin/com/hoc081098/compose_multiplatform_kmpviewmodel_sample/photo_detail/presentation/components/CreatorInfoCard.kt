@@ -46,16 +46,18 @@ internal fun CreatorInfoCard(
     shape = RoundedCornerShape(10.dp),
   ) {
     Row(
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
+      modifier =
+        Modifier
+          .fillMaxWidth()
+          .padding(16.dp),
       verticalAlignment = Alignment.CenterVertically,
     ) {
       if (creator.mediumProfileImageUrl != null) {
         KamelImage(
-          modifier = Modifier
-            .size(65.dp)
-            .clip(CircleShape),
+          modifier =
+            Modifier
+              .size(65.dp)
+              .clip(CircleShape),
           resource = asyncPainterResource(data = creator.mediumProfileImageUrl),
           contentDescription = null,
           contentScale = ContentScale.Crop,
@@ -93,9 +95,10 @@ internal fun CreatorInfoCard(
         verticalArrangement = Arrangement.Top,
       ) {
         Text(
-          modifier = Modifier
-            .fillMaxWidth()
-            .basicMarquee(),
+          modifier =
+            Modifier
+              .fillMaxWidth()
+              .basicMarquee(),
           maxLines = 1,
           overflow = TextOverflow.Ellipsis,
           text = creator.name,

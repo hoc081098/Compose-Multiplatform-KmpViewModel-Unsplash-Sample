@@ -8,10 +8,15 @@ import com.hoc081098.kmp.viewmodel.Closeable
 import kotlin.reflect.KClass
 
 @InternalNavigationApi
-public class NavigationExecutorStore : NavigationExecutor.Store, Closeable {
+public class NavigationExecutorStore :
+  NavigationExecutor.Store,
+  Closeable {
   private val storedObjects = mutableMapOf<KClass<*>, Any>()
 
-  override fun <T : Any> getOrCreate(key: KClass<T>, factory: () -> T): T {
+  override fun <T : Any> getOrCreate(
+    key: KClass<T>,
+    factory: () -> T,
+  ): T {
     @Suppress("UNCHECKED_CAST")
     var storedObject = storedObjects[key] as T?
     if (storedObject == null) {

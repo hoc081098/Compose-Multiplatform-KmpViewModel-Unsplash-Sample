@@ -34,7 +34,10 @@ class MapMultibinding<K, V> {
 
   @InternalKoinMultibindingApi
   @PublishedApi
-  internal operator fun set(key: K, value: V) {
+  internal operator fun set(
+    key: K,
+    value: V,
+  ) {
     map.loop { current ->
       if (map.compareAndSet(current, current + (key to value))) {
         // exit loop
@@ -51,9 +54,8 @@ class MapMultibinding<K, V> {
 inline fun <reified K, reified V> defaultMapMultibindingQualifier(): StringQualifier =
   named("MapMultibinding<${K::class.getFullName()},${V::class.getFullName()}>")
 
-inline fun <reified K, reified V> Module.declareMapMultibinding(
-  qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
-) = single(qualifier = qualifier) { MapMultibinding<K, V>() }
+inline fun <reified K, reified V> Module.declareMapMultibinding(qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>()) =
+  single(qualifier = qualifier) { MapMultibinding<K, V>() }
 
 @OptIn(InternalKoinMultibindingApi::class)
 @Suppress("RedundantUnitExpression", "RemoveExplicitTypeArguments") // Keep for readability
@@ -68,9 +70,10 @@ inline fun <reified K, reified V> Module.intoMapMultibinding(
     qualifier = named("${multibindingQualifier.value}::$key"),
     createdAtStart = true,
   ) {
-    multibinding = get<MapMultibinding<K, V>>(multibindingQualifier).apply {
-      this[key] = definition(it)
-    }
+    multibinding =
+      get<MapMultibinding<K, V>>(multibindingQualifier).apply {
+        this[key] = definition(it)
+      }
     Unit
   }.onClose {
     multibinding?.remove(key)
@@ -80,5 +83,4 @@ inline fun <reified K, reified V> Module.intoMapMultibinding(
 @OptIn(InternalKoinMultibindingApi::class)
 inline fun <reified K, reified V> Scope.getMapMultibinding(
   qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
-): Map<K, V> =
-  get<MapMultibinding<K, V>>(qualifier = qualifier).asMap
+): Map<K, V> = get<MapMultibinding<K, V>>(qualifier = qualifier).asMap

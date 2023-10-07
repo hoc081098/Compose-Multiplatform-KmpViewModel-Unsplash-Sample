@@ -31,22 +31,24 @@ internal class SearchPhotoViewModel(
   private val savedStateHandle: SavedStateHandle,
   private val searchPhotoUseCase: SearchPhotoUseCase,
 ) : ViewModel() {
-  val searchTermStateFlow: StateFlow<String?> = savedStateHandle
-    .getStateFlow<String?>(
-      key = SEARCH_TERM_KEY,
-      initialValue = null,
-    )
+  val searchTermStateFlow: StateFlow<String?> =
+    savedStateHandle
+      .getStateFlow<String?>(
+        key = SEARCH_TERM_KEY,
+        initialValue = null,
+      )
 
-  val stateFlow: StateFlow<SearchPhotoUiState> = searchTermStateFlow
-    .debounce(400.milliseconds)
-    .map { it.orEmpty().trim() }
-    .distinctUntilChanged()
-    .flatMapLatest(searchPhotoUseCase::executeSearching)
-    .stateIn(
-      scope = viewModelScope,
-      started = SharingStarted.Lazily,
-      initialValue = SearchPhotoUiState.INITIAL,
-    )
+  val stateFlow: StateFlow<SearchPhotoUiState> =
+    searchTermStateFlow
+      .debounce(400.milliseconds)
+      .map { it.orEmpty().trim() }
+      .distinctUntilChanged()
+      .flatMapLatest(searchPhotoUseCase::executeSearching)
+      .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Lazily,
+        initialValue = SearchPhotoUiState.INITIAL,
+      )
 
   init {
     Napier.d(message = "init $this", tag = "SearchPhotoViewModel")
@@ -70,8 +72,7 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
     } else {
       invoke(term)
     }
-  }
-    .onStart { Napier.d("search products term=$term") }
+  }.onStart { Napier.d("search products term=$term") }
     .onEach { either ->
       Napier.d(
         "search products ${
@@ -81,8 +82,7 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
           )
         }",
       )
-    }
-    .map { either ->
+    }.map { either ->
       either.fold(
         ifLeft = {
           SearchPhotoUiState(
@@ -94,17 +94,17 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
         },
         ifRight = { coverPhotos ->
           SearchPhotoUiState(
-            photoUiItems = coverPhotos
-              .map { it.toPhotoUiItem() }
-              .toImmutableList(),
+            photoUiItems =
+              coverPhotos
+                .map { it.toPhotoUiItem() }
+                .toImmutableList(),
             isLoading = false,
             error = null,
             submittedTerm = term,
           )
         },
       )
-    }
-    .startWith {
+    }.startWith {
       SearchPhotoUiState(
         isLoading = true,
         error = null,
@@ -113,13 +113,14 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
       )
     }
 
-private fun CoverPhoto.toPhotoUiItem(): PhotoUiItem = PhotoUiItem(
-  id = id,
-  slug = slug,
-  createdAt = createdAt.toImmutableWrapper(),
-  updatedAt = updatedAt.toImmutableWrapper(),
-  promotedAt = promotedAt.toImmutableWrapper(),
-  width = width,
-  height = height,
-  thumbnailUrl = thumbnailUrl,
-)
+private fun CoverPhoto.toPhotoUiItem(): PhotoUiItem =
+  PhotoUiItem(
+    id = id,
+    slug = slug,
+    createdAt = createdAt.toImmutableWrapper(),
+    updatedAt = updatedAt.toImmutableWrapper(),
+    promotedAt = promotedAt.toImmutableWrapper(),
+    width = width,
+    height = height,
+    thumbnailUrl = thumbnailUrl,
+  )

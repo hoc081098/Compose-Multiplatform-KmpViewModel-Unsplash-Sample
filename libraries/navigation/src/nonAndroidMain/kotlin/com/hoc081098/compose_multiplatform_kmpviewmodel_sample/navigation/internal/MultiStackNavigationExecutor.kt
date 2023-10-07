@@ -17,7 +17,6 @@ internal class MultiStackNavigationExecutor(
   private val stack: MultiStack,
   @JvmField internal val viewModel: StoreViewModel,
 ) : NavigationExecutor {
-
   @Suppress("unused") // TODO
   val visibleEntries: State<ImmutableList<StackEntry<*>>>
     get() = stack.visibleEntries
@@ -30,7 +29,10 @@ internal class MultiStackNavigationExecutor(
     stack.push(route)
   }
 
-  override fun navigate(root: NavRoot, restoreRootState: Boolean) {
+  override fun navigate(
+    root: NavRoot,
+    restoreRootState: Boolean,
+  ) {
     stack.push(root, clearTargetStack = !restoreRootState)
   }
 
@@ -53,9 +55,7 @@ internal class MultiStackNavigationExecutor(
     stack.resetToRoot(root)
   }
 
-  override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T {
-    return entryFor(destinationId).route
-  }
+  override fun <T : BaseRoute> routeFor(destinationId: DestinationId<T>): T = entryFor(destinationId).route
 
   override fun <T : BaseRoute> savedStateHandleFor(destinationId: DestinationId<T>): SavedStateHandle {
     val entry = entryFor(destinationId)
@@ -72,12 +72,9 @@ internal class MultiStackNavigationExecutor(
     return entry.destination.extra!!
   }
 
-  internal fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store {
-    return viewModel.provideStore(entryId)
-  }
+  internal fun storeFor(entryId: StackEntry.Id): NavigationExecutor.Store = viewModel.provideStore(entryId)
 
-  private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> {
-    return stack.entryFor(destinationId)
+  private fun <T : BaseRoute> entryFor(destinationId: DestinationId<T>): StackEntry<T> =
+    stack.entryFor(destinationId)
       ?: throw IllegalStateException("Route $destinationId not found on back stack")
-  }
 }
