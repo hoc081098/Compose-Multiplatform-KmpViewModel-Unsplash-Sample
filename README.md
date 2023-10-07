@@ -20,5 +20,10 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
  - Model-View-Intent (MVI) / FlowRedux state management
  - [Kotlin Multiplatform ViewModel](https://github.com/hoc081098/kmp-viewmodel)
  - Clean Architecture
+ - Multiplatform type-safe navigation by [Freeletics/Khonshu](https://github.com/freeletics/khonshu)
 
 https://user-images.githubusercontent.com/36917223/270357793-11cb7264-59fe-4f58-884a-c92c204b566f.mov
+
+### Credits
+
+- [Freeletics/Khonshu](https://github.com/freeletics/khonshu)
