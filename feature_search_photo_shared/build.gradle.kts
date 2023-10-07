@@ -3,25 +3,21 @@ import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.isCiBuild
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.readPropertiesFile
 
 plugins {
-  kotlin("multiplatform")
-  kotlin("native.cocoapods")
-  id("com.android.library")
-  id("org.jetbrains.compose")
-  kotlin("plugin.serialization")
-  id("com.codingfeline.buildkonfig")
-  id("com.google.devtools.ksp")
+  alias(libs.plugins.kotlin.multiplatform)
+  alias(libs.plugins.android.library)
+  alias(libs.plugins.jetbrains.compose.mutiplatform)
+  alias(libs.plugins.kotlin.serialization)
+  alias(libs.plugins.buildkonfig)
+  alias(libs.plugins.ksp)
   id("compose_multiplatform_kmpviewmodel_sample.empty")
 }
 
-val ktorVersion = "2.3.4"
-val kotlinxSerializationVersion = "1.6.0-RC"
-val coroutinesVersion = "1.7.3"
-val koinVersion = "3.5.0"
-val koinKspVersion = "1.3.0"
-val koinComposeVersion = "1.1.0"
-val arrowKtVersion = "1.2.0"
-
 kotlin {
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
+
   androidTarget()
 
   jvm("desktop")
@@ -30,47 +26,49 @@ kotlin {
   iosArm64()
   iosSimulatorArm64()
 
-  cocoapods {
-    version = "1.0.0"
-    summary = "Some description for the Shared Module"
-    homepage = "Link to the Shared Module homepage"
-    ios.deploymentTarget = "14.1"
-    podfile = project.file("../iosApp/Podfile")
-    framework {
-      baseName = "shared"
-      isStatic = true
-    }
-  }
+  //  cocoapods {
+  //    version = "1.0.0"
+  //    summary = "Some description for the Shared Module"
+  //    homepage = "Link to the Shared Module homepage"
+  //    ios.deploymentTarget = "14.1"
+  //    podfile = project.file("../iosApp/Podfile")
+  //    framework {
+  //      baseName = "shared"
+  //      isStatic = true
+  //    }
+  //  }
 
   sourceSets {
     val commonMain by getting {
       kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
       dependencies {
+        // Compose
         api(compose.runtime)
         api(compose.foundation)
         api(compose.material3)
         @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
         implementation(compose.components.resources)
 
+        // Core and Libraries
         api(projects.core.commonUiShared)
         api(projects.core.navigationShared)
-        implementation(project(":libraries:koin-compose-utils"))
-        implementation(project(":libraries:coroutines-utils"))
-        implementation(project(":libraries:compose-stable-wrappers"))
-        implementation(project(":libraries:compose-lifecycle-utils"))
+        implementation(projects.libraries.koinComposeUtils)
+        implementation(projects.libraries.coroutinesUtils)
+        implementation(projects.libraries.composeStableWrappers)
+        implementation(projects.libraries.composeLifecycleUtils)
 
         // Ktor
-        implementation("io.ktor:ktor-client-core:$ktorVersion")
-        implementation("io.ktor:ktor-client-json:$ktorVersion")
-        implementation("io.ktor:ktor-client-logging:$ktorVersion")
-        implementation("io.ktor:ktor-client-serialization:$ktorVersion")
-        implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-        implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+        implementation(libs.ktor.client.core)
+        implementation(libs.ktor.client.json)
+        implementation(libs.ktor.client.logging)
+        implementation(libs.ktor.client.serialization)
+        implementation(libs.ktor.client.content.negotiation)
+        implementation(libs.ktor.serialization.kotlinx.json)
 
         // KotlinX Serialization
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
-        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+        implementation(libs.kotlinx.serialization.core)
+        implementation(libs.kotlinx.serialization.json)
 
         // KotlinX Coroutines
         implementation(libs.kotlinx.coroutines.core)
@@ -80,42 +78,40 @@ kotlin {
         implementation(libs.kmp.viewmodel.savedstate)
         implementation(libs.kmp.viewmodel.compose)
 
-        // KotlinX DateTime
-        implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
-
         // FlowExt
-        implementation("io.github.hoc081098:FlowExt:0.7.1")
+        implementation(libs.flow.ext)
 
         // Koin
-        implementation("io.insert-koin:koin-annotations:$koinKspVersion")
-        implementation("io.insert-koin:koin-core:$koinVersion")
-        implementation("io.insert-koin:koin-compose:$koinComposeVersion")
+        implementation(libs.koin.annotations)
+        implementation(libs.koin.core)
+        implementation(libs.koin.compose)
 
         // Arrow-kt
-        implementation("io.arrow-kt:arrow-core:$arrowKtVersion")
-        implementation("io.arrow-kt:arrow-fx-coroutines:$arrowKtVersion")
+        implementation(libs.arrow.core)
+        implementation(libs.arrow.fx.coroutines)
 
-        // KotlinX Immutable Collections
+        // KotlinX Utils
         implementation(libs.kotlinx.collections.immutable)
+        implementation(libs.kotlinx.datetime)
 
         // Kamel Image
-        implementation("media.kamel:kamel-image:0.7.3")
+        implementation(libs.kamel.image)
 
         // Napier
-        api("io.github.aakira:napier:2.6.1")
+        api(libs.napier)
       }
     }
     val androidMain by getting {
       dependencies {
-        api("androidx.activity:activity-compose:1.7.2")
-        api("androidx.appcompat:appcompat:1.6.1")
-        api("androidx.core:core-ktx:1.10.1")
+        api(libs.androidx.activity.compose)
+        api(libs.androidx.appcompat)
+        api(libs.androidx.core)
 
         // Ktor
-        implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
+        implementation(libs.ktor.client.okhttp)
 
         // KotlinX Coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+        implementation(libs.kotlinx.coroutines.android)
       }
     }
     val iosX64Main by getting
@@ -129,7 +125,7 @@ kotlin {
 
       dependencies {
         // Ktor
-        implementation("io.ktor:ktor-client-darwin:$ktorVersion")
+        implementation(libs.ktor.client.darwin)
       }
     }
     val desktopMain by getting {
@@ -137,33 +133,30 @@ kotlin {
         implementation(compose.desktop.common)
 
         // Ktor
-        implementation("io.ktor:ktor-client-java:$ktorVersion")
+        implementation(libs.ktor.client.java)
 
         // KotlinX Coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-swing:$coroutinesVersion")
+        implementation(libs.kotlinx.coroutines.swing)
       }
     }
   }
 }
 
 android {
-  compileSdk = (findProperty("android.compileSdk") as String).toInt()
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.features.search_photo"
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   sourceSets["main"].res.srcDirs("src/androidMain/res")
   sourceSets["main"].resources.srcDirs("src/commonMain/resources")
 
+  compileSdk = libs.versions.android.compile.map { it.toInt() }.get()
   defaultConfig {
-    minSdk = (findProperty("android.minSdk") as String).toInt()
-    targetSdk = (findProperty("android.targetSdk") as String).toInt()
+    minSdk = libs.versions.android.min.map { it.toInt() }.get()
   }
+
   compileOptions {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-  }
-  kotlin {
-    jvmToolchain(17)
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get())
   }
 
   buildFeatures {
@@ -215,8 +208,7 @@ buildkonfig {
 // ---------------------------- KOIN ANNOTATIONS PROCESSOR ----------------------------
 
 dependencies {
-  val koinKspCompiler = "io.insert-koin:koin-ksp-compiler:$koinKspVersion"
-  add("kspCommonMainMetadata", koinKspCompiler)
+  add("kspCommonMainMetadata", libs.koin.ksp.compiler)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().all {
