@@ -73,7 +73,7 @@ android {
       // We don't know where this comes from but it's 5MB
       // https://slack-pde.slack.com/archives/C8EER3C04/p1621353426001500
       "annotated-jdk/**",
-      "META-INF/versions/9/previous-compilation-data.bin"
+      "META-INF/versions/9/previous-compilation-data.bin",
     )
   }
 }
