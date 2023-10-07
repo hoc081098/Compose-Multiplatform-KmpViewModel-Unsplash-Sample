@@ -24,13 +24,15 @@ kotlin {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
   compilerOptions {
-    jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.target.get()))
+    // Use the same java toolchain version for compilation as the Kotlin plugin
+    jvmTarget.set(JvmTarget.fromTarget(libs.versions.java.toolchain.get()))
   }
 }
 
 tasks.withType<JavaCompile>().configureEach {
-  sourceCompatibility = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
-  targetCompatibility = JavaVersion.toVersion(libs.versions.java.target.get()).toString()
+  // Use the same java toolchain version for compilation as the Kotlin plugin
+  sourceCompatibility = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
+  targetCompatibility = JavaVersion.toVersion(libs.versions.java.toolchain.get()).toString()
 }
 
 dependencies {
