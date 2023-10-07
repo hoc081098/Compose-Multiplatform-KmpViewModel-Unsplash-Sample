@@ -16,7 +16,6 @@ plugins {
 val ktorVersion = "2.3.4"
 val kotlinxSerializationVersion = "1.6.0-RC"
 val coroutinesVersion = "1.7.3"
-val kmpViewModel = "0.4.1-SNAPSHOT"
 val koinVersion = "3.5.0"
 val koinKspVersion = "1.3.0"
 val koinComposeVersion = "1.1.0"
@@ -74,12 +73,12 @@ kotlin {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
         // KotlinX Coroutines
-        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+        implementation(libs.kotlinx.coroutines.core)
 
         // KMP View Model
-        implementation("io.github.hoc081098:kmp-viewmodel:$kmpViewModel")
-        implementation("io.github.hoc081098:kmp-viewmodel-savedstate:$kmpViewModel")
-        api("io.github.hoc081098:kmp-viewmodel-compose:$kmpViewModel")
+        implementation(libs.kmp.viewmodel)
+        implementation(libs.kmp.viewmodel.savedstate)
+        implementation(libs.kmp.viewmodel.compose)
 
         // KotlinX DateTime
         implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")

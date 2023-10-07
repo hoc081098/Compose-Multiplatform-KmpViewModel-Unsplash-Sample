@@ -6,26 +6,34 @@ plugins {
 }
 
 kotlin {
+  jvmToolchain {
+    languageVersion.set(JavaLanguageVersion.of(libs.versions.java.toolchain.get()))
+    vendor.set(JvmVendorSpec.AZUL)
+  }
+
   jvm()
 
   sourceSets {
     val jvmMain by getting {
       dependencies {
+        // Compose
         implementation(compose.desktop.currentOs)
         implementation(compose.material3)
 
+        // Core
         implementation(projects.core.commonShared)
         implementation(projects.core.commonUiShared)
         implementation(projects.core.navigationShared)
 
+        // Libraries
         implementation(projects.libraries.koinUtils)
         implementation(projects.libraries.koinComposeUtils)
         implementation(projects.libraries.coroutinesUtils)
         implementation(projects.libraries.navigation)
 
-        implementation(project(":feature_search_photo_shared"))
-        implementation(project(":feature_photo_detail_shared"))
-        implementation(project(":libraries:coroutines-utils"))
+        // Feature modules
+        implementation(projects.featureSearchPhotoShared)
+        implementation(projects.featurePhotoDetailShared)
 
         implementation("org.apache.logging.log4j:log4j-api:2.20.0")
         implementation("org.apache.logging.log4j:log4j-core:2.20.0")
