@@ -29,7 +29,7 @@ androidx-fragment = "1.6.1"
 androidx-navigation = "2.7.3"
 androidx-savedstate = "1.2.1"
 
-ktor = "2.3.4"
+ktor = "2.3.5"
 
 arrow-kt = "1.2.1"
 kamel-image = "0.7.3"
