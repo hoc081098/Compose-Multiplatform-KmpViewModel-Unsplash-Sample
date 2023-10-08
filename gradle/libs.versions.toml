@@ -185,5 +185,5 @@ bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", versio
 gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
 dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
 poko = { id = "dev.drewhamilton.poko", version = "0.15.0" }
-buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.13.3" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.14.0" }
 spotless={ id = "com.diffplug.gradle.spotless", version = "6.22.0" }
