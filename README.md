@@ -4,6 +4,8 @@
 [![Build Desktop App CI](https://github.com/hoc081098/Compose-Multiplatform-KmpViewModel-KMM-Unsplash-Sample/actions/workflows/build-desktop-app.yml/badge.svg)](https://github.com/hoc081098/Compose-Multiplatform-KmpViewModel-KMM-Unsplash-Sample/actions/workflows/build-desktop-app.yml)
 [![Kotlin](https://img.shields.io/badge/kotlin-1.9.10-purple.svg?logo=kotlin)](http://kotlinlang.org)
 
+This repo is a template for getting started with Compose Multiplatform or Kotlin Multiplatform with support for Android, iOS, and Desktop.
+
 **Compose Multiplatform** sample:
  - https://github.com/hoc081098/kmp-viewmodel
  - https://github.com/JetBrains/compose-multiplatform
