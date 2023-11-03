@@ -12,7 +12,7 @@ jetbrains-compose-mutiplatform = "1.5.3"
 java-target = "17"
 java-toolchain = "17"
 
-gradle-api = "8.3"
+gradle-api = "8.4"
 ktlint = "1.0.0"
 
 android-gradle = "8.1.2"
