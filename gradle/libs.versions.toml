@@ -32,7 +32,7 @@ androidx-savedstate = "1.2.1"
 ktor = "2.3.5"
 
 arrow-kt = "1.2.1"
-kamel-image = "0.8.2"
+kamel-image = "0.8.3"
 napier = "2.6.1"
 uri = "0.0.15"
 flow-ext = "0.7.2"
