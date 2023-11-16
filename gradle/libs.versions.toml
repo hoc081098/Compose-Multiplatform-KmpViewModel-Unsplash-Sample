@@ -58,7 +58,7 @@ auto-value = "1.10.3"
 junit = "4.13.2"
 truth = "1.1.5"
 turbine = "1.0.0"
-kotlin-compile-testing = "0.3.2"
+kotlin-compile-testing = "0.4.0"
 
 publish = "0.25.3"
 dokka = "1.8.20"
