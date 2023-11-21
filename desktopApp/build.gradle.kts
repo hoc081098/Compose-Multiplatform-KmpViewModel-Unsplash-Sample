@@ -50,7 +50,7 @@ kotlin {
         implementation(projects.features.featurePhotoDetailShared)
 
         implementation("org.apache.logging.log4j:log4j-api:2.21.1")
-        implementation("org.apache.logging.log4j:log4j-core:2.21.1")
+        implementation("org.apache.logging.log4j:log4j-core:2.22.0")
         implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.21.1")
       }
     }
