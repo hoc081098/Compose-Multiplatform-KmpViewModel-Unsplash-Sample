@@ -93,7 +93,7 @@ kotlin {
 }
 
 android {
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.libraries.compose-lifecycle-utils"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.libraries.compose_lifecycle_utils"
 
   compileSdk =
     libs
