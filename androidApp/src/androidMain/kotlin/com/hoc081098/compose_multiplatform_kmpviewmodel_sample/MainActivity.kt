@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     setContent {
       AppTheme {
         NavHost(
-          startRoute = SearchPhotoRoute as NavRoot,
+          startRoute = SearchPhotoRoute as com.freeletics.khonshu.navigation.NavRoot,
           destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
           destinationChangedCallback =
             remember {
