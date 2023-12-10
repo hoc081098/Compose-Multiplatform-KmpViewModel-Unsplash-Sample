@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     setContent {
       AppTheme {
         NavHost(
-          startRoute = SearchPhotoRoute,
+          startRoute = SearchPhotoRoute as NavRoot,
           destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
           destinationChangedCallback =
             remember {
