@@ -157,7 +157,7 @@ kotlin {
 }
 
 android {
-  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.features.photo_detail"
+  namespace = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail"
 
   sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
   sourceSets["main"].res.srcDirs("src/androidMain/res")
