@@ -1,6 +1,6 @@
 [versions]
 koinVersion = "3.5.0"
-kotlin = "1.9.20"
+kotlin = "1.9.22"
 kotlinx-collections-immutable = "0.3.6"
 kotlinx-coroutines = "1.7.3"
 kotlinx-atomicfu = "0.22.0"
