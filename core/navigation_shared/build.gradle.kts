@@ -52,8 +52,9 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        api(projects.libraries.navigation)
         compileOnly("org.jetbrains.compose.runtime:runtime:${org.jetbrains.compose.ComposeBuildConfig.composeVersion}")
+
+        api(libs.solivagant.navigation)
       }
     }
     val commonTest by getting {

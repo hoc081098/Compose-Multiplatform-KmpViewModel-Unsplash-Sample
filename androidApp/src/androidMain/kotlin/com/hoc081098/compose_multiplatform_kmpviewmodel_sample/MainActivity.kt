@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import com.freeletics.khonshu.navigation.compose.NavHost
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.theme.AppTheme
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.koinInjectSetMultibinding
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoScreenRoute
 import io.github.aakira.napier.Napier
 
 class MainActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     setContent {
       AppTheme {
         NavHost(
-          startRoute = SearchPhotoRoute as com.freeletics.khonshu.navigation.NavRoot,
+          startRoute = SearchPhotoScreenRoute as com.freeletics.khonshu.navigation.NavRoot,
           destinations = koinInjectSetMultibinding(AllDestinationsQualifier),
           destinationChangedCallback =
             remember {

@@ -43,7 +43,6 @@ kotlin {
         implementation(projects.libraries.koinUtils)
         implementation(projects.libraries.koinComposeUtils)
         implementation(projects.libraries.coroutinesUtils)
-        implementation(projects.libraries.navigation)
 
         // Feature modules
         implementation(projects.features.featureSearchPhotoShared)

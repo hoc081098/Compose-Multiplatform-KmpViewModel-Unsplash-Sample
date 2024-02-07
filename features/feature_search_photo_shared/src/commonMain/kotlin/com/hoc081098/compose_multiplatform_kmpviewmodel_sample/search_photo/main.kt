@@ -6,11 +6,12 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModulesForRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_utils.rememberKoinModulesOnRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.dataModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.domainModule
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoScreen
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.presentationModule
 import io.github.aakira.napier.Napier
 import kotlin.jvm.JvmField
 import org.koin.dsl.module
@@ -21,25 +22,22 @@ internal val FeatureSearchPhotoModule =
     includes(
       dataModule(),
       domainModule(),
+      presentationModule(),
     )
   }
 
 @Composable
 internal fun SearchPhotoScreenWithKoin(
-  route: SearchPhotoRoute,
-  navigateToPhotoDetail: (id: String) -> Unit,
+  route: SearchPhotoScreenRoute,
   modifier: Modifier = Modifier,
 ) {
-  val loaded by rememberKoinModulesForRoute(
+  val loaded by rememberKoinModulesOnRoute(
     route = route,
     unloadModules = true,
   ) { listOf(FeatureSearchPhotoModule) }
 
   if (loaded) {
-    SearchPhotoScreen(
-      modifier = modifier,
-      navigateToPhotoDetail = navigateToPhotoDetail,
-    )
+    SearchPhotoScreen(modifier = modifier)
   } else {
     SideEffect {
       Napier.d(

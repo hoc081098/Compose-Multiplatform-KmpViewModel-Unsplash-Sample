@@ -7,4 +7,5 @@ internal sealed interface PhotoDetailViewIntent {
   data object Init : PhotoDetailViewIntent
   data object Retry : PhotoDetailViewIntent
   data object Refresh : PhotoDetailViewIntent
+  data object NavigateBack: PhotoDetailViewIntent
 }

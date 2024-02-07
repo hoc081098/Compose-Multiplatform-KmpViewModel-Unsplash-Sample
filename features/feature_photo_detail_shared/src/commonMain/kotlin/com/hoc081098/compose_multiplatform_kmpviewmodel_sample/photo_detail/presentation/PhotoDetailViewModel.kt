@@ -1,14 +1,16 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation
 
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.publish
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.requireRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
 import com.hoc081098.flowext.flatMapFirst
 import com.hoc081098.flowext.flowFromSuspend
+import com.hoc081098.flowext.ignoreElements
 import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
+import com.hoc081098.solivagant.navigation.NavEventNavigator
+import com.hoc081098.solivagant.navigation.requireRoute
 import io.github.aakira.napier.Napier
 import kotlin.jvm.JvmName
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,13 +29,16 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
+import org.koin.core.annotation.Factory
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@Factory
 internal class PhotoDetailViewModel(
   savedStateHandle: SavedStateHandle,
   private val getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase,
+  private val navigator: NavEventNavigator,
 ) : ViewModel() {
-  private val route = savedStateHandle.requireRoute<PhotoDetailRoute>()
+  private val route = savedStateHandle.requireRoute<PhotoDetailScreenRoute>()
 
   private val _intentChannel = Channel<PhotoDetailViewIntent>(capacity = 1)
 
@@ -64,6 +69,12 @@ internal class PhotoDetailViewModel(
                 .filterIsInstance<PhotoDetailViewIntent.Retry>()
                 .toPartialStateChangesFlow()
             },
+            select {
+              it
+                .filterIsInstance<PhotoDetailViewIntent.NavigateBack>()
+                .onEach { navigator.navigateBack() }
+                .ignoreElements()
+            }
           )
         }.scan(PhotoDetailUiState.INITIAL) { state, change -> change.reduce(state) }
         .stateIn(

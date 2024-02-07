@@ -1,6 +1,7 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation
 
 import arrow.core.right
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.CoverPhoto
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
@@ -9,6 +10,10 @@ import com.hoc081098.flowext.flowFromSuspend
 import com.hoc081098.flowext.startWith
 import com.hoc081098.kmp.viewmodel.SavedStateHandle
 import com.hoc081098.kmp.viewmodel.ViewModel
+import com.hoc081098.kmp.viewmodel.safe.NonNullSavedStateHandleKey
+import com.hoc081098.kmp.viewmodel.safe.safe
+import com.hoc081098.kmp.viewmodel.safe.string
+import com.hoc081098.solivagant.navigation.NavEventNavigator
 import io.github.aakira.napier.Napier
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.collections.immutable.persistentListOf
@@ -25,18 +30,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import org.koin.core.annotation.Factory
 
 @OptIn(ExperimentalCoroutinesApi::class, FlowPreview::class)
+@Factory
 internal class SearchPhotoViewModel(
   private val savedStateHandle: SavedStateHandle,
   private val searchPhotoUseCase: SearchPhotoUseCase,
+  private val navigator: NavEventNavigator,
 ) : ViewModel() {
-  val searchTermStateFlow: StateFlow<String?> =
-    savedStateHandle
-      .getStateFlow<String?>(
-        key = SEARCH_TERM_KEY,
-        initialValue = null,
-      )
+  val searchTermStateFlow: StateFlow<String> = savedStateHandle
+    .safe
+    .getStateFlow(key = SEARCH_TERM_KEY)
 
   val stateFlow: StateFlow<SearchPhotoUiState> =
     searchTermStateFlow
@@ -55,13 +60,17 @@ internal class SearchPhotoViewModel(
     addCloseable { Napier.d(message = "close $this", tag = "SearchPhotoViewModel") }
   }
 
-  fun search(term: String) {
-    savedStateHandle[SEARCH_TERM_KEY] = term
-  }
+  fun search(term: String) =
+    savedStateHandle.safe { it[SEARCH_TERM_KEY] = term }
+
+  fun navigateToPhotoDetail(item: PhotoUiItem) =
+    navigator.navigateTo(PhotoDetailScreenRoute(id = item.id))
 
   companion object {
-    const val SEARCH_TERM_KEY =
-      "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.search_term"
+    private val SEARCH_TERM_KEY = NonNullSavedStateHandleKey.string(
+      key = "com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.search_term",
+      defaultValue = ""
+    )
   }
 }
 
@@ -95,9 +104,9 @@ private fun SearchPhotoUseCase.executeSearching(term: String): Flow<SearchPhotoU
         ifRight = { coverPhotos ->
           SearchPhotoUiState(
             photoUiItems =
-              coverPhotos
-                .map { it.toPhotoUiItem() }
-                .toImmutableList(),
+            coverPhotos
+              .map { it.toPhotoUiItem() }
+              .toImmutableList(),
             isLoading = false,
             error = null,
             submittedTerm = term,

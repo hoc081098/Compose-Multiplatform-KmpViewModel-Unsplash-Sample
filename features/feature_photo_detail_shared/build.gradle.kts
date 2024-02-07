@@ -58,7 +58,6 @@ kotlin {
         implementation(projects.libraries.koinComposeUtils)
         implementation(projects.libraries.coroutinesUtils)
         implementation(projects.libraries.composeStableWrappers)
-        implementation(projects.libraries.composeLifecycleUtils)
 
         // Ktor
         implementation(libs.ktor.client.core)
@@ -91,6 +90,7 @@ kotlin {
         implementation(libs.kmp.viewmodel)
         implementation(libs.kmp.viewmodel.savedstate)
         implementation(libs.kmp.viewmodel.compose)
+        implementation(libs.kmp.viewmodel.koin.compose)
 
         // FlowExt
         implementation(libs.flow.ext)

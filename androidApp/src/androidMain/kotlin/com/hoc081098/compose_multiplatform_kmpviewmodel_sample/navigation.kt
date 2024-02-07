@@ -8,8 +8,8 @@ import com.freeletics.khonshu.navigation.compose.NavigationSetup
 import com.freeletics.khonshu.navigation.compose.ScreenDestination
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_utils.declareSetMultibinding
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_utils.intoSetMultibinding
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailScreenRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.SearchPhotoScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.PhotoDetailScreen
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.SearchPhotoScreen
 import org.koin.compose.koinInject
@@ -29,10 +29,10 @@ val NavigationModule =
     declareSetMultibinding<NavDestination>(qualifier = AllDestinationsQualifier)
 
     intoSetMultibinding(
-      key = SearchPhotoRoute::class.java,
+      key = SearchPhotoScreenRoute::class.java,
       multibindingQualifier = AllDestinationsQualifier,
     ) {
-      ScreenDestination<SearchPhotoRoute> { route ->
+      ScreenDestination<SearchPhotoScreenRoute> { route ->
         val navigator = koinInject<NavEventNavigator>()
 
         NavigationSetup(navigator)
@@ -42,7 +42,7 @@ val NavigationModule =
           navigateToPhotoDetail =
             remember(navigator) {
               {
-                navigator.navigateTo(PhotoDetailRoute(id = it))
+                navigator.navigateTo(PhotoDetailScreenRoute(id = it))
               }
             },
         )
@@ -50,10 +50,10 @@ val NavigationModule =
     }
 
     intoSetMultibinding(
-      key = PhotoDetailRoute::class.java,
+      key = PhotoDetailScreenRoute::class.java,
       multibindingQualifier = AllDestinationsQualifier,
     ) {
-      ScreenDestination<PhotoDetailRoute> { route ->
+      ScreenDestination<PhotoDetailScreenRoute> { route ->
         val navigator = koinInject<NavEventNavigator>()
 
         NavigationSetup(navigator)

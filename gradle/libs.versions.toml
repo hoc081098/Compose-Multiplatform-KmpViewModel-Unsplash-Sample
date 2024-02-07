@@ -1,76 +1,60 @@
 [versions]
-koinVersion = "3.5.0"
-kotlin = "1.9.20"
-kotlinx-collections-immutable = "0.3.6"
+koinVersion = "3.5.3"
+kotlin = "1.9.22"
+kotlinx-collections-immutable = "0.3.7"
 kotlinx-coroutines = "1.7.3"
-kotlinx-atomicfu = "0.22.0"
+kotlinx-atomicfu = "0.23.2"
 kotlinx-datetime = "0.4.1"
-kotlinx-serialization = "1.6.1"
+kotlinx-serialization = "1.6.2"
 
-jetbrains-compose-mutiplatform = "1.5.10"
+jetbrains-compose-mutiplatform = "1.5.12"
 
 java-target = "17"
 java-toolchain = "17"
 
-gradle-api = "8.4"
 ktlint = "1.0.0"
 
-android-gradle = "8.1.4"
+android-gradle = "8.2.2"
 android-min = "24"
 android-target = "34"
 android-compile = "34"
 androidx-appcompat = "1.6.1"
-androidx-activity = "1.8.1"
-androidx-annotations = "1.7.0"
-androidx-compose-compiler = "1.5.4"
+androidx-activity = "1.8.2"
+androidx-annotations = "1.7.1"
+androidx-compose-compiler = "1.5.8"
 androidx-core = "1.12.0"
-androidx-lifecycle = "2.6.2"
+androidx-lifecycle = "2.7.0"
 androidx-fragment = "1.6.2"
-androidx-navigation = "2.7.5"
+androidx-navigation = "2.7.6"
 androidx-savedstate = "1.2.1"
 
-ktor = "2.3.6"
+ktor = "2.3.8"
 
 arrow-kt = "1.2.1"
 kamel-image = "0.8.3"
-napier = "2.6.1"
-uri = "0.0.15"
-flow-ext = "0.7.4"
-koin-androidx-compose = "3.5.0"
+napier = "2.7.1"
+uri = "0.0.16"
+flow-ext = "0.7.5"
+koin-androidx-compose = "3.5.3"
 koin-annotations = "1.3.0"
-koin-core = "3.5.0"
-koin-compose = "1.1.0"
+koin-core = "3.5.3"
+koin-compose = "1.1.2"
 uuid = "0.8.2"
 
-kmp-viewmodel = "0.6.0"
+kmp-viewmodel = "0.6.2"
 khonshu = "0.20.0"
+solivagant = "0.0.1"
 
 inject = "1"
-dagger = "2.48.1"
-anvil = "2.4.7"
-renderer = "0.13.1"
-ksp = "1.9.20-1.0.14"
-kotlinpoet = "1.14.2"
-auto-service = "1.1.1"
-auto-service-ksp = "1.1.0"
-auto-value = "1.10.3"
+dagger = "2.50"
+ksp = "1.9.22-1.0.16"
 
 junit = "4.13.2"
-truth = "1.1.5"
+truth = "1.2.0"
 turbine = "1.0.0"
-kotlin-compile-testing = "0.3.2"
-
-publish = "0.25.3"
-dokka = "1.8.20"
-bestpractices = "0.10"
-binarycompatibility = "0.13.2"
-dependency-analysis = "1.21.0"
-gr8 = "0.9"
+kotlin-compile-testing = "0.4.0"
 
 [libraries]
-gradle-api = { module = "dev.gradleplugins:gradle-api", version.ref = "gradle-api" }
-android-gradle-api = { module = "com.android.tools.build:gradle-api", version.ref = "android-gradle" }
-
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVersion" }
 koin-androidx-compose = { module = "io.insert-koin:koin-androidx-compose", version.ref = "koin-androidx-compose" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
@@ -140,30 +124,19 @@ uuid = { module = "com.benasher44:uuid", version.ref = "uuid" }
 kmp-viewmodel = { module = "io.github.hoc081098:kmp-viewmodel", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-savedstate = { module = "io.github.hoc081098:kmp-viewmodel-savedstate", version.ref = "kmp-viewmodel" }
 kmp-viewmodel-compose = { module = "io.github.hoc081098:kmp-viewmodel-compose", version.ref = "kmp-viewmodel" }
+kmp-viewmodel-koin-compose = { module = "io.github.hoc081098:kmp-viewmodel-koin-compose", version.ref = "kmp-viewmodel" }
 khonshu-navigation-compose = { module = "com.freeletics.khonshu:navigation-compose", version.ref = "khonshu" }
+solivagant-navigation = { module = "io.github.hoc081098:solivagant-navigation", version.ref = "solivagant" }
 
 inject = { module = "javax.inject:javax.inject", version.ref = "inject" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
-anvil-annotations = { module = "com.squareup.anvil:annotations", version.ref = "anvil" }
-anvil-compiler = { module = "com.squareup.anvil:compiler", version.ref = "anvil" }
-anvil-compiler-api = { module = "com.squareup.anvil:compiler-api", version.ref = "anvil" }
-anvil-compiler-utils = { module = "com.squareup.anvil:compiler-utils", version.ref = "anvil" }
-renderer = { module = "com.gabrielittner.renderer:renderer", version.ref = "renderer" }
-renderer-connect = { module = "com.gabrielittner.renderer:connect", version.ref = "renderer" }
-ksp-api = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
-kotlinpoet = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
-kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
-auto-service-annotations = { module = "com.google.auto.service:auto-service-annotations", version.ref = "auto-service" }
-auto-service-compiler = { module = "dev.zacsweers.autoservice:auto-service-ksp", version.ref = "auto-service-ksp" }
-auto-value = { module = "com.google.auto.value:auto-value", version.ref = "auto-value" }
 
 junit = { module = "junit:junit", version.ref = "junit" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
 kotlin-compile-testing = { module = "dev.zacsweers.kctfork:core", version.ref = "kotlin-compile-testing" }
 kotlin-compile-testing-ksp = { module = "dev.zacsweers.kctfork:ksp", version.ref = "kotlin-compile-testing" }
-gr8 = { module = "com.gradleup:gr8-plugin", version.ref = "gr8" }
 
 [plugins]
 android-library = { id = "com.android.library", version.ref = "android-gradle" }
@@ -178,12 +151,6 @@ kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref =
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-publish = { id = "com.vanniktech.maven.publish", version.ref = "publish" }
-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
-binarycompatibility = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "binarycompatibility" }
-bestpractices = { id = "com.autonomousapps.plugin-best-practices-plugin", version.ref = "bestpractices" }
-gr8 = { id = "com.gradleup.gr8", version.ref = "gr8" }
-dependency-analysis = { id = "com.autonomousapps.dependency-analysis", version.ref = "dependency-analysis" }
-poko = { id = "dev.drewhamilton.poko", version = "0.15.0" }
+poko = { id = "dev.drewhamilton.poko", version = "0.15.2" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.15.0" }
-spotless={ id = "com.diffplug.gradle.spotless", version = "6.22.0" }
+spotless = { id = "com.diffplug.gradle.spotless", version = "6.25.0" }

@@ -3,10 +3,12 @@ package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.koin_compose_uti
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisallowComposableCalls
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.BaseRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.rememberCloseableForRoute
+import androidx.compose.runtime.rememberUpdatedState
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.solivagant.navigation.BaseRoute
+import com.hoc081098.solivagant.navigation.rememberCloseableOnRoute
 import org.koin.compose.getKoin
 import org.koin.core.Koin
 import org.koin.core.annotation.KoinInternalApi
@@ -15,26 +17,25 @@ import org.koin.core.module.Module
 /**
  * Load and remember Modules & run CompositionKoinModuleLoader to handle scope closure
  *
- * @param unloadOnForgotten : unload loaded modules on onForgotten event
- * @param unloadOnAbandoned : unload loaded modules on onAbandoned event
  * @param unloadModules : unload loaded modules on onForgotten or onAbandoned event
  * @return true after modules are loaded, false if not.
  * @author Arnaud Giuliani
  */
 @Composable
-inline fun rememberKoinModulesForRoute(
+inline fun rememberKoinModulesOnRoute(
   route: BaseRoute,
+  koin: Koin = getKoin(),
   unloadModules: Boolean = false,
   crossinline modules: @DisallowComposableCalls () -> List<Module> = { emptyList() },
 ): State<Boolean> {
-  val koin = getKoin()
+  val currentUnloadModules by rememberUpdatedState(unloadModules)
 
   val compositionKoinModuleLoader =
-    rememberCloseableForRoute(route) {
+    rememberCloseableOnRoute(route) {
       CompositionKoinModuleLoader(
         modules = modules(),
         koin = koin,
-        unloadOnClose = unloadModules,
+        unloadOnClose = currentUnloadModules,
         route = route,
       )
     }
