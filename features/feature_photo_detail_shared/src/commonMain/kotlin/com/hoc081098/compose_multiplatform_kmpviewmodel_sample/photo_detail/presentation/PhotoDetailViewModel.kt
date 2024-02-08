@@ -74,7 +74,7 @@ internal class PhotoDetailViewModel(
                 .filterIsInstance<PhotoDetailViewIntent.NavigateBack>()
                 .onEach { navigator.navigateBack() }
                 .ignoreElements()
-            }
+            },
           )
         }.scan(PhotoDetailUiState.INITIAL) { state, change -> change.reduce(state) }
         .stateIn(
@@ -90,7 +90,8 @@ internal class PhotoDetailViewModel(
 
   //region View intent processors
   @JvmName("initIntentFlowToPartialStateChangesFlow")
-  private fun Flow<PhotoDetailViewIntent.Init>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
+  private fun Flow<PhotoDetailViewIntent.Init>.toPartialStateChangesFlow():
+    Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     take(1)
       .flatMapConcat {
         flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
@@ -107,7 +108,8 @@ internal class PhotoDetailViewModel(
       }
 
   @JvmName("retryIntentFlowToPartialStateChangesFlow")
-  private fun Flow<PhotoDetailViewIntent.Retry>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.InitAndRetry> =
+  private fun Flow<PhotoDetailViewIntent.Retry>.toPartialStateChangesFlow():
+    Flow<PhotoDetailPartialStateChange.InitAndRetry> =
     filter { uiStateFlow.value is PhotoDetailUiState.Error }
       .flatMapFirst {
         flowFromSuspend { getPhotoDetailByIdUseCase(route.id) }
@@ -124,7 +126,8 @@ internal class PhotoDetailViewModel(
       }
 
   @JvmName("refreshIntentFlowToPartialStateChangesFlow")
-  private fun Flow<PhotoDetailViewIntent.Refresh>.toPartialStateChangesFlow(): Flow<PhotoDetailPartialStateChange.Refresh> =
+  private fun Flow<PhotoDetailViewIntent.Refresh>.toPartialStateChangesFlow():
+    Flow<PhotoDetailPartialStateChange.Refresh> =
     filter {
       val state = uiStateFlow.value
       state is PhotoDetailUiState.Content && !state.isRefreshing

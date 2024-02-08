@@ -88,10 +88,10 @@ private fun PhotoDetailContent(
   ) { padding ->
     Box(
       modifier =
-      modifier
-        .fillMaxSize()
-        .padding(padding)
-        .consumeWindowInsets(padding),
+        modifier
+          .fillMaxSize()
+          .padding(padding)
+          .consumeWindowInsets(padding),
     ) {
       when (uiState) {
         PhotoDetailUiState.Loading -> {
@@ -105,12 +105,12 @@ private fun PhotoDetailContent(
             modifier = Modifier.matchParentSize(),
             onRetry = onRetry,
             errorMessage =
-            when (uiState.error) {
-              PhotoDetailError.NetworkError -> "Network error"
-              PhotoDetailError.ServerError -> "Server error"
-              PhotoDetailError.TimeoutError -> "Timeout error"
-              PhotoDetailError.Unexpected -> "Unexpected error"
-            },
+              when (uiState.error) {
+                PhotoDetailError.NetworkError -> "Network error"
+                PhotoDetailError.ServerError -> "Server error"
+                PhotoDetailError.TimeoutError -> "Timeout error"
+                PhotoDetailError.Unexpected -> "Unexpected error"
+              },
           )
         }
 
@@ -119,10 +119,10 @@ private fun PhotoDetailContent(
 
           Column(
             modifier =
-            Modifier
-              .matchParentSize()
-              .padding(horizontal = 16.dp)
-              .verticalScroll(rememberScrollState()),
+              Modifier
+                .matchParentSize()
+                .padding(horizontal = 16.dp)
+                .verticalScroll(rememberScrollState()),
           ) {
             Spacer(modifier = Modifier.height(16.dp))
 

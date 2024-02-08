@@ -14,4 +14,3 @@ data object SearchPhotoScreenRoute : NavRoot
 data class PhotoDetailScreenRoute(
   val id: String,
 ) : NavRoute
-

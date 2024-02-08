@@ -1,6 +1,7 @@
 @file:Suppress(
   "ktlint:standard:discouraged-comment-location",
   "ktlint:standard:max-line-length",
+  "ktlint:standard:value-parameter-comment",
 )
 
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.data.remote.response
@@ -11,7 +12,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class UrlsResponse(
-  @SerialName(value = "raw") val raw: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3
+  @SerialName(
+    value = "raw",
+  ) val raw: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3
   @SerialName(
     value = "full",
   ) val full: String, // https://images.unsplash.com/photo-1560089000-7433a4ebbd64?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb
@@ -34,7 +37,9 @@ internal data class LinksResponse(
   @SerialName(value = "self") val self: String, // https://api.unsplash.com/photos/mzt0A967scs
   @SerialName(value = "html") val html: String, // https://unsplash.com/photos/mzt0A967scs
   @SerialName(value = "download") val download: String, // https://unsplash.com/photos/mzt0A967scs/download
-  @SerialName(value = "download_location") val downloadLocation: String, // https://api.unsplash.com/photos/mzt0A967scs/download
+  @SerialName(
+    value = "download_location",
+  ) val downloadLocation: String, // https://api.unsplash.com/photos/mzt0A967scs/download
 )
 
 @Serializable
@@ -49,7 +54,9 @@ internal data class CoverPhotoResponse(
   @SerialName(value = "color") val color: String, // #262626
   @SerialName(value = "blur_hash") val blurHash: String, // LNBp;G?w%2aJRkt7V@WAOuWZWARO
   @SerialName(value = "description") val description: String?, // Tek it married
-  @SerialName(value = "alt_description") val altDescription: String?, // a man holding a basketball standing next to a fence
+  @SerialName(
+    value = "alt_description",
+  ) val altDescription: String?, // a man holding a basketball standing next to a fence
   @SerialName(value = "urls") val urls: UrlsResponse,
   @SerialName(value = "links") val links: LinksResponse,
   @SerialName(value = "likes") val likes: Int, // 2

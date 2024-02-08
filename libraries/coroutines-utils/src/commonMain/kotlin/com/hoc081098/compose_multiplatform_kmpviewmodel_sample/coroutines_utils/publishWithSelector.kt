@@ -152,7 +152,9 @@ private class DefaultSelectorScope<T>(
 
             cachedSelectedFlows
               ?.get(index)
-              ?: error("It looks like you are trying to collect the select{} flow outside publish, please don't do that!")
+              ?: error(
+                "It looks like you are trying to collect the select{} flow outside publish, please don't do that!",
+              )
           }
 
         @Suppress("UNCHECKED_CAST") // Always safe

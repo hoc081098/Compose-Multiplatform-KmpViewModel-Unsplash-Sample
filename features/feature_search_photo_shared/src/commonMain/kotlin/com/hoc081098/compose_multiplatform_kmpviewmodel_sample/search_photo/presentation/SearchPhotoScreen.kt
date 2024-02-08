@@ -123,8 +123,7 @@ private fun ListContent(
     ErrorMessageAndRetryButton(
       modifier = modifier,
       onRetry = { },
-      errorMessage =
-      when (error) {
+      errorMessage = when (error) {
         SearchPhotoError.NetworkError -> "Network error"
         SearchPhotoError.ServerError -> "Server error"
         SearchPhotoError.TimeoutError -> "Timeout error"
