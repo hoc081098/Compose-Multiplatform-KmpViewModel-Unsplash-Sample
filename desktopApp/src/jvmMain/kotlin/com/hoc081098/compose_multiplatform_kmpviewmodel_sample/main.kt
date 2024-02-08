@@ -20,11 +20,11 @@ import java.util.logging.Level
 import java.util.logging.SimpleFormatter
 import java.util.logging.StreamHandler
 import kotlinx.collections.immutable.toImmutableSet
-import org.koin.compose.KoinApplication
+import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
+import org.koin.core.context.startKoin
 import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
-import org.koin.dsl.KoinAppDeclaration
 
 fun main() {
   Napier.base(
@@ -36,7 +36,7 @@ fun main() {
     ),
   )
 
-  val koinApplication: KoinAppDeclaration = {
+  startKoin {
     logger(PrintLogger(level = KoinLoggerLevel.DEBUG))
 
     modules(
@@ -63,7 +63,7 @@ fun main() {
       LifecycleOwnerProvider(
         lifecycleOwner = rememberLifecycleOwner(lifecycleRegistry),
       ) {
-        KoinApplication(application = koinApplication) {
+        KoinContext {
           AppTheme {
             NavHost(
               startRoute = SearchPhotoScreenRoute,

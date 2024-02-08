@@ -11,21 +11,26 @@ import com.hoc081098.solivagant.navigation.NavDestination
 import com.hoc081098.solivagant.navigation.NavHost
 import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.toImmutableSet
+import org.koin.androidx.compose.KoinAndroidContext
+import org.koin.core.annotation.KoinExperimentalAPI
 
+@OptIn(KoinExperimentalAPI::class)
 class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
     setContent {
-      AppTheme {
-        NavHost(
-          startRoute = SearchPhotoScreenRoute,
-          destinations = koinInjectSetMultibinding<NavDestination>(AllDestinationsQualifier)
-            .let { remember(it) { it.toImmutableSet() } },
-          destinationChangedCallback = { route ->
-            Napier.d(message = "Destination changed: $route", tag = "MainActivity")
-          },
-        )
+      KoinAndroidContext {
+        AppTheme {
+          NavHost(
+            startRoute = SearchPhotoScreenRoute,
+            destinations = koinInjectSetMultibinding<NavDestination>(AllDestinationsQualifier)
+              .let { remember(it) { it.toImmutableSet() } },
+            destinationChangedCallback = { route ->
+              Napier.d(message = "Destination changed: $route", tag = "MainActivity")
+            },
+          )
+        }
       }
     }
   }
