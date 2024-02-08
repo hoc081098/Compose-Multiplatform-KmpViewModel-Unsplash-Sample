@@ -1,6 +1,5 @@
 package com.hoc081098.compose_multiplatform_kmpviewmodel_sample
 
-import org.koin.core.logger.Level as KoinLoggerLevel
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
@@ -23,6 +22,7 @@ import java.util.logging.StreamHandler
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
+import org.koin.core.logger.Level as KoinLoggerLevel
 import org.koin.core.logger.PrintLogger
 import org.koin.dsl.KoinAppDeclaration
 
