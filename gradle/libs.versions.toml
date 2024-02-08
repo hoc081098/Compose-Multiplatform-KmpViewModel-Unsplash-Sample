@@ -152,5 +152,5 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 poko = { id = "dev.drewhamilton.poko", version = "0.15.2" }
-buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.15.0" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version = "0.15.1" }
 spotless = { id = "com.diffplug.gradle.spotless", version = "6.25.0" }
