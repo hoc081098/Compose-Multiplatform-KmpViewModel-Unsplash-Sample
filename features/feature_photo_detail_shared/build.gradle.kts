@@ -43,7 +43,7 @@ kotlin {
   applyDefaultHierarchyTemplate()
 
   sourceSets {
-    commonMain{
+    commonMain {
       kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
       dependencies {
@@ -117,7 +117,7 @@ kotlin {
         api(libs.napier)
       }
     }
-    androidMain  {
+    androidMain {
       dependencies {
         api(libs.androidx.activity.compose)
         api(libs.androidx.appcompat)
