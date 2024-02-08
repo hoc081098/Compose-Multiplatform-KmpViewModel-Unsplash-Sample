@@ -27,4 +27,12 @@ Liked some of my work? Buy me a coffee (or more likely a beer)
   - Clean Architecture
   - Compose Multiplatform type-safe navigation by [solivagant](https://github.com/hoc081098/solivagant)
 
+### Screenshots
+
 https://user-images.githubusercontent.com/36917223/270357793-11cb7264-59fe-4f58-884a-c92c204b566f.mov
+
+<img src="images/img_0.png" width="480"/>
+
+<br>
+
+<img src="images/img_1.png" width="480"/>
