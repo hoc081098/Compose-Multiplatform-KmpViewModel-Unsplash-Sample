@@ -12,6 +12,7 @@ import com.hoc081098.solivagant.navigation.NavHost
 import io.github.aakira.napier.Napier
 import kotlinx.collections.immutable.toImmutableSet
 import org.koin.androidx.compose.KoinAndroidContext
+import org.koin.compose.koinInject
 import org.koin.core.annotation.KoinExperimentalAPI
 
 @OptIn(KoinExperimentalAPI::class)
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             startRoute = SearchPhotoScreenRoute,
             destinations = koinInjectSetMultibinding<NavDestination>(AllDestinationsQualifier)
               .let { remember(it) { it.toImmutableSet() } },
+            navEventNavigator = koinInject(),
             destinationChangedCallback = { route ->
               Napier.d(message = "Destination changed: $route", tag = "MainActivity")
             },
