@@ -25,7 +25,7 @@ kotlin {
     vendor.set(JvmVendorSpec.AZUL)
   }
 
-  targetHierarchy.default()
+  applyDefaultHierarchyTemplate()
 
   androidTarget {
     compilations.all {

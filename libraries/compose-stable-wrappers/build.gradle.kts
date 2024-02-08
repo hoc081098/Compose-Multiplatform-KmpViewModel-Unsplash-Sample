@@ -23,7 +23,7 @@ kotlin {
     vendor.set(JvmVendorSpec.AZUL)
   }
 
-  targetHierarchy.default()
+  applyDefaultHierarchyTemplate()
 
   jvm()
 

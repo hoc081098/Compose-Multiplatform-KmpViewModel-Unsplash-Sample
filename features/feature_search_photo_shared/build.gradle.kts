@@ -40,20 +40,10 @@ kotlin {
   iosArm64()
   iosSimulatorArm64()
 
-  //  cocoapods {
-  //    version = "1.0.0"
-  //    summary = "Some description for the Shared Module"
-  //    homepage = "Link to the Shared Module homepage"
-  //    ios.deploymentTarget = "14.1"
-  //    podfile = project.file("../iosApp/Podfile")
-  //    framework {
-  //      baseName = "shared"
-  //      isStatic = true
-  //    }
-  //  }
+  applyDefaultHierarchyTemplate()
 
   sourceSets {
-    val commonMain by getting {
+    commonMain {
       kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
 
       dependencies {
@@ -127,7 +117,7 @@ kotlin {
         api(libs.napier)
       }
     }
-    val androidMain by getting {
+    androidMain {
       dependencies {
         api(libs.androidx.activity.compose)
         api(libs.androidx.appcompat)
@@ -140,15 +130,7 @@ kotlin {
         implementation(libs.kotlinx.coroutines.android)
       }
     }
-    val iosX64Main by getting
-    val iosArm64Main by getting
-    val iosSimulatorArm64Main by getting
-    val iosMain by creating {
-      dependsOn(commonMain)
-      iosX64Main.dependsOn(this)
-      iosArm64Main.dependsOn(this)
-      iosSimulatorArm64Main.dependsOn(this)
-
+    iosMain {
       dependencies {
         // Ktor
         implementation(libs.ktor.client.darwin)
@@ -242,13 +224,12 @@ buildkonfig {
     buildConfigField(
       type = FieldSpec.Type.STRING,
       name = "UNSPLASH_CLIENT_ID",
-      value =
-        if (isCiBuild) {
-          logger.info("CI build, ignore checking existence of local.properties file")
-          "none"
-        } else {
-          rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
-        },
+      value = if (isCiBuild) {
+        logger.info("CI build, ignore checking existence of local.properties file")
+        "none"
+      } else {
+        rootProject.readPropertiesFile("local.properties")["UNSPLASH_CLIENT_ID_DEV"]
+      },
     )
     buildConfigField(
       type = FieldSpec.Type.STRING,
