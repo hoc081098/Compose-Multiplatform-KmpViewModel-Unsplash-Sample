@@ -48,10 +48,14 @@ class SetMultibinding<V> {
   internal val asSet: Set<V> get() = set.value
 }
 
-inline fun <reified V> defaultSetMultibindingQualifier(): StringQualifier = named("SetMultibinding<${V::class.getFullName()}>")
+inline fun <reified V> defaultSetMultibindingQualifier(): StringQualifier =
+  named(
+    "SetMultibinding<${V::class.getFullName()}>",
+  )
 
-inline fun <reified V> Module.declareSetMultibinding(qualifier: StringQualifier = defaultSetMultibindingQualifier<V>()) =
-  single(qualifier = qualifier) { SetMultibinding<V>() }
+inline fun <reified V> Module.declareSetMultibinding(
+  qualifier: StringQualifier = defaultSetMultibindingQualifier<V>(),
+) = single(qualifier = qualifier) { SetMultibinding<V>() }
 
 @OptIn(InternalKoinMultibindingApi::class)
 @Suppress("RedundantUnitExpression", "RemoveExplicitTypeArguments") // Keep for readability
@@ -77,5 +81,6 @@ inline fun <reified V> Module.intoSetMultibinding(
 }
 
 @OptIn(InternalKoinMultibindingApi::class)
-inline fun <reified V> Scope.getSetMultibinding(qualifier: StringQualifier = defaultSetMultibindingQualifier<V>()): Set<V> =
-  get<SetMultibinding<V>>(qualifier = qualifier).asSet
+inline fun <reified V> Scope.getSetMultibinding(
+  qualifier: StringQualifier = defaultSetMultibindingQualifier<V>(),
+): Set<V> = get<SetMultibinding<V>>(qualifier = qualifier).asSet

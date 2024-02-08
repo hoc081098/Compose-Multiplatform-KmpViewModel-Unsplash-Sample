@@ -28,47 +28,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.LoadingIndicator
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose_lifecycle.collectAsStateWithLifecycleKmp
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.GetPhotoDetailByIdUseCase
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.domain.PhotoDetailError
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.CreatorInfoCard
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.components.LargePhotoImage
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.createSavedStateHandle
-import com.hoc081098.kmp.viewmodel.viewModelFactory
-import org.koin.compose.koinInject
-
-@Composable
-private fun photoDetailViewModel(
-  route: PhotoDetailRoute,
-  getPhotoDetailByIdUseCase: GetPhotoDetailByIdUseCase = koinInject(),
-): PhotoDetailViewModel =
-  kmpViewModel(
-    key = "${PhotoDetailViewModel::class.simpleName}_$route",
-    factory =
-      viewModelFactory {
-        PhotoDetailViewModel(
-          savedStateHandle = createSavedStateHandle(),
-          getPhotoDetailByIdUseCase = getPhotoDetailByIdUseCase,
-        )
-      },
-  )
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 internal fun PhotoDetailScreen(
-  route: PhotoDetailRoute,
-  onNavigationBack: () -> Unit,
+  route: PhotoDetailScreenRoute,
   modifier: Modifier = Modifier,
-  viewModel: PhotoDetailViewModel = photoDetailViewModel(route = route),
+  viewModel: PhotoDetailViewModel = koinKmpViewModel(
+    key = "${PhotoDetailViewModel::class.simpleName}_$route",
+  ),
 ) {
-  val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycleKmp()
+  val uiState by viewModel.uiStateFlow.collectAsStateWithLifecycle()
 
-  val processIntent: (PhotoDetailViewIntent) -> Unit =
-    remember(viewModel) {
-      @Suppress("SuspiciousCallableReferenceInLambda")
-      viewModel::process
-    }
+  @Suppress("SuspiciousCallableReferenceInLambda")
+  val processIntent: (PhotoDetailViewIntent) -> Unit = remember(viewModel) { viewModel::process }
 
   DisposableEffect(processIntent) {
     processIntent(PhotoDetailViewIntent.Init)
@@ -80,14 +58,14 @@ internal fun PhotoDetailScreen(
     route = route,
     uiState = uiState,
     onRetry = { processIntent(PhotoDetailViewIntent.Retry) },
-    onNavigationBack = onNavigationBack,
+    onNavigationBack = { processIntent(PhotoDetailViewIntent.NavigateBack) },
   )
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 private fun PhotoDetailContent(
-  route: PhotoDetailRoute,
+  route: PhotoDetailScreenRoute,
   uiState: PhotoDetailUiState,
   onRetry: () -> Unit,
   onNavigationBack: () -> Unit,

@@ -13,16 +13,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation.rememberCloseableForRoute
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailRoute
+import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.navigation_shared.PhotoDetailScreenRoute
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.photo_detail.presentation.PhotoDetailUiState.PhotoSizeUi
 import com.hoc081098.kmp.viewmodel.Closeable
+import com.hoc081098.solivagant.navigation.rememberCloseableOnRoute
 import io.github.aakira.napier.Napier
 import io.kamel.core.config.KamelConfig
 import io.kamel.core.config.takeFrom
@@ -43,16 +45,16 @@ private class KamelConfigWrapperCloseable(
 
 @Composable
 internal fun LargePhotoImage(
-  route: PhotoDetailRoute,
+  route: PhotoDetailScreenRoute,
   url: String,
   contentDescription: String?,
   size: PhotoSizeUi,
   modifier: Modifier = Modifier,
 ) {
-  val currentKamelConfig = LocalKamelConfig.current
+  val currentKamelConfig by rememberUpdatedState(LocalKamelConfig.current)
 
   val kamelConfigWrapper =
-    rememberCloseableForRoute(route) {
+    rememberCloseableOnRoute(route) {
       KamelConfigWrapperCloseable(
         KamelConfig {
           takeFrom(currentKamelConfig)
@@ -69,10 +71,9 @@ internal fun LargePhotoImage(
 
   CompositionLocalProvider(LocalKamelConfig provides kamelConfigWrapper.kamelConfig) {
     KamelImage(
-      modifier =
-        modifier
-          .aspectRatio(size.width.toFloat() / size.height.toFloat())
-          .clip(RoundedCornerShape(size = 8.dp)),
+      modifier = modifier
+        .aspectRatio(size.width.toFloat() / size.height.toFloat())
+        .clip(RoundedCornerShape(size = 8.dp)),
       resource = asyncPainterResource(data = url),
       contentDescription = contentDescription,
       contentScale = ContentScale.Crop,

@@ -18,12 +18,10 @@ include(":features:feature_photo_detail_shared")
 include(":core:common_shared")
 include(":core:common_ui_shared")
 include(":core:navigation_shared")
-include(":libraries:navigation")
 include(":libraries:koin-utils")
 include(":libraries:koin-compose-utils")
 include(":libraries:coroutines-utils")
 include(":libraries:compose-stable-wrappers")
-include(":libraries:compose-lifecycle-utils")
 
 pluginManagement {
   includeBuild("build-logic")
@@ -47,5 +45,5 @@ dependencyResolutionManagement {
 }
 
 plugins {
-  id("org.gradle.toolchains.foojay-resolver-convention") version("0.7.0")
+  id("org.gradle.toolchains.foojay-resolver-convention") version ("0.8.0")
 }

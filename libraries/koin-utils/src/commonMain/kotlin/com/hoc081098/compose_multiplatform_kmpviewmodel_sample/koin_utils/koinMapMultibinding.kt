@@ -54,8 +54,9 @@ class MapMultibinding<K, V> {
 inline fun <reified K, reified V> defaultMapMultibindingQualifier(): StringQualifier =
   named("MapMultibinding<${K::class.getFullName()},${V::class.getFullName()}>")
 
-inline fun <reified K, reified V> Module.declareMapMultibinding(qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>()) =
-  single(qualifier = qualifier) { MapMultibinding<K, V>() }
+inline fun <reified K, reified V> Module.declareMapMultibinding(
+  qualifier: StringQualifier = defaultMapMultibindingQualifier<K, V>(),
+) = single(qualifier = qualifier) { MapMultibinding<K, V>() }
 
 @OptIn(InternalKoinMultibindingApi::class)
 @Suppress("RedundantUnitExpression", "RemoveExplicitTypeArguments") // Keep for readability

@@ -32,46 +32,29 @@ import androidx.compose.ui.unit.dp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.EmptyView
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.ErrorMessageAndRetryButton
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.common_ui.components.LoadingIndicator
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.compose_lifecycle.collectAsStateWithLifecycleKmp
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.coroutines_utils.AppCoroutineDispatchers
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoError
-import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.domain.SearchPhotoUseCase
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.SearchPhotoUiState.PhotoUiItem
 import com.hoc081098.compose_multiplatform_kmpviewmodel_sample.search_photo.presentation.components.PhotoGridCell
-import com.hoc081098.kmp.viewmodel.compose.kmpViewModel
-import com.hoc081098.kmp.viewmodel.createSavedStateHandle
-import com.hoc081098.kmp.viewmodel.viewModelFactory
+import com.hoc081098.kmp.viewmodel.koin.compose.koinKmpViewModel
+import com.hoc081098.solivagant.lifecycle.compose.collectAsStateWithLifecycle
 import org.koin.compose.koinInject
-
-@Composable
-private fun searchPhotoViewModel(searchPhotoUseCase: SearchPhotoUseCase = koinInject()): SearchPhotoViewModel =
-  kmpViewModel(
-    factory =
-      viewModelFactory {
-        SearchPhotoViewModel(
-          savedStateHandle = createSavedStateHandle(),
-          searchPhotoUseCase = searchPhotoUseCase,
-        )
-      },
-  )
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 internal fun SearchPhotoScreen(
-  navigateToPhotoDetail: (id: String) -> Unit,
   modifier: Modifier = Modifier,
-  viewModel: SearchPhotoViewModel = searchPhotoViewModel(),
+  viewModel: SearchPhotoViewModel = koinKmpViewModel(),
   appCoroutineDispatchers: AppCoroutineDispatchers = koinInject(),
 ) {
-  val state by viewModel.stateFlow.collectAsStateWithLifecycleKmp()
+  val state by viewModel.stateFlow.collectAsStateWithLifecycle()
   val searchTerm by viewModel
     .searchTermStateFlow
-    .collectAsStateWithLifecycleKmp(context = appCoroutineDispatchers.immediateMain)
+    .collectAsStateWithLifecycle(context = appCoroutineDispatchers.immediateMain)
 
   Scaffold(
-    modifier =
-      modifier
-        .fillMaxSize(),
+    modifier = modifier
+      .fillMaxSize(),
     topBar = {
       CenterAlignedTopAppBar(
         title = { Text(text = "Unsplash") },
@@ -79,19 +62,17 @@ internal fun SearchPhotoScreen(
     },
   ) { padding ->
     Column(
-      modifier =
-        Modifier
-          .padding(padding)
-          .consumeWindowInsets(padding),
+      modifier = Modifier
+        .padding(padding)
+        .consumeWindowInsets(padding),
     ) {
       Spacer(modifier = Modifier.height(16.dp))
 
       TextField(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        value = searchTerm.orEmpty(),
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
+        value = searchTerm,
         onValueChange = remember(viewModel) { viewModel::search },
         label = { Text(text = "Search term") },
       )
@@ -99,26 +80,24 @@ internal fun SearchPhotoScreen(
       Spacer(modifier = Modifier.height(8.dp))
 
       Text(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp),
         text = "Submitted term: ${state.submittedTerm.orEmpty()}",
       )
 
       Spacer(modifier = Modifier.height(16.dp))
 
       Box(
-        modifier =
-          Modifier
-            .fillMaxWidth()
-            .weight(1f),
+        modifier = Modifier
+          .fillMaxWidth()
+          .weight(1f),
         contentAlignment = Alignment.Center,
       ) {
         ListContent(
           modifier = Modifier.matchParentSize(),
           state = state,
-          onItemClick = { navigateToPhotoDetail(it.id) },
+          onItemClick = remember(viewModel) { viewModel::navigateToPhotoDetail },
         )
       }
     }
@@ -144,13 +123,12 @@ private fun ListContent(
     ErrorMessageAndRetryButton(
       modifier = modifier,
       onRetry = { },
-      errorMessage =
-        when (error) {
-          SearchPhotoError.NetworkError -> "Network error"
-          SearchPhotoError.ServerError -> "Server error"
-          SearchPhotoError.TimeoutError -> "Timeout error"
-          SearchPhotoError.Unexpected -> "Unexpected error"
-        },
+      errorMessage = when (error) {
+        SearchPhotoError.NetworkError -> "Network error"
+        SearchPhotoError.ServerError -> "Server error"
+        SearchPhotoError.TimeoutError -> "Timeout error"
+        SearchPhotoError.Unexpected -> "Unexpected error"
+      },
     )
     return
   }
@@ -173,11 +151,10 @@ private fun ListContent(
         key = { it.id },
       ) {
         PhotoGridCell(
-          modifier =
-            Modifier
-              .animateItemPlacement()
-              .fillMaxWidth()
-              .aspectRatio(1f),
+          modifier = Modifier
+            .animateItemPlacement()
+            .fillMaxWidth()
+            .aspectRatio(1f),
           photo = it,
           onClick = { onItemClick(it) },
         )

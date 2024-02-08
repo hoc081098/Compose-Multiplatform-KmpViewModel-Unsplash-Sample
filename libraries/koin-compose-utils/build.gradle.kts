@@ -48,7 +48,7 @@ kotlin {
         api(projects.libraries.koinUtils)
 
         // Navigation
-        api(projects.libraries.navigation)
+        api(libs.solivagant.navigation)
 
         // Koin
         api(libs.koin.core)
