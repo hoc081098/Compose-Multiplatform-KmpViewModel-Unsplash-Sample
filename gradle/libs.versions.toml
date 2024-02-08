@@ -47,7 +47,7 @@ solivagant = "0.0.1"
 
 inject = "1"
 dagger = "2.50"
-ksp = "1.9.22-1.0.16"
+ksp = "1.9.22-1.0.17"
 
 junit = "4.13.2"
 truth = "1.2.0"
