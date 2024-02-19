@@ -29,13 +29,17 @@ val NavigationModule =
       key = SearchPhotoScreenRoute::class.java,
       multibindingQualifier = AllDestinationsQualifier,
     ) {
-      ScreenDestination<SearchPhotoScreenRoute> { SearchPhotoScreen(route = it) }
+      ScreenDestination<SearchPhotoScreenRoute> { route, modifier ->
+        SearchPhotoScreen(modifier = modifier, route = route)
+      }
     }
 
     intoSetMultibinding(
       key = PhotoDetailScreenRoute::class.java,
       multibindingQualifier = AllDestinationsQualifier,
     ) {
-      ScreenDestination<PhotoDetailScreenRoute> { PhotoDetailScreen(route = it) }
+      ScreenDestination<PhotoDetailScreenRoute> { route, modifier ->
+        PhotoDetailScreen(modifier = modifier, route = route)
+      }
     }
   }
