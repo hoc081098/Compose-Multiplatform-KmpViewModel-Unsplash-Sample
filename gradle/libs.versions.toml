@@ -35,7 +35,7 @@ koin-compose = "1.1.2"
 kmp-viewmodel = "0.7.0"
 solivagant = "0.1.1"
 
-ksp = "1.9.22-1.0.17"
+ksp = "1.9.22-1.0.18"
 
 [libraries]
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinVersion" }
