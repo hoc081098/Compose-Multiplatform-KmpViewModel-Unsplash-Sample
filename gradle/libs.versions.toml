@@ -33,7 +33,7 @@ koin-core = "3.5.3"
 koin-compose = "1.1.2"
 
 kmp-viewmodel = "0.7.1"
-solivagant = "0.1.1"
+solivagant = "0.2.0"
 
 ksp = "1.9.22-1.0.18"
 
