@@ -1,5 +1,5 @@
 [versions]
-koinVersion = "3.5.3"
+koinVersion = "3.5.4"
 kotlin = "1.9.22"
 kotlinx-collections-immutable = "0.3.7"
 kotlinx-coroutines = "1.8.0"
