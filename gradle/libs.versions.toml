@@ -22,7 +22,7 @@ androidx-appcompat = "1.6.1"
 androidx-activity = "1.8.2"
 androidx-core = "1.12.0"
 
-ktor = "2.3.9"
+ktor = "2.3.10"
 
 arrow-kt = "1.2.4"
 kamel-image = "0.9.4"
