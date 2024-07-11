@@ -14,7 +14,7 @@ java-toolchain = "17"
 
 ktlint = "1.1.1"
 
-android-gradle = "8.5.0"
+android-gradle = "8.5.1"
 android-min = "24"
 android-target = "34"
 android-compile = "34"
