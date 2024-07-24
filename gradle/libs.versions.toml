@@ -19,7 +19,7 @@ android-min = "24"
 android-target = "34"
 android-compile = "34"
 androidx-appcompat = "1.7.0"
-androidx-activity = "1.9.0"
+androidx-activity = "1.9.1"
 androidx-core = "1.13.1"
 
 ktor = "2.3.12"
